@@ -89,12 +89,12 @@ public class Player : MonoBehaviour {
         
         if (Tempurature > 95.4f)
         {
-            otherMat.color = new Color(1, curMat.color.g, curMat.color.b,1);
+            otherMat.color = new Color(1, otherMat.color.g, otherMat.color.b,1);
             otherMat.color -= new Color(0, 0.01f, 0.01f, 0); 
         }
         else if (Tempurature < 95)
         {
-            otherMat.color = new Color(curMat.color.r, curMat.color.g, 1, 1);
+            otherMat.color = new Color(otherMat.color.r, otherMat.color.g, 1, 1);
             otherMat.color -= new Color(0.01f, 0.01f, 0, 0); 
 
         }
