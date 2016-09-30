@@ -33,11 +33,13 @@ public class Movement : MonoBehaviour {
 	
     string curMouseZone = "";//Store mouse zone
 
+    private Animator _animController;
+
 	void Start () 
     {
         curSpeed = normSpeed;
         curMoverate = maxMovement;
-
+        this._animController = this.gameObject.GetComponent<Animator>();
 	}
 	
 	
@@ -52,6 +54,7 @@ public class Movement : MonoBehaviour {
             curMoverate = sprintMaxMovement;
             Player.Hydration -= 0.001f;
             Player.Tempurature += 0.001f;
+            this._animController.SetBool("Sprinting", true);
         }
         else if (!isGrounded)//Slower in air
         {
@@ -61,18 +64,20 @@ public class Movement : MonoBehaviour {
         {
             curSpeed = normSpeed;
             curMoverate = maxMovement;
+            this._animController.SetBool("Sprinting", false);
         }
         //*
         //Moving
         if (Input.GetKey(KeyCode.A) && GetComponent<Rigidbody2D>().velocity.x > -curMoverate)//Moving Left
         {
             GetComponent<Rigidbody2D>().AddForce(new Vector2(-curSpeed, 0));
+            this._animController.SetBool("Moving", true);
 
         }
         else if (Input.GetKey(KeyCode.D) && GetComponent<Rigidbody2D>().velocity.x < curMoverate)//Moving Right
         {
             GetComponent<Rigidbody2D>().AddForce(new Vector2(curSpeed, 0));
-
+            this._animController.SetBool("Moving", true);
         }
 
         //Climbing
@@ -107,6 +112,7 @@ public class Movement : MonoBehaviour {
             GetComponent<Rigidbody2D>().AddForce(new Vector2(0, curSpeed * 15));
             Player.Hydration -= 0.1f;
             Player.Tempurature += 0.1f;
+            this._animController.SetBool("Jumping", true);
         }
         //*/
 
@@ -120,10 +126,14 @@ public class Movement : MonoBehaviour {
             if (curMouseZone == "Left" && GetComponent<Rigidbody2D>().velocity.x > -curMoverate)//Movement
             {
                 GetComponent<Rigidbody2D>().AddForce(new Vector2(-curSpeed, 0));
+                this.GetComponent<SpriteRenderer>().flipX = true;
+                this._animController.SetBool("Moving", true);
             }
             else if (curMouseZone == "Right" && GetComponent<Rigidbody2D>().velocity.x < curMoverate)//Movement
             {
                 GetComponent<Rigidbody2D>().AddForce(new Vector2(curSpeed, 0));
+                this.GetComponent<SpriteRenderer>().flipX = false;
+                this._animController.SetBool("Moving", true);
             }
 
         }
@@ -151,11 +161,18 @@ public class Movement : MonoBehaviour {
                 GetComponent<Rigidbody2D>().AddForce(new Vector2(0, curSpeed * 15));
                 Player.Hydration -= 0.1f;
                 Player.Tempurature += 0.01f;
+                this._animController.SetTrigger("Jumping");
             }
 
         }
+
+        //this._animController.SetBool("Moving", false);
         //*/
-	}
+        if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.magnitude) < 1.0f)
+        {
+            this._animController.SetBool("Moving", false);
+        }
+    }
 
 
     void CheckZone()

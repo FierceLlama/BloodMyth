@@ -1,0 +1,479 @@
+fileFormatVersion: 2
+guid: 0d4a0d1276ba91a429e983e4365c1715
+timeCreated: 1475261559
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: KirbyRun_02
+    21300002: KirbyWalk_01
+    21300004: KirbyRun_01
+    21300006: KirbyWalk_02
+    21300008: KirbyRun_03
+    21300010: KirbyWalk_03
+    21300012: KirbyRun_04
+    21300014: KirbyWalk_04
+    21300016: KirbyWalk_05
+    21300018: KirbyRun_05
+    21300020: KirbyWalk_06
+    21300022: KirbyRun_06
+    21300024: KirbyWalk_07
+    21300026: KirbyRun_07
+    21300028: KirbyWalk_08
+    21300030: KirbyRun_08
+    21300032: KirbyWalk_09
+    21300034: KirbyWalk_10
+    21300036: KirbyJump_01
+    21300038: KirbyJump_02
+    21300040: KirbyJump_03
+    21300042: KirbyJump_04
+    21300044: KirbyJump_05
+    21300046: KirbyJump_06
+    21300048: KirbyJump_07
+    21300050: KirbyJump_08
+    21300052: KirbyJump_09
+    21300054: KirbyJump_10
+    21300056: KirblyIdle_01
+    21300058: KirbyIdle_02
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 821, z: 0, w: 91}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: KirbyRun_02
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 591
+        width: 154
+        height: 172
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyWalk_01
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 822
+        width: 168
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyRun_01
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 595
+        width: 162
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyWalk_02
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 821
+        width: 158
+        height: 159
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyRun_03
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 592
+        width: 144
+        height: 161
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyWalk_03
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 822
+        width: 151
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyRun_04
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 592
+        width: 171
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyWalk_04
+      rect:
+        serializedVersion: 2
+        x: 607
+        y: 822
+        width: 134
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyWalk_05
+      rect:
+        serializedVersion: 2
+        x: 783
+        y: 822
+        width: 135
+        height: 158
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyRun_05
+      rect:
+        serializedVersion: 2
+        x: 805
+        y: 596
+        width: 208
+        height: 166
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyWalk_06
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 822
+        width: 167
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyRun_06
+      rect:
+        serializedVersion: 2
+        x: 1048
+        y: 592
+        width: 180
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyWalk_07
+      rect:
+        serializedVersion: 2
+        x: 1169
+        y: 822
+        width: 160
+        height: 158
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyRun_07
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 592
+        width: 144
+        height: 161
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyWalk_08
+      rect:
+        serializedVersion: 2
+        x: 1371
+        y: 822
+        width: 151
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyRun_08
+      rect:
+        serializedVersion: 2
+        x: 1444
+        y: 592
+        width: 162
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyWalk_09
+      rect:
+        serializedVersion: 2
+        x: 1564
+        y: 822
+        width: 150
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyWalk_10
+      rect:
+        serializedVersion: 2
+        x: 1756
+        y: 822
+        width: 160
+        height: 158
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyJump_01
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 357
+        width: 151
+        height: 158
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyJump_02
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 357
+        width: 159
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyJump_03
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 357
+        width: 151
+        height: 142
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyJump_04
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 357
+        width: 160
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyJump_05
+      rect:
+        serializedVersion: 2
+        x: 753
+        y: 357
+        width: 151
+        height: 158
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyJump_06
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 357
+        width: 160
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyJump_07
+      rect:
+        serializedVersion: 2
+        x: 1144
+        y: 357
+        width: 167
+        height: 142
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyJump_08
+      rect:
+        serializedVersion: 2
+        x: 1351
+        y: 357
+        width: 159
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyJump_09
+      rect:
+        serializedVersion: 2
+        x: 1550
+        y: 357
+        width: 152
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyJump_10
+      rect:
+        serializedVersion: 2
+        x: 1766
+        y: 357
+        width: 151
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirblyIdle_01
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 123
+        width: 168
+        height: 165
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: KirbyIdle_02
+      rect:
+        serializedVersion: 2
+        x: 381
+        y: 123
+        width: 168
+        height: 165
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
