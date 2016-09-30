@@ -34,6 +34,7 @@ public class Movement : MonoBehaviour {
     string curMouseZone = "";//Store mouse zone
 
     private Animator _animController;
+    private bool _facingRight = true;
 
 	void Start () 
     {
@@ -126,13 +127,11 @@ public class Movement : MonoBehaviour {
             if (curMouseZone == "Left" && GetComponent<Rigidbody2D>().velocity.x > -curMoverate)//Movement
             {
                 GetComponent<Rigidbody2D>().AddForce(new Vector2(-curSpeed, 0));
-                this.GetComponent<SpriteRenderer>().flipX = true;
                 this._animController.SetBool("Moving", true);
             }
             else if (curMouseZone == "Right" && GetComponent<Rigidbody2D>().velocity.x < curMoverate)//Movement
             {
                 GetComponent<Rigidbody2D>().AddForce(new Vector2(curSpeed, 0));
-                this.GetComponent<SpriteRenderer>().flipX = false;
                 this._animController.SetBool("Moving", true);
             }
 
@@ -171,6 +170,15 @@ public class Movement : MonoBehaviour {
         if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.magnitude) < 1.0f)
         {
             this._animController.SetBool("Moving", false);
+        }
+
+        if (GetComponent<Rigidbody2D>().velocity.x > 0 && !this._facingRight)
+        {
+            this.Flip();
+        }
+        else if (GetComponent<Rigidbody2D>().velocity.x < 0 && this._facingRight)
+        {
+            this.Flip();
         }
     }
 
@@ -264,5 +272,13 @@ public class Movement : MonoBehaviour {
         {
             isGrounded = false;
         }
+    }
+
+    void Flip()
+    {
+        this._facingRight = !this._facingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 }
