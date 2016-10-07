@@ -13,7 +13,7 @@ public class Movement : MonoBehaviour
     // Jump velocity
     public float jumpVelocity = 20;
 
-    float curSpeed = 0; //Current Move speed
+    //float curSpeed = 0; //Current Move speed
     float curMoveRate = 0;//Current move rate
 
     /*
@@ -34,7 +34,7 @@ public class Movement : MonoBehaviour
     bool isGrounded = false; //Is player on the ground
     bool canClimb = false; //Can the player climb
 
-    string curMouseZone = "";//Store mouse zone
+    //string curMouseZone = "";//Store mouse zone
 
     private Animator _animController;
     private bool _facingRight = true;
@@ -53,7 +53,7 @@ public class Movement : MonoBehaviour
 
     void Start()
     {
-        curSpeed = normSpeed;
+        //curSpeed = normSpeed;
         curMoveRate = maxMovement;
         this._animController = this.gameObject.GetComponent<Animator>();
         this._animController.SetInteger("moveState", (int)moveState);
@@ -70,7 +70,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && isGrounded)
         {
             this._sprinting = true;
-            curSpeed = sprintSpeed;
+            //curSpeed = sprintSpeed;
             curMoveRate = sprintMaxMovement;
             Player.Hydration -= 0.001f;
             Player.Tempurature += 0.001f;
@@ -79,7 +79,7 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            curSpeed = normSpeed;
+            //curSpeed = normSpeed;
             curMoveRate = maxMovement;
         }
         //*
@@ -112,7 +112,7 @@ public class Movement : MonoBehaviour
             this._flip.flipX = false;
             this._facingRight = true;
         }
-        // Add velocity up to max move rate
+        // Movement is velocity in the x direction up to current move rate
         this._rb2D.velocity = new Vector2(move * this.curMoveRate, this._rb2D.velocity.y);
         // Need to fiddle with these values for the movement shit (probably want to change the state machine to better reflect what we want (i.e. sprint bool and move bool)
         if (Mathf.Abs(this._rb2D.velocity.x) > 0 && !this._sprinting)
@@ -128,7 +128,8 @@ public class Movement : MonoBehaviour
             GetComponent<Rigidbody2D>().gravityScale = 0;
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             GetComponent<BoxCollider2D>().isTrigger = true;
-            GetComponent<Rigidbody2D>().AddForce(transform.up * curSpeed);
+            //GetComponent<Rigidbody2D>().AddForce(transform.up * curSpeed);
+            this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, this.curMoveRate);
             Player.Hydration -= 0.01f;
             Player.Tempurature += 0.01f;
 
@@ -138,7 +139,8 @@ public class Movement : MonoBehaviour
             GetComponent<Rigidbody2D>().gravityScale = 0;
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             GetComponent<BoxCollider2D>().isTrigger = true;
-            GetComponent<Rigidbody2D>().AddForce(-transform.up * curSpeed);
+            //GetComponent<Rigidbody2D>().AddForce(-transform.up * curSpeed);
+            this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, -this.curMoveRate);
             Player.Hydration -= 0.01f;
             Player.Tempurature += 0.01f;
         }
@@ -165,54 +167,54 @@ public class Movement : MonoBehaviour
         //*
 
         // Check mouse position quadrant
-        if (Input.GetMouseButton(0))
-        {
-            CheckZone();
-            if (curMouseZone == "Left"/* && GetComponent<Rigidbody2D>().velocity.x > -curMoveRate*/)//Movement
-            {
-                GetComponent<Rigidbody2D>().AddForce(new Vector2(-curSpeed, 0));
-                GetComponent<SpriteRenderer>().flipX = true;
-                moveState = MoveStates.Walking;
-                this._animController.SetInteger("moveState", (int)moveState);
-            }
-            else if (curMouseZone == "Right" /*&& GetComponent<Rigidbody2D>().velocity.x < curMoveRate*/)//Movement
-            {
-                GetComponent<Rigidbody2D>().AddForce(new Vector2(curSpeed, 0));
-                GetComponent<SpriteRenderer>().flipX = false;
-                moveState = MoveStates.Walking;
-                this._animController.SetInteger("moveState", (int)moveState);
-            }
+        //if (Input.GetMouseButton(0))
+        //{
+        //    CheckZone();
+        //    if (curMouseZone == "Left"/* && GetComponent<Rigidbody2D>().velocity.x > -curMoveRate*/)//Movement
+        //    {
+        //        GetComponent<Rigidbody2D>().AddForce(new Vector2(-curSpeed, 0));
+        //        GetComponent<SpriteRenderer>().flipX = true;
+        //        moveState = MoveStates.Walking;
+        //        this._animController.SetInteger("moveState", (int)moveState);
+        //    }
+        //    else if (curMouseZone == "Right" /*&& GetComponent<Rigidbody2D>().velocity.x < curMoveRate*/)//Movement
+        //    {
+        //        GetComponent<Rigidbody2D>().AddForce(new Vector2(curSpeed, 0));
+        //        GetComponent<SpriteRenderer>().flipX = false;
+        //        moveState = MoveStates.Walking;
+        //        this._animController.SetInteger("moveState", (int)moveState);
+        //    }
 
-        }
+        //}
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            if (curMouseZone == "Top")//Action Button
-            {
-                //Always Climbing
-                //                if (canClimb)//Climbing Up
-                //                {
-                //                    GetComponent<Rigidbody2D>().gravityScale = 0;
-                //                    GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
-                //                    GetComponent<BoxCollider2D>().isTrigger = true;
-                //                    GetComponent<Rigidbody2D>().AddForce(new Vector2(0, curSpeed * 5));
-                //                    Player.Hydration -= 0.01f;
-                //                    Player.Tempurature += 0.01f;
-                //
-                //                }
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    if (curMouseZone == "Top")//Action Button
+        //    {
+        //        //Always Climbing
+        //        //                if (canClimb)//Climbing Up
+        //        //                {
+        //        //                    GetComponent<Rigidbody2D>().gravityScale = 0;
+        //        //                    GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+        //        //                    GetComponent<BoxCollider2D>().isTrigger = true;
+        //        //                    GetComponent<Rigidbody2D>().AddForce(new Vector2(0, curSpeed * 5));
+        //        //                    Player.Hydration -= 0.01f;
+        //        //                    Player.Tempurature += 0.01f;
+        //        //
+        //        //                }
 
 
-            }
-            else if (curMouseZone == "Bottom" && isGrounded)//Jump Button
-            {
-                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, curSpeed * 15));
-                Player.Hydration -= 0.1f;
-                Player.Tempurature += 0.01f;
-                this.moveState = MoveStates.Jumping;
-                this._animController.SetInteger("moveState", (int)this.moveState);
-            }
+        //    }
+        //    else if (curMouseZone == "Bottom" && isGrounded)//Jump Button
+        //    {
+        //        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, curSpeed * 15));
+        //        Player.Hydration -= 0.1f;
+        //        Player.Tempurature += 0.01f;
+        //        this.moveState = MoveStates.Jumping;
+        //        this._animController.SetInteger("moveState", (int)this.moveState);
+        //    }
 
-        }
+        //}
 
         //this._animController.SetBool("Moving", false);
         //*/
@@ -240,42 +242,41 @@ public class Movement : MonoBehaviour
         }
     }
 
-    void CheckZone()
-    {
-        if (Input.mousePosition.y > ((float)Screen.height / (float)Screen.width) * Input.mousePosition.x)
-        {
+    //void CheckZone()
+    //{
+    //    if (Input.mousePosition.y > ((float)Screen.height / (float)Screen.width) * Input.mousePosition.x)
+    //    {
 
-            if (Input.mousePosition.y > (-(float)Screen.height / (float)Screen.width) * Input.mousePosition.x + Screen.height) // Top Button
-            {
-                curMouseZone = "Top";
-            }
-            else // Left Button
-            {
-                //Debug.Log("Left");
-                //GetComponent<Rigidbody2D>().AddForce(new Vector2(-curSpeed, 0));
-                curMouseZone = "Left";
-            }
+    //        if (Input.mousePosition.y > (-(float)Screen.height / (float)Screen.width) * Input.mousePosition.x + Screen.height) // Top Button
+    //        {
+    //            curMouseZone = "Top";
+    //        }
+    //        else // Left Button
+    //        {
+    //            //Debug.Log("Left");
+    //            //GetComponent<Rigidbody2D>().AddForce(new Vector2(-curSpeed, 0));
+    //            curMouseZone = "Left";
+    //        }
 
-        }
-        else
-        {
+    //    }
+    //    else
+    //    {
 
-            if (Input.mousePosition.y > (-(float)Screen.height / (float)Screen.width) * Input.mousePosition.x + Screen.height)// Right Button
-            {
-                //Debug.Log("Right");
-                //GetComponent<Rigidbody2D>().AddForce(new Vector2(curSpeed, 0));
-                curMouseZone = "Right";
+    //        if (Input.mousePosition.y > (-(float)Screen.height / (float)Screen.width) * Input.mousePosition.x + Screen.height)// Right Button
+    //        {
+    //            //Debug.Log("Right");
+    //            //GetComponent<Rigidbody2D>().AddForce(new Vector2(curSpeed, 0));
+    //            curMouseZone = "Right";
 
-            }
-            else  // Bottom button
-            {
-                //Debug.Log("Bottom");
-                curMouseZone = "Bottom";
-            }
+    //        }
+    //        else  // Bottom button
+    //        {
+    //            //Debug.Log("Bottom");
+    //            curMouseZone = "Bottom";
+    //        }
 
-        }
-    }
-
+    //    }
+    //}
 
     void OnTriggerStay2D(Collider2D col)
     {
@@ -329,5 +330,10 @@ public class Movement : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+
+    public bool isFacingRight()
+    {
+        return this._facingRight;
     }
 }

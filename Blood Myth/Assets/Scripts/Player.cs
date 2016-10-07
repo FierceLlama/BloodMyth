@@ -23,6 +23,10 @@ public class Player : MonoBehaviour {
         Hydration = 10;
         Tempurature = 95;
 	}
+
+    /*
+        Need a fixed update step for player movement.  Will eventually need to move this out to a strategy pattern for the different movements (e.g. walking, jumping, sprinting, near crisis)
+    */
 	
 	// Update is called once per frame
 	void Update () 
