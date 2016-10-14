@@ -13,20 +13,9 @@ public class Movement : MonoBehaviour
     //float curSpeed = 0; //Current Move speed
     float curMoveRate = 0;//Current move rate
 
-    /*
-    public float changeTempMove = 0.0001f;
-    public float changeHydroMove = 0.0001f;
-
-    public float changeTempSprint = 0.001f;
-    public float changeHydroSprint = 0.001f;
-
-    public float changeTempClimb  = 0.001f;
-    public float changeHydroClimb = 0.001f;
-
-    public float changeTempJump = 0.01f;
-    public float changeHydroJump = 0.01f;
-   //*/
-
+    
+    float DownHydration;
+    float DownTemperature;
     private bool _isGrounded = false; //Is player on the ground
     bool canClimb = false; //Can the player climb
 
@@ -49,6 +38,9 @@ public class Movement : MonoBehaviour
         this._animController = this.gameObject.GetComponent<Animator>();
         this._rb2D = GetComponent<Rigidbody2D>();
         this._flip = GetComponent<SpriteRenderer>();
+
+        DownHydration = GetComponent<Player>().HydroDownRate;
+        
     }
 
     void FixedUpdate()
@@ -84,7 +76,7 @@ public class Movement : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             GetComponent<BoxCollider2D>().isTrigger = true;
             this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, this.curMoveRate);
-            Player.Hydration -= 0.01f;
+            Player.Hydration -= DownHydration;
 
         }
         else if (Input.GetKey(KeyCode.S) && canClimb)//Climbing Down
@@ -93,7 +85,7 @@ public class Movement : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             GetComponent<BoxCollider2D>().isTrigger = true;
             this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, -this.curMoveRate);
-            Player.Hydration -= 0.01f;
+            Player.Hydration -= DownHydration;
         }
         else
         {
@@ -108,7 +100,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             curMoveRate = sprintMaxMovement;
-            Player.Hydration -= 0.001f;
+            Player.Hydration -= DownHydration;
             this._animController.SetBool("sprinting", true);
         }
         else

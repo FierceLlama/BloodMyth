@@ -35,5 +35,18 @@ public class CenterCam : MonoBehaviour {
         }
 
 		transform.position = Vector3.Lerp(curPos, playerPos, speed * smooth * Time.smoothDeltaTime);
+
+        //Nick Testing Auto-Zoom out
+        /*
+        if (curPos == playerPos && Camera.main.orthographicSize < 20)
+        {
+            Camera.main.orthographicSize += 0.1f;
+        }
+
+        else if(Camera.main.orthographicSize >15)
+        {
+            Camera.main.orthographicSize -= 0.1f;
+        }
+        //*/
 	}
 }
