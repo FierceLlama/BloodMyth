@@ -3,11 +3,8 @@ using System.Collections;
 
 public class Movement : MonoBehaviour
 {
-
-
     public float normSpeed = 25;//Movement speed
     public float maxMovement = 10;//Movement speed cap
-
     public float sprintSpeed = 40;//Movement speed Sprinting
     public float sprintMaxMovement = 15; //Movement speed cap Sprinting
     // Jump velocity
@@ -29,7 +26,6 @@ public class Movement : MonoBehaviour
     public float changeTempJump = 0.01f;
     public float changeHydroJump = 0.01f;
    //*/
-
 
     private bool _isGrounded = false; //Is player on the ground
     bool canClimb = false; //Can the player climb
@@ -54,7 +50,6 @@ public class Movement : MonoBehaviour
         this._rb2D = GetComponent<Rigidbody2D>();
         this._flip = GetComponent<SpriteRenderer>();
     }
-
 
     void FixedUpdate()
     {
@@ -105,8 +100,6 @@ public class Movement : MonoBehaviour
             GetComponent<Rigidbody2D>().gravityScale = 1;
             GetComponent<BoxCollider2D>().isTrigger = false;
         }
-
-        this._animController.SetBool("moving", false);
     }
 
     void Update()
