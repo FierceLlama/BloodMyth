@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TempObjController: MonoBehaviour {
+public class TempObjectController: MonoBehaviour {
 
 	public float SpeedSwitch; //Time in between switching on and off
 

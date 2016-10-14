@@ -3,29 +3,12 @@ using System.Collections;
 
 public class Movement : MonoBehaviour
 {
-    //public float normSpeed = 25;//Movement speed
+    private Player _player;
     public float maxMovement = 10;//Movement speed cap
-    //public float sprintSpeed = 40;//Movement speed Sprinting
     public float sprintMaxMovement = 15; //Movement speed cap Sprinting
     // Jump velocity
     public float jumpVelocity = 20;
-
-    //float curSpeed = 0; //Current Move speed
     float curMoveRate = 0;//Current move rate
-
-    /*
-    public float changeTempMove = 0.0001f;
-    public float changeHydroMove = 0.0001f;
-
-    public float changeTempSprint = 0.001f;
-    public float changeHydroSprint = 0.001f;
-
-    public float changeTempClimb  = 0.001f;
-    public float changeHydroClimb = 0.001f;
-
-    public float changeTempJump = 0.01f;
-    public float changeHydroJump = 0.01f;
-   //*/
 
     private bool _isGrounded; //Is player on the ground
     private bool _canClimb = false; //Can the player climb
@@ -44,7 +27,7 @@ public class Movement : MonoBehaviour
 
     void Start()
     {
-        //curSpeed = normSpeed;
+        this._player = GetComponent<Player>();
         curMoveRate = maxMovement;
         this._animController = this.gameObject.GetComponent<Animator>();
         this._rb2D = GetComponent<Rigidbody2D>();
@@ -83,22 +66,19 @@ public class Movement : MonoBehaviour
         //Climbing
         if (Input.GetKey(KeyCode.W) && this._canClimb)//Climbing Up
         {
-            //GetComponent<Rigidbody2D>().gravityScale = 0;
             GetComponent<BoxCollider2D>().isTrigger = true;
             this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, this.curMoveRate);
-            // Call player script function to decrease hydration for climbing
+            this._player.playerClimbing();
 
         }
         else if (Input.GetKey(KeyCode.S) && this._canClimb)//Climbing Down
-        {
-            //GetComponent<Rigidbody2D>().gravityScale = 0;
+        {            
             GetComponent<BoxCollider2D>().isTrigger = true;
             this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, -this.curMoveRate);
-            // Call player script function to decrease hydration for climbing       
+            this._player.playerClimbing();
         }
         else
         {
-            //GetComponent<Rigidbody2D>().gravityScale = 1;
             GetComponent<BoxCollider2D>().isTrigger = false;
         }
 
@@ -106,7 +86,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             curMoveRate = sprintMaxMovement;
-            // Call player script function to decrease hydration for sprinting
+            this._player.playerSprinting();
             this._animController.SetBool("sprinting", true);
         }
         else
@@ -116,10 +96,10 @@ public class Movement : MonoBehaviour
         }
 
         // Jumping
-        if (this._isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.S)))
+        if (this._isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             this._rb2D.AddForce(new Vector2(0, jumpVelocity));
-            // Call player script function to decrease hydration for jumping
+            this._player.playerJumped();
         }
     }
 
@@ -131,28 +111,28 @@ public class Movement : MonoBehaviour
     {
 
         if (col.gameObject.tag == "Climb")
+        {
             this._canClimb = true;
+        }
 
         if (col.gameObject.tag == "Water" && Input.GetKeyDown(KeyCode.W))
-            Player.Hydration += 3;
+        {
+            this._player.playerDrinkingWater();
+        }
 
         // Temperature effects
         if (col.gameObject.tag == "Shade")
         {
-            if (Player.Tempurature > 95)
-                Player.Tempurature -= 0.01f;
-
-            else if (Player.Tempurature < 95)
-                Player.Tempurature += 0.01f;
+            this._player.playerInShade();
         }
         else if (col.gameObject.tag == "Hot")
         {
-            Player.Tempurature += 0.01f;
+            this._player.playerHot();
         }
 
         else if (col.gameObject.tag == "Cold")
         {
-            Player.Tempurature -= 0.01f;
+            this._player.playerCold();
         }
     }
 
@@ -167,22 +147,6 @@ public class Movement : MonoBehaviour
     /*
     Above code should be moved to separate script or behavior (strategy patterned) *****************************************************************
     */
-
-    //void OnCollisionStay2D(Collision2D col)
-    //{
-    //    if (col.gameObject.tag == "Ground")
-    //    {
-    //        isGrounded = true;
-    //    }
-    //}
-
-    //void OnCollisionExit2D(Collision2D col)
-    //{
-    //    if (col.gameObject.tag == "Ground")
-    //    {
-    //        isGrounded = false;
-    //    }
-    //}
 
     public bool isFacingRight()
     {
