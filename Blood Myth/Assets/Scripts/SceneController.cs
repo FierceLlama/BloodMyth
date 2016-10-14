@@ -7,6 +7,7 @@ public class SceneController : MonoBehaviour {
 	
     public void RestartScene()
     {
-        SceneManager.LoadScene("FallTest");
+        string sceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(sceneName);
     }
 }

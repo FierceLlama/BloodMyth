@@ -13,7 +13,7 @@ public class Player : MonoBehaviour {
     public static float Hydration = 10;
     public static float Tempurature = 95;
 
-    public float HydroDownRate = 0.0001f;
+    public float HydroDownRate = 0.01f;
     public float FatigueDownRate = 0.01f;
     public float tempLowEnd = 90f;
     public float tempHighEnd = 100f;
