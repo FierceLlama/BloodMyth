@@ -116,7 +116,6 @@ public class Movement : MonoBehaviour
         {
             curMoveRate = sprintMaxMovement;
             Player.Hydration -= 0.001f;
-            Player.Tempurature += 0.001f;
             this._animController.SetBool("sprinting", true);
         }
         else
@@ -128,6 +127,7 @@ public class Movement : MonoBehaviour
         if (this._isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.S)))
         {
             this._rb2D.AddForce(new Vector2(0, jumpVelocity));
+            // hydration effect
         }
     }
 
