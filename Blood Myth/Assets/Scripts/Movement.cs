@@ -144,6 +144,12 @@ public class Movement : MonoBehaviour
             Player.Tempurature -= 0.01f;
         }
 
+        if (col.gameObject.tag == "Zoom")
+        {
+            GetComponent<CenterCam>().AutoZoomIN();
+             
+        }
+
     }
 
     void OnTriggerExit2D(Collider2D col)
@@ -151,6 +157,12 @@ public class Movement : MonoBehaviour
         if (col.gameObject.tag == "Climb")
         {
             canClimb = false;
+        }
+
+        if (col.gameObject.tag == "Zoom")
+        {
+            GetComponent<CenterCam>().isZooming = false;
+
         }
     }
 

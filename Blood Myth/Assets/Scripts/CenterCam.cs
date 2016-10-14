@@ -12,7 +12,8 @@ public class CenterCam : MonoBehaviour {
 
 	Vector3 curPos;
 	Vector3 playerPos;
-	
+
+    public bool isZooming = false;
     void Start()
     {
         
@@ -36,17 +37,27 @@ public class CenterCam : MonoBehaviour {
 
 		transform.position = Vector3.Lerp(curPos, playerPos, speed * smooth * Time.smoothDeltaTime);
 
-        //Nick Testing Auto-Zoom out
-        /*
-        if (curPos == playerPos && Camera.main.orthographicSize < 20)
+
+        if (!isZooming && Camera.main.orthographicSize > 14)
+        {
+            Camera.main.orthographicSize -= 0.1f;
+        }
+        
+	}
+
+    //Nick Testing Auto-Zoom out
+    //*
+    public void AutoZoomIN()
+    {
+        isZooming = true;
+        if (Camera.main.orthographicSize < 22)
         {
             Camera.main.orthographicSize += 0.1f;
         }
 
-        else if(Camera.main.orthographicSize >15)
-        {
-            Camera.main.orthographicSize -= 0.1f;
-        }
-        //*/
-	}
+    }
+
+    
+
+    //*/
 }
