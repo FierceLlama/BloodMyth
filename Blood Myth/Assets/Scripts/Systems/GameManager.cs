@@ -10,12 +10,12 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 
     [SerializeField]
-    GameStateManager gsManScript;
+    BM_SceneManager sceneManager;
 
 	// Use this for initialization
 	void Awake ()
     {
-        gsManScript = GetComponent<GameStateManager>();
+        DontDestroyOnLoad(this.gameObject);
 	}
 
     void InitGame()
@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour {
 
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 	
 	}
 }

@@ -45,9 +45,4 @@ public class GameStateManager : MonoBehaviour {
         this._stateslist.Add(new GameplayState());
     }
 	
-	// Update is called once per frame
-	void Update ()
-    {
-	
-	}
 }
