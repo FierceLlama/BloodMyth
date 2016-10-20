@@ -16,13 +16,14 @@ public class GameManager : MonoBehaviour {
 	void Awake ()
     {
         DontDestroyOnLoad(this.gameObject);
+        InitGame();
 	}
 
     void InitGame()
     {
+      IOSystem.Instance.Load();
     }
 
-	
 	// Update is called once per frame
 	void Update ()
     {

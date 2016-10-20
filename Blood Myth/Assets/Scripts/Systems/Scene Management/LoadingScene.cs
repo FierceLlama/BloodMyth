@@ -38,4 +38,12 @@ public class LoadingScene : MonoBehaviour {
         Sceneloaded = true;
         privSceneToLoad = SceneId.Loading;
     }
+
+    /* DEBUG
+    public void Awake()
+    {   
+        IOSystem.Instance.BuildDataClass();
+        IOSystem.Instance.AutoSave();   
+    }
+    */
 }
