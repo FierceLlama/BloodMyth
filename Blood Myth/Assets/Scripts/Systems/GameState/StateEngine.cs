@@ -3,13 +3,15 @@ using System.Collections;
 
 
 /// <summary>
-/// TODO (OMAR) Still not sure what to do with this may come in handy later so creatd the class
+
 /// Could be redundant with the GameStaetManager
 /// Mayabe use this for logic related to GameStates and the Manager for switching?
 /// </summary>
 public class StateEngine
 {
-
+    //This can be used later if required to force or limit certain transitions
+    //Basically Make sure that one state cannot go to another or that one state needs to
+    //move to another when a specific thing happens.
 }
 
 public abstract class State
@@ -23,40 +25,31 @@ public class MainMenuState : State
 {
     public MainMenuState() { }
 
-    public override void Enter()
-    {
-        Debug.Log("Idle - Enter");
-    }
+    public override void Enter() { }
 
-    public override void Exit()
-    {
-        Debug.Log("Idle - Exit");
-    }
+    public override void Exit() { }
 
-    public override void Update()
-    {
+    public override void Update() { }
+}
 
-    }
+public class LoadingState : State
+{
+    public LoadingState() { }
+
+    public override void Enter() { }
+
+    public override void Exit() { }
+
+    public override void Update() { }
 }
 
 public class GameplayState : State
 {
     public GameplayState() { }
 
-    public override void Enter()
-    {
-        Debug.Log("Stunned - Enter");
-    }
-
-    public override void Exit()
-    {
-        Debug.Log("Stunned - Exit");
-    }
-
-    public override void Update()
-    {
-
-    }
+    public override void Enter() { }
+    public override void Exit() { }
+    public override void Update() { }
 }
 
 

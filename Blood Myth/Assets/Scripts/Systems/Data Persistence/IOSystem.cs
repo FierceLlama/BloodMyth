@@ -7,9 +7,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 [Serializable]
 public class IOData
 {
+   string playername = "Tommy";
    //Add Whatever data We need to Save.
 }
 
+//TODO (OMAR) AutoSave will happen everytime the Loading Scene is called
+//Before doing that Check that something has changed to avoid unnecessary writing to the disk.
 public class IOSystem
 {
     private static readonly IOSystem instance = new IOSystem();
@@ -18,11 +21,6 @@ public class IOSystem
     public static IOSystem Instance { get { return instance; } }
 
     private IOSystem () { data = new IOData(); }
-   
-    //DEBUG
-    public void BuildDataClass()
-    {
-    }
 
     public void AutoSave()
     {

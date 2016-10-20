@@ -18,9 +18,7 @@ public class LoadingScene : MonoBehaviour {
                 Sceneloaded = false;
             }
             else
-            {
                 Debug.Assert(true, "Something is Wrong, Loading scene is trying to Load itself.");
-            }
         }
         
     }
@@ -39,11 +37,8 @@ public class LoadingScene : MonoBehaviour {
         privSceneToLoad = SceneId.Loading;
     }
 
-    /* DEBUG
     public void Awake()
     {   
-        IOSystem.Instance.BuildDataClass();
-        IOSystem.Instance.AutoSave();   
+      IOSystem.Instance.AutoSave();   
     }
-    */
 }

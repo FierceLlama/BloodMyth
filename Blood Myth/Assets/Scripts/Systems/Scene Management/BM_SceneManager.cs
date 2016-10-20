@@ -4,19 +4,9 @@ using System.Collections;
 
 
 /// <summary>
-/// TODO(OMAR) Set Game State at the end of scene load.
-/// TODO(OMAR) Create Debug Scene
-/// TODO (OMAR) Maybe use same scene for menus (i.e shift camera position) that would cut screen number down (loading, game, menu, +pause(additive) )
+
 /// </summary>
 
-///This has to be in the same order as the scenes that are loaded in the
-///scene build settings, only doing this to avoid memorizing numbers.
-public enum SceneId
-{
-    MainMenu = 0,
-    Loading,
-    Game,
-}
 //Had to do that because SceneManager already exists in the UnityEngine.SceneManagement Namespace.
 public class BM_SceneManager : MonoBehaviour
 {
@@ -25,6 +15,31 @@ public class BM_SceneManager : MonoBehaviour
     SceneId scenetoload;
     [SerializeField]
     SceneId currentScene;
+    GamePlayInterface gpI;
+    GamePlayInterface gpInterface
+    {
+        get
+        {
+            if (!gpI)
+            {
+                gpInterface = gameObject.GetComponent<GamePlayInterface>();
+                if (!gpI)
+                    gpInterface = gameObject.AddComponent<GamePlayInterface>();
+            }
+
+            return gpI;
+        }
+        set
+        {
+            if (!gpI)
+                gpI = value;
+        }
+    }
+
+    void Awake()
+    {
+
+    }
 
     void LoadGameScene(SceneId inLevelID)
     {
@@ -63,9 +78,19 @@ public class BM_SceneManager : MonoBehaviour
     {
         switch(scene.buildIndex)
         {
+            case (int)SceneId.MainMenu:
+                gpInterface.MainMenuOnLoad(mode);
+            break;
+
             case (int)SceneId.Loading:
                 GameObject.Find("LoadController").GetComponent<LoadingScene>().SceneToLoad = scenetoload;
+                gpInterface.LoadingOnLoad(mode);
             break;
+
+            case (int)SceneId.Game:
+                gpInterface.GameOnLoad(mode);
+            break;
+
             default: loading = false; break;
         }
         currentScene = (SceneId)scene.buildIndex;

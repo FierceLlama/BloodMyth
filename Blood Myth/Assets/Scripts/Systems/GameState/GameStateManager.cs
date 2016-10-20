@@ -9,15 +9,19 @@ using System.Collections.Generic;
 /// </summary>
 public enum GameState
 {
-    Gameplay = 0,
-    MainMenu,
+    MainMenu = 0,
+    Loading,
+    Gameplay,
     SelectLevel,
     Settings,
-    Loading,
     Pause
 };
 
 public class GameStateManager : MonoBehaviour {
+
+    ///for the inspector
+    [SerializeField]
+    GameState currentGameState;
 
     List<State> _stateslist;
     private State _currentState;
@@ -33,6 +37,7 @@ public class GameStateManager : MonoBehaviour {
                 this._currentState.Exit();
 
             this._currentState = this._stateslist[(int)value];
+            this.currentGameState = value;
             this._currentState.Enter();
         }
     }
@@ -42,7 +47,9 @@ public class GameStateManager : MonoBehaviour {
     {
         this._stateslist = new List<State>();
         this._stateslist.Add(new MainMenuState());
+        this._stateslist.Add(new LoadingState());
         this._stateslist.Add(new GameplayState());
-    }
-	
+    }	
+
+    void Update () { _currentState.Update(); }
 }
