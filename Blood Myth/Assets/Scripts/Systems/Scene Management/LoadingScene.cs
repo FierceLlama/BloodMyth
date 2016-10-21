@@ -20,7 +20,6 @@ public class LoadingScene : MonoBehaviour {
             else
                 Debug.Assert(true, "Something is Wrong, Loading scene is trying to Load itself.");
         }
-        
     }
    
     IEnumerator CheckSceneLoadStatus()

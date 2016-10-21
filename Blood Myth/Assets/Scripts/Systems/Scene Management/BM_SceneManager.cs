@@ -15,6 +15,7 @@ public class BM_SceneManager : MonoBehaviour
     SceneId scenetoload;
     [SerializeField]
     SceneId currentScene;
+
     GamePlayInterface gpI;
     GamePlayInterface gpInterface
     {

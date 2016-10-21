@@ -21,7 +21,7 @@ public class GameStateManager : MonoBehaviour {
 
     ///for the inspector
     [SerializeField]
-    GameState currentGameState;
+    private GameState currentGameState;
 
     List<State> _stateslist;
     private State _currentState;

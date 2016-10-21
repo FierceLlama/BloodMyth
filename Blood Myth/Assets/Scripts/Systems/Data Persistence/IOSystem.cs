@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.ComponentModel;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -7,16 +8,20 @@ using System.Runtime.Serialization.Formatters.Binary;
 [Serializable]
 public class IOData
 {
-   string playername = "Tommy";
-   //Add Whatever data We need to Save.
+    [System.NonSerialized]
+    private bool _ischanged = false;
+    public bool isChanged { get { return this._ischanged; } }
+
+    private string _playername = "Tommy";
+    public string PlayerName { get { return this._playername; } set { this._playername = value; _ischanged = true; } }
+    
 }
 
-//TODO (OMAR) AutoSave will happen everytime the Loading Scene is called
-//Before doing that Check that something has changed to avoid unnecessary writing to the disk.
-public class IOSystem
+public class IOSystem 
 {
     private static readonly IOSystem instance = new IOSystem();
-    public IOData data;
+    private IOData data;
+   
 
     public static IOSystem Instance { get { return instance; } }
 
@@ -24,16 +29,19 @@ public class IOSystem
 
     public void AutoSave()
     {
-        BinaryFormatter Bf = new BinaryFormatter();
-        FileStream file;
+        if (data.isChanged)
+        { 
+            BinaryFormatter Bf = new BinaryFormatter();
+            FileStream file;
 
-        if (File.Exists(Application.persistentDataPath + "/autosave.dat"))
-            file = File.Open(Application.persistentDataPath + "/autosave.dat", FileMode.Open);
-        else
-            file = File.Create(Application.persistentDataPath + "/autosave.dat");
+            if (File.Exists(Application.persistentDataPath + "/autosave.dat"))
+                file = File.Open(Application.persistentDataPath + "/autosave.dat", FileMode.Open);
+            else
+                file = File.Create(Application.persistentDataPath + "/autosave.dat");
      
-        Bf.Serialize(file, data);
-        file.Close();
+            Bf.Serialize(file, data);
+            file.Close();
+        }
     }
 
     public void Load()
