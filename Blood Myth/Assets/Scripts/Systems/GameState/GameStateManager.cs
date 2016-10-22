@@ -9,6 +9,7 @@ using System.Collections.Generic;
 /// </summary>
 public enum GameState
 {
+    // All game state related info (not scene change stuff)
     MainMenu = 0,
     Loading,
     Gameplay,
