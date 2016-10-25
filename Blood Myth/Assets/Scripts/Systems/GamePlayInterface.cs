@@ -9,7 +9,16 @@ public enum SceneId
     // Based on scene ordering in build index
     MainMenu = 0,
     Loading,
-    Game,
+
+    Level1,
+    Level2,
+    Level3,
+    Level4,
+
+    Settings,
+    Credits,
+    Pause,
+    SelectLevel,
 }
 public class GamePlayInterface : MonoBehaviour
 {

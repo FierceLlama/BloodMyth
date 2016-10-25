@@ -3,11 +3,8 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 
 
-/// <summary>
-
-/// </summary>
-
 //Had to do that because SceneManager already exists in the UnityEngine.SceneManagement Namespace.
+//Will refactor later.
 public class BM_SceneManager : MonoBehaviour
 {
     bool loading = false;
@@ -60,7 +57,7 @@ public class BM_SceneManager : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Space) && loading == false)
         {
-            LoadGameScene(SceneId.Game);
+            LoadGameScene(SceneId.Level1);
         }
     }
 
@@ -88,7 +85,7 @@ public class BM_SceneManager : MonoBehaviour
                 gpInterface.LoadingOnLoad(mode);
             break;
 
-            case (int)SceneId.Game:
+            case (int)SceneId.Level1:
                 gpInterface.GameOnLoad(mode);
             break;
 

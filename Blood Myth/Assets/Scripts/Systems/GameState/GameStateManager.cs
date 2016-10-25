@@ -46,6 +46,7 @@ public class GameStateManager : MonoBehaviour {
     // Use this for initialization
     void Awake()
     {
+        _currentState = null;
         this._stateslist = new List<State>();
         this._stateslist.Add(new MainMenuState());
         this._stateslist.Add(new LoadingState());
