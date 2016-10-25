@@ -28,6 +28,14 @@ public class Player : MonoBehaviour {
     public float hydrationEffectClimbing = 0.03f;
     public float hydrationEffectDrinkingWater = 3.0f;
 
+    [Header("Movement Variables:")]
+    // Movement speed cap
+    public float maxMovement = 10;
+    // Sprinting speed cap
+    public float sprintMaxMovement = 15;
+    // Jump velocity
+    public float jumpVelocity = 20;
+
     // Use this for initialization
     void Start () 
     {
@@ -59,7 +67,7 @@ public class Player : MonoBehaviour {
         }
 
         //Temp Check
-        if (Temperature < tempLowEnd || Temperature > tempHighEnd)
+        if (Temperature <= tempLowCap || Temperature >= tempHighCap)
         {
             //Lower Fatigue
             Fatigue -= FatigueDownRate;
@@ -88,7 +96,7 @@ public class Player : MonoBehaviour {
         //    Temperature = tempHighCap;
 
         //Gain back Fatigue
-        if (Hydration > 0 && Temperature > tempLowEnd && Temperature < tempHighEnd && Fatigue < fatigueHighEnd)
+        if ((Hydration > 0 && Temperature > tempLowEnd) && (Temperature < tempHighEnd && Fatigue < fatigueHighEnd))
             Fatigue += FatigueDownRate;
     }
 
