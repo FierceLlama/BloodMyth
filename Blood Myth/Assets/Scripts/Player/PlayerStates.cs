@@ -4,123 +4,146 @@ using System;
 
 public abstract class PlayerStates
 {
-    public abstract void Enter();
-    public abstract void Update();
-    public abstract void Exit();
+    public abstract void Enter(PlayerManager playerManager, Player player, Movement playerMovementScript);
+    public abstract void Update(PlayerManager playerManager, Player player, Movement playerMovementScript);
+    public abstract void Exit(PlayerManager playerManager, Player player, Movement playerMovementScript);
 }
 
 public class PlayerNormal : PlayerStates
 {
-    public override void Enter()
+    public override void Enter(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
-        PlayerManager.instance.SetNormalMovementValues();
+        playerMovementScript.SetNormalMovementValues();
     }
 
-    public override void Update()
+    public override void Update(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
-        PlayerManager.instance.NormalMovement();
+        playerMovementScript.NormalMovement();
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            playerManager.PlayerIsSprinting();
+        }
     }
 
-    public override void Exit()
+    public override void Exit(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 }
 
 public class PlayerTiredMovement : PlayerStates
 {
-    public override void Enter()
+    public override void Enter(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
-        PlayerManager.instance.SetTiredMovementValues();
+        playerMovementScript.SetTiredMovementValues();
     }
 
-    public override void Update()
+    public override void Update(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 
-    public override void Exit()
+    public override void Exit(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 }
 
 public class PlayerExhaustedMovement : PlayerStates
 {
-    public override void Enter()
+    public override void Enter(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
-        PlayerManager.instance.SetExhaustedMovementValues();
+        playerMovementScript.SetExhaustedMovementValues();
     }
 
-    public override void Update()
+    public override void Update(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 
-    public override void Exit()
+    public override void Exit(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 }
 
 public class PlayerSprinting : PlayerStates
 {
-    public override void Enter()
+    public override void Enter(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
-        PlayerManager.instance.SetSprintingMovementValues();
+        playerMovementScript.SetSprintingMovementValues();
     }
 
-    public override void Update()
+    public override void Update(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
-        PlayerManager.instance.SprintingMovement();
+        playerMovementScript.SprintingMovement();
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            PlayerManager.instance.PlayerIsNormal();
+            playerManager.CheckPlayerFatigue();
         }
     }
 
-    public override void Exit()
+    public override void Exit(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 }
 
 public class PlayerJumping : PlayerStates
 {
-    public override void Enter()
+    public override void Enter(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    {
+        playerMovementScript.PlayerJumped();
+        playerManager.CheckPlayerFatigue();
+    }
+
+    public override void Update(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 
-    public override void Update()
-    {
-    }
-
-    public override void Exit()
+    public override void Exit(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 }
 
 public class PlayerClimbingVertical : PlayerStates
 {
-    public override void Enter()
+    public override void Enter(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 
-    public override void Update()
+    public override void Update(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 
-    public override void Exit()
+    public override void Exit(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 }
 
 public class PlayerClimbingHorizontal : PlayerStates
 {
-    public override void Enter()
+    public override void Enter(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
 
     }
 
-    public override void Update()
+    public override void Update(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 
-    public override void Exit()
+    public override void Exit(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    {
+    }
+}
+
+// A do nothing class which will be called upon exiting sprint, jump, and climb states
+public class FatigueCheck : PlayerStates
+{
+    public override void Enter(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    {
+        player.DetermineFatigue();
+    }
+
+    public override void Update(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    {
+    }
+
+    public override void Exit(PlayerManager playerManager, Player player, Movement playerMovementScript)
     {
     }
 }
