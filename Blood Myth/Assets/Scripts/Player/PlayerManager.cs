@@ -21,16 +21,16 @@ public class PlayerManager : MonoBehaviour
 
     void Initialize()
     {
-        this._normalMovement = new PlayerNormal();
-        this._tiredMovement = new PlayerTiredMovement();
-        this._exhaustedMovement = new PlayerExhaustedMovement();
-        this._sprinting = new PlayerSprinting();
-        this._jumping = new PlayerJumping();
-        this._fatigueCheck = new FatigueCheck();
-        this.PlayerIsNormal();
-
         this._player = GetComponent<Player>();
         this._playerMovementScript = GetComponent<Movement>();
+
+        this._normalMovement = new PlayerNormal(this, this._player, this._playerMovementScript);
+        this._tiredMovement = new PlayerTiredMovement(this, this._player, this._playerMovementScript);
+        this._exhaustedMovement = new PlayerExhaustedMovement(this, this._player, this._playerMovementScript);
+        this._sprinting = new PlayerSprinting(this, this._player, this._playerMovementScript);
+        this._jumping = new PlayerJumping(this, this._player, this._playerMovementScript);
+        this._fatigueCheck = new FatigueCheck(this, this._player, this._playerMovementScript);
+        this.PlayerIsNormal();
     }
 
     void FixedUpdate()
@@ -40,14 +40,14 @@ public class PlayerManager : MonoBehaviour
         {
             this.PlayerIsJumping();
         }
-        this._currentPlayerState.Update(this, this._player, this._playerMovementScript);
+        this._currentPlayerState.Update();
     }
 
     public void SwitchPlayerState(PlayerStates newPlayerState)
     {
-        this._currentPlayerState.Exit(this, this._player, this._playerMovementScript);
+        this._currentPlayerState.Exit();
         this._currentPlayerState = newPlayerState;
-        this._currentPlayerState.Enter(this, this._player, this._playerMovementScript);
+        this._currentPlayerState.Enter();
     }
 
     public void PlayerIsNormal()
