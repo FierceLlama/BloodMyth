@@ -14,14 +14,14 @@ public class StateEngine
     //move to another when a specific thing happens.
 }
 
-public abstract class State
+public abstract class GameState
 {
     public abstract void Enter();
     public abstract void Exit();
     public abstract void Update();
 }
 
-public class MainMenuState : State
+public class MainMenuState : GameState  
 {
     public MainMenuState() { }
 
@@ -32,7 +32,7 @@ public class MainMenuState : State
     public override void Update() { }
 }
 
-public class LoadingState : State
+public class LoadingState : GameState
 {
     public LoadingState() { }
 
@@ -43,7 +43,7 @@ public class LoadingState : State
     public override void Update() { }
 }
 
-public class GameplayState : State
+public class GameplayState : GameState
 {
     public GameplayState() { }
 

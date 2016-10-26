@@ -27,9 +27,9 @@ public class GamePlayInterface : MonoBehaviour
 
     #region [Sceneloading Function]3t
 
-    public void MainMenuOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameState.MainMenu); }
-    public void LoadingOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameState.Loading); }
-    public void GameOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameState.Gameplay); }
+    public void MainMenuOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameStateId.MainMenu); }
+    public void LoadingOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameStateId.Loading); }
+    public void GameOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameStateId.Gameplay); }
     
     #endregion
 

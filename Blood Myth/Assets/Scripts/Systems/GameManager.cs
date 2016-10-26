@@ -15,7 +15,7 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 
     static public GameManager Instance;
-    
+ 
     //Access to The SceneManager is Only permited through the GameManager.
     BM_SceneManager scMan;
     BM_SceneManager SceneManager
@@ -79,6 +79,6 @@ public class GameManager : MonoBehaviour {
         IOSystem.Instance.Load();
     }
 
-    public void ChangeGameState(GameState GameStateID) { GameSManager.CurrentState = GameStateID; }
+    public void ChangeGameState(GameStateId GameStateID) { GameSManager.CurrentState = GameStateID; }
     
 }
