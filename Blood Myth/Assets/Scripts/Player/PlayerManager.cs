@@ -9,9 +9,10 @@ public class PlayerManager : MonoBehaviour
     private PlayerStates _exhaustedMovement;
     private PlayerStates _sprinting;
     private PlayerStates _jumping;
+    private PlayerStates _climbingVertical;
     private PlayerStates _fatigueCheck;
 
-    private Movement _playerMovementScript;
+    private PlayerMovement _playerMovementScript;
     private Player _player;
 
     void Awake()
@@ -22,23 +23,31 @@ public class PlayerManager : MonoBehaviour
     void Initialize()
     {
         this._player = GetComponent<Player>();
-        this._playerMovementScript = GetComponent<Movement>();
+        this._playerMovementScript = GetComponent<PlayerMovement>();
 
         this._normalMovement = new PlayerNormal(this, this._player, this._playerMovementScript);
         this._tiredMovement = new PlayerTiredMovement(this, this._player, this._playerMovementScript);
         this._exhaustedMovement = new PlayerExhaustedMovement(this, this._player, this._playerMovementScript);
         this._sprinting = new PlayerSprinting(this, this._player, this._playerMovementScript);
         this._jumping = new PlayerJumping(this, this._player, this._playerMovementScript);
+        this._climbingVertical = new PlayerClimbingVertical(this, this._player, this._playerMovementScript);
         this._fatigueCheck = new FatigueCheck(this, this._player, this._playerMovementScript);
-        this.PlayerIsNormal();
+
+        this._currentPlayerState = this._normalMovement;
+        this._currentPlayerState.Enter();
     }
 
     void FixedUpdate()
     {
         this._playerMovementScript.CheckOnGround();
-        if (Input.GetKeyUp(KeyCode.Space))
+
+        if (Input.GetKeyUp(KeyCode.Space) && this._playerMovementScript.GetGrounded())
         {
             this.PlayerIsJumping();
+        }
+        else if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S)) && this._playerMovementScript.canClimb())
+        {
+            this.PlayerIsClimbingVertically();
         }
         this._currentPlayerState.Update();
     }
@@ -75,8 +84,19 @@ public class PlayerManager : MonoBehaviour
         this.SwitchPlayerState(this._jumping);
     }
 
+    public void PlayerIsClimbingVertically()
+    {
+        // Need to separate climbing vertically from horizontally
+        this.SwitchPlayerState(this._climbingVertical);
+    }
+
     public void CheckPlayerFatigue()
     {
         this.SwitchPlayerState(this._fatigueCheck);
+    }
+
+    public bool GetMovement()
+    {
+        return this._playerMovementScript.GetMovement();
     }
 }

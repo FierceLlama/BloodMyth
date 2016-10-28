@@ -131,7 +131,7 @@ public class Player : MonoBehaviour
 
     public void playerSprinting()
     {
-        if (!checkLowHydration())
+        if (this._playerManager.GetMovement() && !checkLowHydration())
         {
             this._currentHydration -= this.hydrationEffectSprinting;
         }

@@ -26,7 +26,7 @@ public class CenterCam : MonoBehaviour {
         playerPos.y += offsetY;
         playerPos.z -= offsetZ;
         // Camera needs to offset in the x based on player facing direction
-        if (player.GetComponent<Movement>().isFacingRight())
+        if (player.GetComponent<PlayerMovement>().isFacingRight())
         {
             playerPos.x += offsetX;
         }

@@ -13,9 +13,9 @@ public class PlayerNormal : PlayerStates
 {
     private PlayerManager _playerManager;
     private Player _player;
-    private Movement _playerMovementScript;
+    private PlayerMovement _playerMovementScript;
 
-    public PlayerNormal(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    public PlayerNormal(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
     {
         this._playerManager = playerManager;
         this._player = player;
@@ -45,9 +45,9 @@ public class PlayerTiredMovement : PlayerStates
 {
     private PlayerManager _playerManager;
     private Player _player;
-    private Movement _playerMovementScript;
+    private PlayerMovement _playerMovementScript;
 
-    public PlayerTiredMovement(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    public PlayerTiredMovement(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
     {
         this._playerManager = playerManager;
         this._player = player;
@@ -72,9 +72,9 @@ public class PlayerExhaustedMovement : PlayerStates
 {
     private PlayerManager _playerManager;
     private Player _player;
-    private Movement _playerMovementScript;
+    private PlayerMovement _playerMovementScript;
 
-    public PlayerExhaustedMovement(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    public PlayerExhaustedMovement(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
     {
         this._playerManager = playerManager;
         this._player = player;
@@ -99,9 +99,9 @@ public class PlayerSprinting : PlayerStates
 {
     private PlayerManager _playerManager;
     private Player _player;
-    private Movement _playerMovementScript;
+    private PlayerMovement _playerMovementScript;
 
-    public PlayerSprinting(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    public PlayerSprinting(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
     {
         this._playerManager = playerManager;
         this._player = player;
@@ -116,6 +116,7 @@ public class PlayerSprinting : PlayerStates
     public override void Update()
     {
         this._playerMovementScript.SprintingMovement();
+        this._player.playerSprinting();
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             this._playerManager.CheckPlayerFatigue();
@@ -124,6 +125,7 @@ public class PlayerSprinting : PlayerStates
 
     public override void Exit()
     {
+        this._playerMovementScript.StoppedSprinting();
     }
 }
 
@@ -131,9 +133,9 @@ public class PlayerJumping : PlayerStates
 {
     private PlayerManager _playerManager;
     private Player _player;
-    private Movement _playerMovementScript;
+    private PlayerMovement _playerMovementScript;
 
-    public PlayerJumping(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    public PlayerJumping(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
     {
         this._playerManager = playerManager;
         this._player = player;
@@ -142,7 +144,8 @@ public class PlayerJumping : PlayerStates
 
     public override void Enter()
     {
-        this._playerMovementScript.PlayerJumped();
+        this._playerMovementScript.Jumped();
+        this._player.playerJumped();
         this._playerManager.CheckPlayerFatigue();
     }
 
@@ -159,9 +162,9 @@ public class PlayerClimbingVertical : PlayerStates
 {
     private PlayerManager _playerManager;
     private Player _player;
-    private Movement _playerMovementScript;
+    private PlayerMovement _playerMovementScript;
 
-    public PlayerClimbingVertical(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    public PlayerClimbingVertical(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
     {
         this._playerManager = playerManager;
         this._player = player;
@@ -170,14 +173,39 @@ public class PlayerClimbingVertical : PlayerStates
 
     public override void Enter()
     {
+        this._playerMovementScript.StartedClimbing();
     }
 
     public override void Update()
     {
+        if (Input.GetKey(KeyCode.W))
+        {
+            this._playerMovementScript.ClimbingVerticallyUp();
+            this._player.playerClimbing();
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            this._playerMovementScript.ClimbingVerticallyDown();
+            this._player.playerClimbing();
+        }
+        else if (!this._playerMovementScript.canClimb())
+        {
+            this._playerManager.CheckPlayerFatigue();
+            this._playerMovementScript.StoppedClimbing();
+        }
+        else
+        {
+            this._playerMovementScript.StationaryWhileClimbing();
+        }
     }
 
     public override void Exit()
     {
+        //if (!this._playerMovementScript.canClimb())
+        //{
+        //    this._playerManager.CheckPlayerFatigue();
+        //    this._playerMovementScript.StoppedClimbing();
+        //}
     }
 }
 
@@ -185,9 +213,9 @@ public class PlayerClimbingHorizontal : PlayerStates
 {
     private PlayerManager _playerManager;
     private Player _player;
-    private Movement _playerMovementScript;
+    private PlayerMovement _playerMovementScript;
 
-    public PlayerClimbingHorizontal(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    public PlayerClimbingHorizontal(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
     {
         this._playerManager = playerManager;
         this._player = player;
@@ -213,9 +241,9 @@ public class FatigueCheck : PlayerStates
 {
     private PlayerManager _playerManager;
     private Player _player;
-    private Movement _playerMovementScript;
+    private PlayerMovement _playerMovementScript;
 
-    public FatigueCheck(PlayerManager playerManager, Player player, Movement playerMovementScript)
+    public FatigueCheck(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
     {
         this._playerManager = playerManager;
         this._player = player;
