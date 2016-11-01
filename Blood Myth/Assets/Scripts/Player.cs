@@ -1,26 +1,38 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public enum PlayerFatigue
+{
+    NORMAL_FATIGUE = 100000,
+    TIRED_FATIGUE,
+    EXHAUSTED_FATIGUE
+}
 
+public class Player : MonoBehaviour
+{
     Material curMat;
     Material otherMat;
 
     public GameObject tempuratureObj;
+    private PlayerFatigue _playerFatigue;
+    private PlayerManager _playerManager;
+    private float _zero = 0.0f;
+    private float _colorDivisor = 10.0f;
+    private float _temperatureRangeMid;
 
     [Header("QA SECTION")]
-    public float Fatigue = 10;
-    public float Hydration = 10;
-    public float Temperature = 95;
+    private float _currentFatigue;
+    private float _currentHydration;
+    private float _currentTemperature = 95.0f;
 
-    public float HydroDownRate = 0.01f;
-    public float FatigueDownRate = 0.01f;
-    public float tempLowEnd = 90f;
-    public float tempHighEnd = 100f;
-    public float tempLowCap = 85f;
-    public float tempHighCap = 105f;
-    public float hydraHighCap = 15f;
-    public float fatigueHighEnd = 10f;
+    public float hydrationDownRate = 0.01f;
+    public float fatigueDownRate = 0.01f;
+    public float temperatureRangeLow = 90.0f;
+    public float temperatureRangeHigh = 100.0f;
+    public float minTemperature = 85.0f;
+    public float maxTemperature = 105.0f;
+    public float maxHydration = 15.0f;
+    public float maxFatigue = 10.0f;
 
     public float temperatureEffect = 0.01f;
     public float hydrationEffectSprinting = 0.01f;
@@ -28,15 +40,20 @@ public class Player : MonoBehaviour {
     public float hydrationEffectClimbing = 0.03f;
     public float hydrationEffectDrinkingWater = 3.0f;
 
+    public float tiredFatigueRangeHigh = 8.0f;
+    public float tiredFatigueRangeLow = 3.0f;
+
     // Use this for initialization
     void Start () 
     {
+        this._playerManager = GetComponent<PlayerManager>();
         curMat = GetComponent<Renderer>().material;
         otherMat = tempuratureObj.GetComponent<Renderer>().material;
-        Fatigue = 10;
-        Hydration = 10;
-        Temperature = 95;
-	}
+        this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
+        this._currentFatigue = maxFatigue;
+        this._currentHydration = maxHydration;
+        this._temperatureRangeMid = this.temperatureRangeHigh / this.temperatureRangeLow;
+    }
 
     /*
         Need a fixed update step for player movement.  Will eventually need to move this out to a strategy pattern for the different movements (e.g. walking, jumping, sprinting, near crisis)
@@ -48,58 +65,47 @@ public class Player : MonoBehaviour {
         CheckStatus();
         UpdateMat();
 
-        //Constant Dehydration
-        //Hydration -= HydroDownRate;
-
-        //Hydration Check
-        if (Hydration <= 0)
+        // Hydration Check
+        if (this._currentHydration <= this._zero)
         {
-            //Lower Fatigue
-            Fatigue -= FatigueDownRate;
+            // Lower Fatigue
+            this.LowerFatigue();
         }
 
-        //Temp Check
-        if (Temperature < tempLowEnd || Temperature > tempHighEnd)
+        // Temp Check
+        if (this._currentTemperature <= this.minTemperature || this._currentTemperature >= this.maxTemperature)
         {
-            //Lower Fatigue
-            Fatigue -= FatigueDownRate;
+            // Lower Fatigue
+            this.LowerFatigue();
         }
 
-        //Fatigue Check
-        if (Fatigue <= 0)
-        {
-            //Crisis -- needs better management later
-            Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
-        }
+        //// Fatigue Check for crisis
+        //if (this._currentFatigue <= this._zero)
+        //{
+        //    // Crisis -- needs better management later
+        //    Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
+        //}
 	}
 
     void CheckStatus()
     {
-        //Hydration stays in bounds
-        //if (Hydration > hydraHighCap)
-        //    Hydration = hydraHighCap;
-        //else if (Hydration < 0)
-        //    Hydration = 0;
-
-        ////Temp stays in bounds
-        //if (Temperature < tempLowCap)
-        //    Temperature = tempLowCap;
-        //else if (Temperature > tempHighCap)
-        //    Temperature = tempHighCap;
-
-        //Gain back Fatigue
-        if (Hydration > 0 && Temperature > tempLowEnd && Temperature < tempHighEnd && Fatigue < fatigueHighEnd)
-            Fatigue += FatigueDownRate;
+        // Gain back Fatigue
+        if ((this._currentHydration > this._zero && this._currentTemperature > this.temperatureRangeLow) &&
+            (this._currentTemperature < this.temperatureRangeHigh && this._currentFatigue < this.maxFatigue))
+        {
+            this._currentFatigue += this.fatigueDownRate;
+            this.DetermineFatigue();
+        }
     }
 
     void UpdateMat()
     {        
-        if (Temperature > tempHighEnd)
+        if (this._currentTemperature > this.maxTemperature)
         {
             otherMat.color = new Color(1, otherMat.color.g, otherMat.color.b,1);
             otherMat.color -= new Color(0, 0.01f, 0.01f, 0); 
         }
-        else if (Temperature < tempLowEnd)
+        else if (this._currentTemperature < this.minTemperature)
         {
             otherMat.color = new Color(otherMat.color.r, otherMat.color.g, 1, 1);
             otherMat.color -= new Color(0.01f, 0.01f, 0, 0); 
@@ -110,31 +116,32 @@ public class Player : MonoBehaviour {
         }
 
         tempuratureObj.GetComponent<Renderer>().material = otherMat;
-        curMat.color = new Color(Hydration/10, Hydration/10, Hydration/10, Fatigue/10);
+        curMat.color = new Color(this._currentHydration/this._colorDivisor, this._currentHydration / this._colorDivisor,
+                                 this._currentHydration / this._colorDivisor, this._currentFatigue/ this._colorDivisor);
         GetComponent<Renderer>().material = curMat;
     }
 
-    public void playerJumped()
+    public void Jumped()
     {
         if (!checkLowHydration())
         {
-            this.Hydration -= this.hydrationEffectJumping;
+            this._currentHydration -= this.hydrationEffectJumping;
         }
     }
 
-    public void playerSprinting()
+    public void Sprinting()
     {
-        if (!checkLowHydration())
+        if (this._playerManager.GetMovement() && !checkLowHydration())
         {
-            this.Hydration -= this.hydrationEffectSprinting;
+            this._currentHydration -= this.hydrationEffectSprinting;
         }
     }
 
-    public void playerClimbing()
+    public void Climbing()
     {
         if (!checkLowHydration())
         {
-            this.Hydration -= this.hydrationEffectClimbing;
+            this._currentHydration -= this.hydrationEffectClimbing;
         }
     }
 
@@ -142,61 +149,104 @@ public class Player : MonoBehaviour {
     {
         bool hydration0 = false;
 
-        if (this.Hydration <= 0)
+        if (this._currentHydration <= this._zero)
         {
-            this.Hydration = 0;
+            this._currentHydration = this._zero;
             hydration0 = true;
         }
 
         return hydration0;
     }
 
-    public void playerDrinkingWater()
+    public void DrinkingWater()
     {
-        if (this.Hydration < hydraHighCap)
+        if (this._currentHydration < this.maxHydration)
         {
-            this.Hydration += this.hydrationEffectDrinkingWater;
+            this._currentHydration += this.hydrationEffectDrinkingWater;
         }
         else
         {
-            this.Hydration = this.hydraHighCap;
+            this._currentHydration = this.maxHydration;
         }
     }
 
-    public void playerInShade()
+    public void InShade()
     {
-        if (this.Temperature > 95)
+        if (this._currentTemperature > this._temperatureRangeMid)
         {
-            this.Temperature -= this.temperatureEffect;
+            this._currentTemperature -= this.temperatureEffect;
         }
 
-        else if (this.Temperature < 95)
+        else if (this._currentTemperature < this._temperatureRangeMid)
         {
-            this.Temperature += this.temperatureEffect;
+            this._currentTemperature += this.temperatureEffect;
         }
     }
 
-    public void playerHot()
+    public void InHot()
     {
-        if (this.Temperature < this.tempHighCap)
+        if (this._currentTemperature < this.maxTemperature)
         {
-            this.Temperature += this.temperatureEffect;
+            this._currentTemperature += this.temperatureEffect;
         }
         else
         {
-            this.Temperature = this.tempHighCap;
+            this._currentTemperature = this.maxTemperature;
         }
     }
 
-    public void playerCold()
+    public void InCold()
     {
-        if (this.Temperature > this.tempLowCap)
+        if (this._currentTemperature > this.minTemperature)
         {
-            this.Temperature -= this.temperatureEffect;
+            this._currentTemperature -= this.temperatureEffect;
         }
         else
         {
-            this.Temperature = this.tempLowCap;
+            this._currentTemperature = this.minTemperature;
         }
+    }
+
+    public void LowerFatigue()
+    {
+        if (this.CheckCrisis())
+        {
+            Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
+        }
+        else
+        {
+            this._currentFatigue -= this.fatigueDownRate;
+            // I don't like this, I need callbacks for threshold values
+            this.DetermineFatigue();
+        }
+    }
+
+    bool CheckCrisis()
+    {
+        bool inCrisis = false;
+        if (this._currentFatigue <= this._zero)
+        {
+            inCrisis = true;
+        }
+        return inCrisis;
+    }
+
+    public void DetermineFatigue()
+    {
+        if (this._currentFatigue > this.tiredFatigueRangeHigh)
+        {
+            this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
+            this._playerManager.PlayerIsNormal();
+        }
+        else if (this._currentFatigue > this.tiredFatigueRangeLow)
+        {
+            this._playerFatigue = PlayerFatigue.TIRED_FATIGUE;
+            this._playerManager.PlayerIsTired();
+        }
+        else
+        {
+            this._playerFatigue = PlayerFatigue.EXHAUSTED_FATIGUE;
+            this._playerManager.PlayerIsExhausted();
+        }        
     }
 }
