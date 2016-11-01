@@ -39,10 +39,10 @@ public class Movement : MonoBehaviour
         // Check if player grounded
         this._isGrounded = Physics2D.OverlapCircle(this.groundCheck.position, this._groundRadius, this.whatIsGround);
         this._animController.SetBool("grounded", this._isGrounded);
-        if (!this._isGrounded)
-        {
-            curMoveRate = maxMovement / 2;
-        }
+        //if (!this._isGrounded)
+        //{
+        //    curMoveRate = maxMovement / 2;
+        //}
 
         this._move = Input.GetAxis("Horizontal");
         this._animController.SetFloat("speed", Mathf.Abs(this._move));
