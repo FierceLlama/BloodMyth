@@ -116,7 +116,7 @@ public class PlayerSprinting : PlayerStates
     public override void Update()
     {
         this._playerMovementScript.SprintingMovement();
-        this._player.playerSprinting();
+        this._player.Sprinting();
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             this._playerManager.CheckPlayerFatigue();
@@ -145,7 +145,7 @@ public class PlayerJumping : PlayerStates
     public override void Enter()
     {
         this._playerMovementScript.Jumped();
-        this._player.playerJumped();
+        this._player.Jumped();
         this._playerManager.CheckPlayerFatigue();
     }
 
@@ -181,12 +181,12 @@ public class PlayerClimbingVertical : PlayerStates
         if (Input.GetKey(KeyCode.W))
         {
             this._playerMovementScript.ClimbingVerticallyUp();
-            this._player.playerClimbing();
+            this._player.Climbing();
         }
         else if (Input.GetKey(KeyCode.S))
         {
             this._playerMovementScript.ClimbingVerticallyDown();
-            this._player.playerClimbing();
+            this._player.Climbing();
         }
         else if (!this._playerMovementScript.canClimb())
         {
@@ -201,11 +201,6 @@ public class PlayerClimbingVertical : PlayerStates
 
     public override void Exit()
     {
-        //if (!this._playerMovementScript.canClimb())
-        //{
-        //    this._playerManager.CheckPlayerFatigue();
-        //    this._playerMovementScript.StoppedClimbing();
-        //}
     }
 }
 

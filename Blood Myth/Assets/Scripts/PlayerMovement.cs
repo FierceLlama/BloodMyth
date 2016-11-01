@@ -5,8 +5,10 @@ public class PlayerMovement : MonoBehaviour
 {
     private Player _player;
 
-    private bool _isGrounded; //Is player on the ground
-    private bool _canClimb = false; //Can the player climb
+    // Is player on the ground
+    private bool _isGrounded;
+    // Can the player climb
+    private bool _canClimb = false;
 
     //string curMouseZone = "";//Store mouse zone
 
@@ -56,40 +58,40 @@ public class PlayerMovement : MonoBehaviour
 
     public void NormalMovement()
     {
-        if (!this._isGrounded)
-        {
-            this._currentSpeed = this.normalSpeed / 2.0f;
-        }
-        else
-        {
-            this._currentSpeed = this.normalSpeed;
-        }
+        //if (!this._isGrounded)
+        //{
+        //    this._currentSpeed = this.normalSpeed / 2.0f;
+        //}
+        //else
+        //{
+        //    this._currentSpeed = this.normalSpeed;
+        //}
         this.Movement();
     }
 
     public void SprintingMovement()
     {
-        if (!this._isGrounded)
-        {
-            this._currentSpeed = this.sprintSpeed / 2.0f;
-        }
-        else
-        {
-            this._currentSpeed = this.sprintSpeed;
-        }
+        //if (!this._isGrounded)
+        //{
+        //    this._currentSpeed = this.sprintSpeed / 2.0f;
+        //}
+        //else
+        //{
+        //    this._currentSpeed = this.sprintSpeed;
+        //}
         this.Movement();
     }
 
     public void TiredMovement()
     {
-        if (!this._isGrounded)
-        {
-            this._currentSpeed = this.tiredSpeed / 2.0f;
-        }
-        else
-        {
-            this._currentSpeed = this.tiredSpeed;
-        }
+        //if (!this._isGrounded)
+        //{
+        //    this._currentSpeed = this.tiredSpeed / 2.0f;
+        //}
+        //else
+        //{
+        //    this._currentSpeed = this.tiredSpeed;
+        //}
         this.Movement();
     }
 
@@ -203,22 +205,22 @@ public class PlayerMovement : MonoBehaviour
 
         if (col.gameObject.tag == "Water" && Input.GetKeyDown(KeyCode.W))
         {
-            this._player.playerDrinkingWater();
+            this._player.DrinkingWater();
         }
 
         // Temperature effects
         if (col.gameObject.tag == "Shade")
         {
-            this._player.playerInShade();
+            this._player.InShade();
         }
         else if (col.gameObject.tag == "Hot")
         {
-            this._player.playerHot();
+            this._player.InHot();
         }
 
         else if (col.gameObject.tag == "Cold")
         {
-            this._player.playerCold();
+            this._player.InCold();
         }
     }
 

@@ -52,6 +52,14 @@ public class PlayerManager : MonoBehaviour
         this._currentPlayerState.Update();
     }
 
+    //void Update()
+    //{
+    //    if (Input.GetKeyUp(KeyCode.Space) && this._playerMovementScript.GetGrounded())
+    //    {
+    //        this.PlayerIsJumping();
+    //    }
+    //}
+
     public void SwitchPlayerState(PlayerStates newPlayerState)
     {
         this._currentPlayerState.Exit();

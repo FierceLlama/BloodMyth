@@ -121,7 +121,7 @@ public class Player : MonoBehaviour
         GetComponent<Renderer>().material = curMat;
     }
 
-    public void playerJumped()
+    public void Jumped()
     {
         if (!checkLowHydration())
         {
@@ -129,7 +129,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void playerSprinting()
+    public void Sprinting()
     {
         if (this._playerManager.GetMovement() && !checkLowHydration())
         {
@@ -137,7 +137,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void playerClimbing()
+    public void Climbing()
     {
         if (!checkLowHydration())
         {
@@ -158,7 +158,7 @@ public class Player : MonoBehaviour
         return hydration0;
     }
 
-    public void playerDrinkingWater()
+    public void DrinkingWater()
     {
         if (this._currentHydration < this.maxHydration)
         {
@@ -170,7 +170,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void playerInShade()
+    public void InShade()
     {
         if (this._currentTemperature > this._temperatureRangeMid)
         {
@@ -183,7 +183,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void playerHot()
+    public void InHot()
     {
         if (this._currentTemperature < this.maxTemperature)
         {
@@ -195,7 +195,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void playerCold()
+    public void InCold()
     {
         if (this._currentTemperature > this.minTemperature)
         {
