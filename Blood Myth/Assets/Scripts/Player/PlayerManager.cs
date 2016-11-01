@@ -45,7 +45,8 @@ public class PlayerManager : MonoBehaviour
         {
             this.PlayerIsJumping();
         }
-        else if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S)) && this._playerMovementScript.canClimb())
+        /*else */
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S)) && this._playerMovementScript.canClimb())
         {
             this.PlayerIsClimbingVertically();
         }
