@@ -80,6 +80,24 @@ public class PlayerMovement : MonoBehaviour
         this.Movement();
     }
 
+    public void TiredMovement()
+    {
+        if (!this._isGrounded)
+        {
+            this._currentSpeed = this.tiredSpeed / 2.0f;
+        }
+        else
+        {
+            this._currentSpeed = this.tiredSpeed;
+        }
+        this.Movement();
+    }
+
+    public void ExahustedMovement()
+    {
+        this.Movement();
+    }
+
     void Movement()
     {
         this._move = Input.GetAxis("Horizontal");
