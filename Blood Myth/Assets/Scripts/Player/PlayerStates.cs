@@ -61,6 +61,7 @@ public class PlayerTiredMovement : PlayerStates
 
     public override void Update()
     {
+        this._playerMovementScript.TiredMovement();
     }
 
     public override void Exit()
@@ -88,6 +89,7 @@ public class PlayerExhaustedMovement : PlayerStates
 
     public override void Update()
     {
+        this._playerMovementScript.ExhaustedMovement();
     }
 
     public override void Exit()
@@ -188,7 +190,7 @@ public class PlayerClimbingVertical : PlayerStates
             this._playerMovementScript.ClimbingVerticallyDown();
             this._player.Climbing();
         }
-        else if (!this._playerMovementScript.canClimb())
+        else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
         {
             this._playerManager.CheckPlayerFatigue();
             this._playerMovementScript.StoppedClimbing();
