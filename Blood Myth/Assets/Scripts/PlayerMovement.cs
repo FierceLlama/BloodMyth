@@ -195,38 +195,18 @@ public class PlayerMovement : MonoBehaviour
     Below code should be moved to separate script or behavior (strategy patterned) ***************************************************************
     */
 
-    void OnTriggerStay2D(Collider2D col)
+    void OnTriggerStay2D(Collider2D climbingObject)
     {
 
-        if (col.gameObject.tag == "Climb")
+        if (climbingObject.gameObject.tag == "Climb")
         {
             this._canClimb = true;
         }
-
-        if (col.gameObject.tag == "Water" && Input.GetKeyDown(KeyCode.W))
-        {
-            this._player.DrinkingWater();
-        }
-
-        // Temperature effects
-        if (col.gameObject.tag == "Shade")
-        {
-            this._player.InShade();
-        }
-        else if (col.gameObject.tag == "Hot")
-        {
-            this._player.InHot();
-        }
-
-        else if (col.gameObject.tag == "Cold")
-        {
-            this._player.InCold();
-        }
     }
 
-    void OnTriggerExit2D(Collider2D col)
+    void OnTriggerExit2D(Collider2D climbingObject)
     {
-        if (col.gameObject.tag == "Climb")
+        if (climbingObject.gameObject.tag == "Climb")
         {
             this._canClimb = false;
         }

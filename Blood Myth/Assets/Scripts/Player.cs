@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
         this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
         this._currentFatigue = maxFatigue;
         this._currentHydration = maxHydration;
-        this._temperatureRangeMid = this.temperatureRangeHigh / this.temperatureRangeLow;
+        this._temperatureRangeMid = (this.temperatureRangeHigh + this.temperatureRangeLow) / 2.0f;
     }
 
     /*
