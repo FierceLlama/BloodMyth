@@ -7,24 +7,38 @@ public class Debuginfo : MonoBehaviour {
     TestInput inpttest;
     string text;
 
-	// Use this for initialization
-	void Start () {
+    public TouchInputData Primary;
+    public TouchInputData Secondary;
+
+    // Use this for initialization
+    void Start () {
 
         inpttest = GameObject.Find("TestCube").GetComponent<TestInput>();
-      
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
+        //inpttest.inputman.GetCurrenEnabledScreenSections(out Primary, out Secondary);
+
+        Primary = inpttest.inputman.GetPrimaryInputData();
+        Secondary = inpttest.inputman.GetSecondryInputData();
+
         text = "";
-        text += "Primary Screen Section: " + inpttest.Primary.ToString();
+        text += "Primary Screen Section: " + inpttest.Primary.CurrScrSec.ToString();
         text += "\n";
-        text += "Secondary Screen Section: " + inpttest.Secondary.ToString();
+        text += "Secondary Screen Section: " + inpttest.Secondary.CurrScrSec.ToString();
         text += "\n";
         text += "Touch Counts: " + Input.touchCount.ToString();
         text += "\n";
 
+#if UNITY_ANDROID
+        text += "TouchTaps First Input: " + Primary.getTouchTapCount();
+        text += "\n";
+        
+        text += "TouchTaps Second Input: " + Secondary.getTouchTapCount();
+        text += "\n";       
+#endif
         this.GetComponent<Text>().text = text;
 	}
 }

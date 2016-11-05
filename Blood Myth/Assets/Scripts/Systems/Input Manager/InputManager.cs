@@ -13,21 +13,27 @@ public struct ScreenCoordinates
 {
     public Vector2 TopLeft, BottomLeft, TopRight, BottomRight, Middle;
 };
-public struct TouchInputWrapper
+public struct TouchInputData
 {
-    public Touch touchinput;
+    private Touch touchinput;
+    public Touch TouchInput { set { touchinput = value; }  }
+
     public Vector2 touchpos;
     public ScreenSection CurrScrSec;
+
+    public TouchPhase getTouchPhase () { return touchinput.phase; }
+    public int getTouchTapCount() { return touchinput.tapCount; }
 }
 public class InputManager : MonoBehaviour
 {
-    private TouchInputWrapper prytouch;
-    private TouchInputWrapper srytouch;
+    private TouchInputData PrimaryTouch;
+    private TouchInputData SecondaryTouch;
 
     private ScreenCoordinates scrCord;
 
     void Awake()
     {
+        //This needs to go to the Game Manager.
         Screen.orientation = ScreenOrientation.LandscapeLeft;
 
         scrCord.TopLeft.x = 0;
@@ -44,60 +50,68 @@ public class InputManager : MonoBehaviour
 
         scrCord.Middle.x = Screen.width / 2;
         scrCord.Middle.y = Screen.height / 2;
+
+
+        PrimaryTouch.CurrScrSec = ScreenSection.None;
+        SecondaryTouch.CurrScrSec = ScreenSection.None;
     }
-    // Update is called once per frame
+
+    void UpdateTouchData(ref TouchInputData TouchData, int i)
+    {
+        TouchData.TouchInput = Input.GetTouch(i);
+
+        if (TouchData.getTouchPhase() == TouchPhase.Stationary)
+        {
+            TouchData.touchpos = Input.GetTouch(i).position;
+        }
+        else if (TouchData.getTouchPhase() == TouchPhase.Ended)
+        {
+            TouchData.CurrScrSec = ScreenSection.None;
+            TouchData.touchpos = -Vector2.one;
+        }
+    }
+
     void Update()
     {
         if (Input.touchCount > 0)
         {
+            UpdateTouchData(ref PrimaryTouch, 0);
            
-            prytouch.touchinput = Input.GetTouch(0);
-     
-
-            if (prytouch.touchinput.phase == TouchPhase.Stationary)
-               prytouch.touchpos = prytouch.touchinput.position;
-            else if (prytouch.touchinput.phase == TouchPhase.Ended)
-            {
-                prytouch.CurrScrSec = ScreenSection.None;
-                prytouch.touchpos = -Vector2.one;
-            }
-
             if (Input.touchCount > 1)
-            { 
-                srytouch.touchinput = Input.GetTouch(1);
-                if (srytouch.touchinput.phase == TouchPhase.Stationary)
-                    srytouch.touchpos = srytouch.touchinput.position;
-                else if (srytouch.touchinput.phase == TouchPhase.Ended)
-                {
-                    srytouch.CurrScrSec = ScreenSection.None;
-                    srytouch.touchpos = -Vector2.one;
-                }
+            {
+                UpdateTouchData(ref SecondaryTouch, 1);
             }
-            CurrenEnabledScreenSections();
+
+            CurrentEnabledScreenSections();
         }
         else
         {
-            prytouch.touchpos = -Vector2.one;
-            srytouch.touchpos = -Vector2.one;
-            prytouch.CurrScrSec = ScreenSection.None;
-            srytouch.CurrScrSec = ScreenSection.None;
+            PrimaryTouch.CurrScrSec = ScreenSection.None;
+            PrimaryTouch.touchpos = -Vector2.one;
+            
+            SecondaryTouch.CurrScrSec = ScreenSection.None;
+            SecondaryTouch.touchpos = -Vector2.one;
         }
 
-     //prytouch.touchpos = Input.mousePosition;
+        //prytouch.touchpos = Input.mousePosition;
         //srytouch.touchpos = Input.mousePosition * -1;
-        //CurrenEnabledScreenSections();
+        //CurrentEnabledScreenSections();
     }
+
+    public TouchInputData GetPrimaryInputData() { return PrimaryTouch; }
+    public TouchInputData GetSecondryInputData() { return SecondaryTouch; }
+    public int GetInputCount () { return Input.touchCount;  }
 
     public void GetCurrenEnabledScreenSections(out ScreenSection inScreenSect1, out ScreenSection inScreenSect2)
     {
-        inScreenSect1 = prytouch.CurrScrSec;
-        inScreenSect2 = srytouch.CurrScrSec;
+        inScreenSect1 = PrimaryTouch.CurrScrSec;
+        inScreenSect2 = SecondaryTouch.CurrScrSec;
     }
 
-    void CurrenEnabledScreenSections()
+    void CurrentEnabledScreenSections()
     {
-        prytouch.CurrScrSec = ScreenSectionEnabled(prytouch.touchpos);
-        srytouch.CurrScrSec = ScreenSectionEnabled(srytouch.touchpos);
+        PrimaryTouch.CurrScrSec = ScreenSectionEnabled(PrimaryTouch.touchpos);
+        SecondaryTouch.CurrScrSec = ScreenSectionEnabled(SecondaryTouch.touchpos);
     }
 
     private ScreenSection ScreenSectionEnabled( Vector2 inputpos)
