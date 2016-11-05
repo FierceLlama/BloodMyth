@@ -95,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
         this.Movement();
     }
 
-    public void ExahustedMovement()
+    public void ExhaustedMovement()
     {
         this.Movement();
     }

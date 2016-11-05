@@ -41,7 +41,7 @@ public class PlayerManager : MonoBehaviour
     {
         this._playerMovementScript.CheckOnGround();
 
-        if (Input.GetKeyUp(KeyCode.Space) && this._playerMovementScript.GetGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && this._playerMovementScript.GetGrounded())
         {
             this.PlayerIsJumping();
         }
