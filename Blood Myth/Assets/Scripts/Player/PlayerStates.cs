@@ -221,7 +221,6 @@ public class PlayerClimbingHorizontal : PlayerStates
 
     public override void Enter()
     {
-
     }
 
     public override void Update()

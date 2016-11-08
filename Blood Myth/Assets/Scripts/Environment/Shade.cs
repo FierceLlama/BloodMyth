@@ -5,9 +5,9 @@ public class Shade : MonoBehaviour
 {
     public GameObject player;
 
-    void OnTriggerStay2D(Collider2D player)
+    void OnTriggerStay2D(Collider2D inPlayer)
     {
-        if (player.gameObject.tag == "Player")
+        if (inPlayer.gameObject.tag == "Player")
         {
             player.GetComponent<Player>().InShade();
         }

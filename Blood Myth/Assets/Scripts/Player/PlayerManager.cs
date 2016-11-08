@@ -46,20 +46,12 @@ public class PlayerManager : MonoBehaviour
             this.PlayerIsJumping();
         }
         /*else */
-        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S)) && this._playerMovementScript.canClimb())
+        if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)) && this._playerMovementScript.canClimb())
         {
             this.PlayerIsClimbingVertically();
         }
         this._currentPlayerState.Update();
     }
-
-    //void Update()
-    //{
-    //    if (Input.GetKeyUp(KeyCode.Space) && this._playerMovementScript.GetGrounded())
-    //    {
-    //        this.PlayerIsJumping();
-    //    }
-    //}
 
     public void SwitchPlayerState(PlayerStates newPlayerState)
     {

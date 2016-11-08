@@ -4,13 +4,12 @@ using System.Collections;
 public class PlayerMovement : MonoBehaviour
 {
     private Player _player;
-
     // Is player on the ground
     private bool _isGrounded;
-    // Can the player climb
+    // Player interacting with climbing object
     private bool _canClimb = false;
-
-    //string curMouseZone = "";//Store mouse zone
+    // Player's ability to climb based on fatigue state
+    private bool _climbingFatigue = false;
 
     private Animator _animController;
     private bool _facingRight = true;
@@ -58,40 +57,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void NormalMovement()
     {
-        //if (!this._isGrounded)
-        //{
-        //    this._currentSpeed = this.normalSpeed / 2.0f;
-        //}
-        //else
-        //{
-        //    this._currentSpeed = this.normalSpeed;
-        //}
         this.Movement();
     }
 
     public void SprintingMovement()
     {
-        //if (!this._isGrounded)
-        //{
-        //    this._currentSpeed = this.sprintSpeed / 2.0f;
-        //}
-        //else
-        //{
-        //    this._currentSpeed = this.sprintSpeed;
-        //}
         this.Movement();
     }
 
     public void TiredMovement()
     {
-        //if (!this._isGrounded)
-        //{
-        //    this._currentSpeed = this.tiredSpeed / 2.0f;
-        //}
-        //else
-        //{
-        //    this._currentSpeed = this.tiredSpeed;
-        //}
         this.Movement();
     }
 
@@ -173,6 +148,7 @@ public class PlayerMovement : MonoBehaviour
     public void SetTiredMovementValues()
     {
         this._currentSpeed = this.tiredSpeed;
+        this._climbingFatigue = true;
     }
 
     public void SetExhaustedMovementValues()
@@ -195,22 +171,22 @@ public class PlayerMovement : MonoBehaviour
     Below code should be moved to separate script or behavior (strategy patterned) ***************************************************************
     */
 
-    void OnTriggerStay2D(Collider2D climbingObject)
-    {
+    //void OnTriggerStay2D(Collider2D climbingObject)
+    //{
 
-        if (climbingObject.gameObject.tag == "Climb")
-        {
-            this._canClimb = true;
-        }
-    }
+    //    if (!this._climbingFatigue && climbingObject.gameObject.tag == "Climb")
+    //    {
+    //        this._canClimb = true;
+    //    }
+    //}
 
-    void OnTriggerExit2D(Collider2D climbingObject)
-    {
-        if (climbingObject.gameObject.tag == "Climb")
-        {
-            this._canClimb = false;
-        }
-    }
+    //void OnTriggerExit2D(Collider2D climbingObject)
+    //{
+    //    if (climbingObject.gameObject.tag == "Climb")
+    //    {
+    //        this._canClimb = false;
+    //    }
+    //}
 
     /*
     Above code should be moved to separate script or behavior (strategy patterned) *****************************************************************
@@ -219,6 +195,16 @@ public class PlayerMovement : MonoBehaviour
     public bool canClimb()
     {
         return this._canClimb;
+    }
+
+    public void inClimbingArea()
+    {
+        this._canClimb = true;
+    }
+
+    public void outOfClimbingArea()
+    {
+        this._canClimb = false;
     }
 
     public bool isFacingRight()

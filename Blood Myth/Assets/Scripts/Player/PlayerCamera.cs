@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CenterCam : MonoBehaviour {
-
+public class PlayerCamera : MonoBehaviour
+{
 	public GameObject player;
 	public float speed;
     public float offsetY;
@@ -15,8 +15,7 @@ public class CenterCam : MonoBehaviour {
 
     //public bool isZooming = false;
     void Start()
-    {
-        
+    {        
     }
 
 	void Update () 
@@ -36,28 +35,5 @@ public class CenterCam : MonoBehaviour {
         }
 
 		transform.position = Vector3.Lerp(curPos, playerPos, speed * smooth * Time.smoothDeltaTime);
-
-
-        //if (!isZooming && Camera.main.orthographicSize > 14)
-        //{
-        //    Camera.main.orthographicSize -= 0.1f;
-        //}
-        
 	}
-
-    //Nick Testing Auto-Zoom out
-    //*
-    //public void AutoZoomIN()
-    //{
-    //    isZooming = true;
-    //    if (Camera.main.orthographicSize < 22)
-    //    {
-    //        Camera.main.orthographicSize += 0.1f;
-    //    }
-
-    //}
-
-    
-
-    //*/
 }
