@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
 /// <summary>
 
 /// Could be redundant with the GameStaetManager
@@ -51,5 +50,3 @@ public class GameplayState : GameState
     public override void Exit() { }
     public override void Update() { }
 }
-
-

@@ -5,7 +5,6 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-
 public class IOSystem 
 {
     private static readonly IOSystem instance = new IOSystem();
