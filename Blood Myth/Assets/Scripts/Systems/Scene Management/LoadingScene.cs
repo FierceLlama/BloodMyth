@@ -2,8 +2,8 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class LoadingScene : MonoBehaviour {
-
+public class LoadingScene : MonoBehaviour
+{
     bool Sceneloaded = false;
     SceneId privSceneToLoad;
     public SceneId SceneToLoad

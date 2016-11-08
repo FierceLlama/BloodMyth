@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 /// <summary>
 /// TODO(OMAR) Talk to the team and figure out what other states are necessary (not exclusive to screens)
 /// i.e. see soteria for what possible clusterfuck could come out of it.
@@ -18,8 +17,8 @@ public enum GameStateId
     Pause
 };
 
-public class GameStateManager : MonoBehaviour {
-
+public class GameStateManager : MonoBehaviour
+{
     ///for the inspector
     [SerializeField]
     private GameStateId currentGameState;

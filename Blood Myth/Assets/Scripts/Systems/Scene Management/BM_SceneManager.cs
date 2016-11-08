@@ -2,7 +2,6 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-
 //Had to do that because SceneManager already exists in the UnityEngine.SceneManagement Namespace.
 //Will refactor later.
 public class BM_SceneManager : MonoBehaviour

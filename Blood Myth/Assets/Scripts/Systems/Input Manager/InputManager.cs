@@ -9,10 +9,12 @@ public enum ScreenSection
     Right,
     None
 }
+
 public struct ScreenCoordinates
 {
     public Vector2 TopLeft, BottomLeft, TopRight, BottomRight, Middle;
 };
+
 public struct TouchInputData
 {
     private Touch touchinput;
@@ -24,6 +26,7 @@ public struct TouchInputData
     public TouchPhase getTouchPhase () { return touchinput.phase; }
     public int getTouchTapCount() { return touchinput.tapCount; }
 }
+
 public class InputManager : MonoBehaviour
 {
     private TouchInputData PrimaryTouch;

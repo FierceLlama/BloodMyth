@@ -26,6 +26,4 @@ public class IOData
 
     private int _sfxlevels;
     public int SFXLevels { get { return this._sfxlevels; } set { this._sfxlevels = value; _ischanged = true; } }
-
 }
-

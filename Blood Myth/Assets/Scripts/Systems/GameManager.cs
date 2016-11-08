@@ -12,8 +12,8 @@ using System.Collections;
 [RequireComponent(typeof(BM_SceneManager))]
 [RequireComponent(typeof(GamePlayInterface))]
 [DisallowMultipleComponent]
-public class GameManager : MonoBehaviour {
-
+public class GameManager : MonoBehaviour
+{
     static public GameManager Instance;
  
     //Access to The SceneManager is Only permited through the GameManager.
@@ -79,6 +79,5 @@ public class GameManager : MonoBehaviour {
         IOSystem.Instance.Load();
     }
 
-    public void ChangeGameState(GameStateId GameStateID) { GameSManager.CurrentState = GameStateID; }
-    
+    public void ChangeGameState(GameStateId GameStateID) { GameSManager.CurrentState = GameStateID; }    
 }
