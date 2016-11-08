@@ -2,8 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class Debuginfo : MonoBehaviour {
-
+public class Debuginfo : MonoBehaviour
+{
     TestInput inpttest;
     string text;
 
@@ -11,8 +11,8 @@ public class Debuginfo : MonoBehaviour {
     public TouchInputData Secondary;
 
     // Use this for initialization
-    void Start () {
-
+    void Start ()
+    {
         inpttest = GameObject.Find("TestCube").GetComponent<TestInput>();
 	}
 	

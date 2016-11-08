@@ -18,7 +18,7 @@ public struct ScreenCoordinates
 public struct TouchInputData
 {
     private Touch touchinput;
-    public Touch TouchInput { set { touchinput = value; }  }
+    public Touch TouchInput { set { touchinput = value; } }
 
     public Vector2 touchpos;
     public ScreenSection CurrScrSec;

@@ -20,12 +20,13 @@ public enum SceneId
     Pause,
     SelectLevel,
 }
+
 public class GamePlayInterface : MonoBehaviour
 {
     //TODO(CHRIS) Add whatever logic you want to run when unity is done
     //loading a scene. you can use IOSystem for getting saved data.
 
-    #region [Sceneloading Function]3t
+    #region [Sceneloading Function]
 
     public void MainMenuOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameStateId.MainMenu); }
     public void LoadingOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameStateId.Loading); }
