@@ -22,28 +22,28 @@ public class TestInput : MonoBehaviour {
 
         // inputman.GetCurrenEnabledScreenSections(out Primary, out Secondary);
 
-        if (Secondary.CurrScrSec == ScreenSection.None)
+        if (Secondary.CurrentScreenSection == ScreenSection.None)
         { 
-            if (Primary.CurrScrSec == ScreenSection.Top)
+            if (Primary.CurrentScreenSection == ScreenSection.Top)
                 this.gameObject.GetComponent<Renderer>().material.color = Color.red;
-            else if (Primary.CurrScrSec == ScreenSection.Bottom)
+            else if (Primary.CurrentScreenSection == ScreenSection.Bottom)
                 this.gameObject.GetComponent<Renderer>().material.color = Color.yellow;
-            else if(Primary.CurrScrSec == ScreenSection.Left)
+            else if(Primary.CurrentScreenSection == ScreenSection.Left)
                 this.gameObject.GetComponent<Renderer>().material.color = Color.black;
-            else if(Primary.CurrScrSec == ScreenSection.Right)
+            else if(Primary.CurrentScreenSection == ScreenSection.Right)
                 this.gameObject.GetComponent<Renderer>().material.color = Color.blue;
             else
                 this.gameObject.GetComponent<Renderer>().material.color = Color.white;
         }
         else
         { 
-            if (Primary.CurrScrSec == ScreenSection.Top && Secondary.CurrScrSec == ScreenSection.Top)
+            if (Primary.CurrentScreenSection == ScreenSection.Top && Secondary.CurrentScreenSection == ScreenSection.Top)
                 this.gameObject.GetComponent<Renderer>().material.color = Color.cyan;
-            else if(Primary.CurrScrSec == ScreenSection.Bottom && Secondary.CurrScrSec == ScreenSection.Top)
+            else if(Primary.CurrentScreenSection == ScreenSection.Bottom && Secondary.CurrentScreenSection == ScreenSection.Top)
                 this.gameObject.GetComponent<Renderer>().material.color = Color.gray;
-            else if(Primary.CurrScrSec == ScreenSection.Left && Secondary.CurrScrSec == ScreenSection.Top)
+            else if(Primary.CurrentScreenSection == ScreenSection.Left && Secondary.CurrentScreenSection == ScreenSection.Top)
                 this.gameObject.GetComponent<Renderer>().material.color = Color.magenta;
-            else if(Primary.CurrScrSec == ScreenSection.Right && Secondary.CurrScrSec == ScreenSection.Top)
+            else if(Primary.CurrentScreenSection == ScreenSection.Right && Secondary.CurrentScreenSection == ScreenSection.Top)
                 this.gameObject.GetComponent<Renderer>().material.color = Color.clear;
             else
                 this.gameObject.GetComponent<Renderer>().material.color = Color.white;

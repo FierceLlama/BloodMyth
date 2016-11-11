@@ -25,9 +25,9 @@ public class Debuginfo : MonoBehaviour {
         Secondary = inpttest.inputman.GetSecondryInputData();
 
         text = "";
-        text += "Primary Screen Section: " + inpttest.Primary.CurrScrSec.ToString();
+        text += "Primary Screen Section: " + inpttest.Primary.CurrentScreenSection.ToString();
         text += "\n";
-        text += "Secondary Screen Section: " + inpttest.Secondary.CurrScrSec.ToString();
+        text += "Secondary Screen Section: " + inpttest.Secondary.CurrentScreenSection.ToString();
         text += "\n";
         text += "Touch Counts: " + Input.touchCount.ToString();
         text += "\n";
