@@ -10,7 +10,6 @@ public class TemperatureHazard : MonoBehaviour
     {
         if (inPlayer.gameObject.tag == "Player")
         {
-            // Flag needed to change texture material for arms
             player.GetComponent<Player>().TemperatureHazard(hazardEffect);
         }
     }

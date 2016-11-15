@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _canClimb = false;
     // Player's ability to climb based on fatigue state
     private bool _climbingFatigue = false;
+    private bool _activelyClimbing = false;
 
     private Animator _animController;
     private bool _facingRight = true;
@@ -99,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
     public void StartedClimbing()
     {
         this._rb2D.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+        this._activelyClimbing = true;
     }
 
     public void ClimbingVerticallyUp()
@@ -119,6 +121,7 @@ public class PlayerMovement : MonoBehaviour
     public void StoppedClimbing()
     {
         this._rb2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+        this._activelyClimbing = false;
     }
 
     void VerifySpriteDirection()
@@ -210,5 +213,10 @@ public class PlayerMovement : MonoBehaviour
     public bool isFacingRight()
     {
         return this._facingRight;
+    }
+
+    public bool isActivelyClimbing()
+    {
+        return this._activelyClimbing;
     }
 }

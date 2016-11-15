@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     public GameObject tempuratureObj;
     private PlayerFatigue _playerFatigue;
     private PlayerManager _playerManager;
+    private PlayerMovement _playerMovement;
     private float _zero = 0.0f;
     private float _colorDivisor = 10.0f;
 
@@ -56,6 +57,7 @@ public class Player : MonoBehaviour
     void Start () 
     {
         this._playerManager = GetComponent<PlayerManager>();
+        this._playerMovement = GetComponent<PlayerMovement>();
         curMat = GetComponent<Renderer>().material;
         otherMat = tempuratureObj.GetComponent<Renderer>().material;
         this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
@@ -164,6 +166,7 @@ public class Player : MonoBehaviour
                 this._currentHydration -= this.hydrationEffectClimbing * Time.deltaTime;
             }
         }
+        this.DetermineFatigueClimbing();
     }
 
     bool checkLowHydration()
@@ -226,7 +229,14 @@ public class Player : MonoBehaviour
         {
             this._currentFatigue -= this.fatigueDownRate * Time.deltaTime;
             // I don't like this, I need callbacks for threshold values
-            this.DetermineFatigue();
+            if (this._playerMovement.isActivelyClimbing())
+            {
+                this.DetermineFatigueClimbing();
+            }
+            else
+            {
+                this.DetermineFatigue();
+            }
         }
     }
 
@@ -257,5 +267,20 @@ public class Player : MonoBehaviour
             this._playerFatigue = PlayerFatigue.EXHAUSTED_FATIGUE;
             this._playerManager.PlayerIsExhausted();
         }        
+    }
+
+    public void DetermineFatigueClimbing()
+    {
+        if (this._currentFatigue > this.tiredFatigueRangeHigh)
+        {
+            this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
+            this._playerManager.PlayerIsClimbingVertically();
+        }
+        else if (this._currentFatigue > this.tiredFatigueRangeLow)
+        {
+            this._playerFatigue = PlayerFatigue.TIRED_FATIGUE;
+            this._playerMovement.StoppedClimbing();
+            this._playerManager.PlayerIsTired();
+        }
     }
 }
