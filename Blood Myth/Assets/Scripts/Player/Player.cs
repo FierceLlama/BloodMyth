@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     private PlayerManager _playerManager;
     private PlayerMovement _playerMovement;
     private float _zero = 0.0f;
-    private float _colorDivisor = 10.0f;
+    private float _colorDivisor = 100.0f;
 
     private float _currentFatigue;
     private float _currentHydration;
@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
         //}
         else
         {
-            otherMat.color = new Color(1, 1, 1, 1);
+            otherMat.color = Color.white;
         }
 
         tempuratureObj.GetComponent<Renderer>().material = otherMat;
