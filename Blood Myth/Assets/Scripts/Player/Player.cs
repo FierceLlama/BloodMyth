@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
     private PlayerMovement _playerMovement;
     private float _zero = 0.0f;
     private float _colorDivisor = 100.0f;
+    private int _totemPowers;
+    private int _totemZero = 0;
 
     private float _currentFatigue;
     private float _currentHydration;
@@ -37,10 +39,8 @@ public class Player : MonoBehaviour
     public float maxHydration = 100.0f;
     public float maxFatigue = 100.0f;
     public float fatigueLoweringThreshold = 50.0f;
-
     public float temperatureAffectOnHydration = 75.0f;
-    public float temperatureRate = 1.0f;
-
+    public float temperatureEffect = 25.0f;
     public float hydrationEffectSprinting = 2.0f;
     public float hydrationEffectClimbing = 4.0f;
     public float hydrationEffectJumping = 5.0f;
@@ -48,7 +48,6 @@ public class Player : MonoBehaviour
     public float temperatureEffectClimbing = 6.0f;
     public float temperatureEffectJumping = 7.5f;
     public float hydrationEffectDrinkingWater = 10.0f;
-
     public float tiredFatigueRangeHigh = 80.0f;
     public float tiredFatigueRangeLow = 30.0f;
     public float fatigueDownRate = 1.0f;
@@ -198,7 +197,7 @@ public class Player : MonoBehaviour
     {
         if (this._currentTemperature < this.maxTemperature)
         {
-            this._currentTemperature += this.temperatureRate;
+            this._currentTemperature += this.temperatureEffect;
         }
         else
         {
@@ -211,7 +210,7 @@ public class Player : MonoBehaviour
         this._hazardEffect = inHazard;
         if (this._currentTemperature > this._zero)
         {
-            this._currentTemperature -= this.temperatureRate;
+            this._currentTemperature -= this.temperatureEffect;
         }
         else
         {
@@ -281,6 +280,19 @@ public class Player : MonoBehaviour
             this._playerFatigue = PlayerFatigue.TIRED_FATIGUE;
             this._playerMovement.StoppedClimbing();
             this._playerManager.PlayerIsTired();
+        }
+    }
+
+    public void addTotemPowers()
+    {
+        this._totemPowers++;
+    }
+
+    public void subtractTotemPowers()
+    {
+        if (this._totemPowers > this._totemZero)
+        {
+            this._totemPowers--;
         }
     }
 }

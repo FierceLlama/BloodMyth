@@ -6,7 +6,7 @@ public class TemperatureHazard : MonoBehaviour
     public GameObject player;
     public TemperatureEffect hazardEffect;
 
-    void OnTriggerStay2D(Collider2D inPlayer)
+    void OnTriggerEnter2D(Collider2D inPlayer)
     {
         if (inPlayer.gameObject.tag == "Player")
         {
