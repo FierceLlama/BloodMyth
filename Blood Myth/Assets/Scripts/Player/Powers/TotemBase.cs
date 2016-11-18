@@ -1,21 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TotemBase : MonoBehaviour {
-
+public class TotemBase : MonoBehaviour
+{
     public Color totemColor;
     public string power;
     public int Uses;
-
-	void Start () 
-    {
-	
-	}
-	
-	void Update () 
-    {
-	
-	}
 
     void OnTriggerEnter2D(Collider2D col)
     {

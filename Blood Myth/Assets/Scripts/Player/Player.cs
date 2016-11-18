@@ -16,10 +16,11 @@ public enum TemperatureEffect
 
 public class Player : MonoBehaviour
 {
+    // Temperature change stuffies -- will be removed later
     Material curMat;
     Material otherMat;
-
     public GameObject tempuratureObj;
+
     private PlayerFatigue _playerFatigue;
     private PlayerManager _playerManager;
     private PlayerMovement _playerMovement;
@@ -51,6 +52,7 @@ public class Player : MonoBehaviour
     public float tiredFatigueRangeHigh = 80.0f;
     public float tiredFatigueRangeLow = 30.0f;
     public float fatigueDownRate = 1.0f;
+    public float fatigueRestingRate = 10.0f;
 
     // Use this for initialization
     void Start () 
@@ -64,10 +66,6 @@ public class Player : MonoBehaviour
         this._currentHydration = maxHydration;
         this._currentTemperature = maxTemperature;
     }
-
-    /*
-        Need a fixed update step for player movement.  Will eventually need to move this out to a strategy pattern for the different movements (e.g. walking, jumping, sprinting, near crisis)
-    */
 	
 	// Update is called once per frame
 	void Update () 
@@ -293,6 +291,14 @@ public class Player : MonoBehaviour
         if (this._totemPowers > this._totemZero)
         {
             this._totemPowers--;
+        }
+    }
+
+    public void Resting()
+    {
+        if (this._currentFatigue < this.maxFatigue)
+        {
+            this._currentFatigue += this.fatigueRestingRate * Time.deltaTime;
         }
     }
 }

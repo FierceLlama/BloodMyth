@@ -170,31 +170,6 @@ public class PlayerMovement : MonoBehaviour
         this._animController.SetBool("sprinting", false);
     }
 
-    /*
-    Below code should be moved to separate script or behavior (strategy patterned) ***************************************************************
-    */
-
-    //void OnTriggerStay2D(Collider2D climbingObject)
-    //{
-
-    //    if (!this._climbingFatigue && climbingObject.gameObject.tag == "Climb")
-    //    {
-    //        this._canClimb = true;
-    //    }
-    //}
-
-    //void OnTriggerExit2D(Collider2D climbingObject)
-    //{
-    //    if (climbingObject.gameObject.tag == "Climb")
-    //    {
-    //        this._canClimb = false;
-    //    }
-    //}
-
-    /*
-    Above code should be moved to separate script or behavior (strategy patterned) *****************************************************************
-    */
-
     public bool canClimb()
     {
         return this._canClimb;
