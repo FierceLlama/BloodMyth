@@ -294,6 +294,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public int getTotemPowers()
+    {
+        return this._totemPowers;
+    }
+
     public void Resting()
     {
         if (this._currentFatigue < this.maxFatigue)
