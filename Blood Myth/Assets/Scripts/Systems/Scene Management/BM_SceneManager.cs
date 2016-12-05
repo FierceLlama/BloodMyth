@@ -8,7 +8,7 @@ public class BM_SceneManager : MonoBehaviour
 {
     bool loading = false;
     [SerializeField]
-    SceneId scenetoload;
+    SceneId sceneToLoad;
     [SerializeField]
     SceneId currentScene;
 
@@ -40,24 +40,26 @@ public class BM_SceneManager : MonoBehaviour
 
     void LoadGameScene(SceneId inLevelID)
     {
-        scenetoload = inLevelID;
+        sceneToLoad = inLevelID;
         loading = true;
         SceneManager.LoadScene((int)SceneId.Loading);
     }
+
     void LoadMenuScene (SceneId inLevelID)
     {
-        scenetoload = inLevelID;
+        sceneToLoad = inLevelID;
         loading = true;
-        SceneManager.LoadScene((int)scenetoload);
+        SceneManager.LoadScene((int)sceneToLoad);
     }
 
     //DEBUG
+    // If loading scene script
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space) && loading == false)
-        {
-            LoadGameScene(SceneId.Level1);
-        }
+        //if (Input.GetKeyUp(KeyCode.Space) && loading == false)
+        //{
+        //    LoadGameScene(SceneId.Level1);
+        //}
     }
 
     //Using Delegates to Make something Happen when a scene is done loading.
@@ -80,12 +82,11 @@ public class BM_SceneManager : MonoBehaviour
             break;
 
             case (int)SceneId.Loading:
-                GameObject.Find("LoadController").GetComponent<LoadingScene>().SceneToLoad = scenetoload;
+                GameObject.Find("LoadController").GetComponent<LoadingScene>().SceneToLoad = sceneToLoad;
                 gpInterface.LoadingOnLoad(mode);
             break;
-
-            case (int)SceneId.Level1:
-                gpInterface.GameOnLoad(mode);
+            //case (int)SceneId.Level1:
+            //    gpInterface.GameOnLoad(mode);
             break;
 
             default: loading = false; break;

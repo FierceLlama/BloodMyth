@@ -27,14 +27,22 @@ public class GameStateManager : MonoBehaviour
     private GameState _currentState;
     public GameStateId CurrentState
     {
-        get { return (GameStateId)this._stateslist.IndexOf(this._currentState); }
+        get
+        {
+            return (GameStateId)this._stateslist.IndexOf(this._currentState);
+        }
+
         set
         {
             if (value == (GameStateId)this._stateslist.IndexOf(this._currentState))
+            {
                 return;
+            }
 
             if (_currentState != null)
+            {
                 this._currentState.Exit();
+            }
 
             this._currentState = this._stateslist[(int)value];
             this.currentGameState = value;
@@ -50,7 +58,10 @@ public class GameStateManager : MonoBehaviour
         this._stateslist.Add(new MainMenuState());
         this._stateslist.Add(new LoadingState());
         this._stateslist.Add(new GameplayState());
-    }	
+    }
 
-    void Update () { _currentState.Update(); }
+    void Update ()
+    {
+        _currentState.Update();
+    }
 }

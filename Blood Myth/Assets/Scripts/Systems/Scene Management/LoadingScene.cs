@@ -9,19 +9,22 @@ public class LoadingScene : MonoBehaviour
     public SceneId SceneToLoad
     {
         get { return privSceneToLoad; }
-        set {
+        set
+        {
             privSceneToLoad = value;
 
             if (privSceneToLoad != SceneId.Loading && Sceneloaded == false)
-            { 
+            {
                 StartCoroutine(CheckSceneLoadStatus());
                 Sceneloaded = false;
             }
             else
+            {
                 Debug.Assert(true, "Something is Wrong, Loading scene is trying to Load itself.");
+            }
         }
     }
-   
+
     IEnumerator CheckSceneLoadStatus()
     {
         yield return new WaitForSeconds(3);
@@ -30,14 +33,16 @@ public class LoadingScene : MonoBehaviour
         AsyncOperation async = SceneManager.LoadSceneAsync((int)privSceneToLoad);
 
         while (!async.isDone)
+        {
             yield return null;
+        }
 
         Sceneloaded = true;
         privSceneToLoad = SceneId.Loading;
     }
 
     public void Awake()
-    {   
-      IOSystem.Instance.AutoSave();   
+    {
+        IOSystem.Instance.AutoSave();   
     }
 }
