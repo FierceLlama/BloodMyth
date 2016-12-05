@@ -3,80 +3,89 @@ using System.Collections;
 
 public enum PlayerFatigue
 {
-    NORMAL_FATIGUE = 100000,
+    NORMAL_FATIGUE,
     TIRED_FATIGUE,
     EXHAUSTED_FATIGUE
 }
 
+public enum TemperatureEffect
+{
+    COLD_HAZARD,
+    HOT_HAZARD
+}
+
 public class Player : MonoBehaviour
 {
+    // Temperature change stuffies -- will be removed later
     Material curMat;
     Material otherMat;
-
     public GameObject tempuratureObj;
+
     private PlayerFatigue _playerFatigue;
     private PlayerManager _playerManager;
+    private PlayerMovement _playerMovement;
     private float _zero = 0.0f;
-    private float _colorDivisor = 10.0f;
-    private float _temperatureRangeMid;
+    private float _colorDivisor = 100.0f;
+    private int _totemPowers;
+    private int _totemZero = 0;
 
-    [Header("QA SECTION")]
     private float _currentFatigue;
     private float _currentHydration;
-    private float _currentTemperature = 95.0f;
+    private float _currentTemperature;
+    private TemperatureEffect _hazardEffect;
+    private bool _temperatureAffectingHydration = false;
 
-    public float hydrationDownRate = 0.01f;
-    public float fatigueDownRate = 0.01f;
-    public float temperatureRangeLow = 90.0f;
-    public float temperatureRangeHigh = 100.0f;
-    public float minTemperature = 85.0f;
-    public float maxTemperature = 105.0f;
-    public float maxHydration = 15.0f;
-    public float maxFatigue = 10.0f;
-
-    public float temperatureEffect = 0.01f;
-    public float hydrationEffectSprinting = 0.01f;
-    public float hydrationEffectJumping = 0.2f;
-    public float hydrationEffectClimbing = 0.03f;
-    public float hydrationEffectDrinkingWater = 3.0f;
-
-    public float tiredFatigueRangeHigh = 8.0f;
-    public float tiredFatigueRangeLow = 3.0f;
+    [Header("QA SECTION")]
+    public float maxTemperature = 100.0f;
+    public float maxHydration = 100.0f;
+    public float maxFatigue = 100.0f;
+    public float fatigueLoweringThreshold = 50.0f;
+    public float temperatureAffectOnHydration = 75.0f;
+    public float temperatureEffect = 25.0f;
+    public float hydrationEffectSprinting = 2.0f;
+    public float hydrationEffectClimbing = 4.0f;
+    public float hydrationEffectJumping = 5.0f;
+    public float temperatureEffectSprinting = 3.0f;
+    public float temperatureEffectClimbing = 6.0f;
+    public float temperatureEffectJumping = 7.5f;
+    public float hydrationEffectDrinkingWater = 10.0f;
+    public float tiredFatigueRangeHigh = 80.0f;
+    public float tiredFatigueRangeLow = 30.0f;
+    public float fatigueDownRate = 1.0f;
+    public float fatigueRestingRate = 10.0f;
 
     // Use this for initialization
     void Start () 
     {
         this._playerManager = GetComponent<PlayerManager>();
+        this._playerMovement = GetComponent<PlayerMovement>();
         curMat = GetComponent<Renderer>().material;
         otherMat = tempuratureObj.GetComponent<Renderer>().material;
         this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
         this._currentFatigue = maxFatigue;
         this._currentHydration = maxHydration;
-        this._temperatureRangeMid = (this.temperatureRangeHigh + this.temperatureRangeLow) / 2.0f;
+        this._currentTemperature = maxTemperature;
     }
-
-    /*
-        Need a fixed update step for player movement.  Will eventually need to move this out to a strategy pattern for the different movements (e.g. walking, jumping, sprinting, near crisis)
-    */
 	
 	// Update is called once per frame
 	void Update () 
     {
-        CheckStatus();
         UpdateMat();
 
         // Hydration Check
-        if (this._currentHydration <= this._zero)
+        if (this._currentHydration <= this.fatigueLoweringThreshold)
         {
             // Lower Fatigue
             this.LowerFatigue();
         }
 
-        // Temp Check
-        if (this._currentTemperature <= this.minTemperature || this._currentTemperature >= this.maxTemperature)
+        // Temp Checks
+        if (this._currentTemperature <= this.fatigueLoweringThreshold)
         {
             // Lower Fatigue
             this.LowerFatigue();
+            // Swap player material for arms based on last temperature hazard encountered
+            // TODO
         }
 
         //// Fatigue Check for crisis
@@ -87,32 +96,22 @@ public class Player : MonoBehaviour
         //}
 	}
 
-    void CheckStatus()
-    {
-        // Gain back Fatigue
-        if ((this._currentHydration > this._zero && this._currentTemperature > this.temperatureRangeLow) &&
-            (this._currentTemperature < this.temperatureRangeHigh && this._currentFatigue < this.maxFatigue))
-        {
-            this._currentFatigue += this.fatigueDownRate;
-            this.DetermineFatigue();
-        }
-    }
-
     void UpdateMat()
     {        
-        if (this._currentTemperature > this.maxTemperature)
+        if (this._currentTemperature < this.fatigueLoweringThreshold)
         {
+            // swap material on player based on _hazardEffect
             otherMat.color = new Color(1, otherMat.color.g, otherMat.color.b,1);
-            otherMat.color -= new Color(0, 0.01f, 0.01f, 0); 
+            otherMat.color -= new Color(0, 0.01f, 0.01f, 0);
         }
-        else if (this._currentTemperature < this.minTemperature)
-        {
-            otherMat.color = new Color(otherMat.color.r, otherMat.color.g, 1, 1);
-            otherMat.color -= new Color(0.01f, 0.01f, 0, 0); 
-        }
+        //else if (this._currentTemperature < this.minTemperature)
+        //{
+        //    otherMat.color = new Color(otherMat.color.r, otherMat.color.g, 1, 1);
+        //    otherMat.color -= new Color(0.01f, 0.01f, 0, 0); 
+        //}
         else
         {
-            otherMat.color = new Color(1, 1, 1, 1);
+            otherMat.color = Color.white;
         }
 
         tempuratureObj.GetComponent<Renderer>().material = otherMat;
@@ -123,26 +122,48 @@ public class Player : MonoBehaviour
 
     public void Jumped()
     {
-        if (!checkLowHydration())
+        if (!this.checkLowHydration())
         {
-            this._currentHydration -= this.hydrationEffectJumping;
+            if (!this._temperatureAffectingHydration)
+            {
+                this._currentHydration -= this.hydrationEffectJumping;
+            }
+            else
+            {
+                this._currentHydration -= this.temperatureEffectJumping;
+            }
         }
     }
 
     public void Sprinting()
     {
-        if (this._playerManager.GetMovement() && !checkLowHydration())
+        if (this._playerManager.GetMovement() && !this.checkLowHydration())
         {
-            this._currentHydration -= this.hydrationEffectSprinting;
+            if (!this._temperatureAffectingHydration)
+            {
+                this._currentHydration -= this.hydrationEffectSprinting * Time.deltaTime;
+            }
+            else
+            {
+                this._currentHydration -= this.temperatureEffectSprinting * Time.deltaTime;
+            }
         }
     }
 
     public void Climbing()
     {
-        if (!checkLowHydration())
+        if (!this.checkLowHydration())
         {
-            this._currentHydration -= this.hydrationEffectClimbing;
+            if (!this._temperatureAffectingHydration)
+            {
+                this._currentHydration -= this.hydrationEffectClimbing * Time.deltaTime;
+            }
+            else
+            {
+                this._currentHydration -= this.hydrationEffectClimbing * Time.deltaTime;
+            }
         }
+        this.DetermineFatigueClimbing();
     }
 
     bool checkLowHydration()
@@ -172,19 +193,6 @@ public class Player : MonoBehaviour
 
     public void InShade()
     {
-        if (this._currentTemperature > this._temperatureRangeMid)
-        {
-            this._currentTemperature -= this.temperatureEffect;
-        }
-
-        else if (this._currentTemperature < this._temperatureRangeMid)
-        {
-            this._currentTemperature += this.temperatureEffect;
-        }
-    }
-
-    public void InHot()
-    {
         if (this._currentTemperature < this.maxTemperature)
         {
             this._currentTemperature += this.temperatureEffect;
@@ -195,15 +203,16 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void InCold()
+    public void TemperatureHazard(TemperatureEffect inHazard)
     {
-        if (this._currentTemperature > this.minTemperature)
+        this._hazardEffect = inHazard;
+        if (this._currentTemperature > this._zero)
         {
             this._currentTemperature -= this.temperatureEffect;
         }
         else
         {
-            this._currentTemperature = this.minTemperature;
+            this._currentTemperature = this._zero;
         }
     }
 
@@ -215,9 +224,16 @@ public class Player : MonoBehaviour
         }
         else
         {
-            this._currentFatigue -= this.fatigueDownRate;
+            this._currentFatigue -= this.fatigueDownRate * Time.deltaTime;
             // I don't like this, I need callbacks for threshold values
-            this.DetermineFatigue();
+            if (this._playerMovement.isActivelyClimbing())
+            {
+                this.DetermineFatigueClimbing();
+            }
+            else
+            {
+                this.DetermineFatigue();
+            }
         }
     }
 
@@ -248,5 +264,46 @@ public class Player : MonoBehaviour
             this._playerFatigue = PlayerFatigue.EXHAUSTED_FATIGUE;
             this._playerManager.PlayerIsExhausted();
         }        
+    }
+
+    public void DetermineFatigueClimbing()
+    {
+        if (this._currentFatigue > this.tiredFatigueRangeHigh)
+        {
+            this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
+            this._playerManager.PlayerIsClimbingVertically();
+        }
+        else if (this._currentFatigue > this.tiredFatigueRangeLow)
+        {
+            this._playerFatigue = PlayerFatigue.TIRED_FATIGUE;
+            this._playerMovement.StoppedClimbing();
+            this._playerManager.PlayerIsTired();
+        }
+    }
+
+    public void addTotemPowers()
+    {
+        this._totemPowers++;
+    }
+
+    public void subtractTotemPowers()
+    {
+        if (this._totemPowers > this._totemZero)
+        {
+            this._totemPowers--;
+        }
+    }
+
+    public int getTotemPowers()
+    {
+        return this._totemPowers;
+    }
+
+    public void Resting()
+    {
+        if (this._currentFatigue < this.maxFatigue)
+        {
+            this._currentFatigue += this.fatigueRestingRate * Time.deltaTime;
+        }
     }
 }

@@ -180,12 +180,12 @@ public class PlayerClimbingVertical : PlayerStates
 
     public override void Update()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
         {
             this._playerMovementScript.ClimbingVerticallyUp();
             this._player.Climbing();
         }
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S) && this._playerMovementScript.canClimb())
         {
             this._playerMovementScript.ClimbingVerticallyDown();
             this._player.Climbing();
