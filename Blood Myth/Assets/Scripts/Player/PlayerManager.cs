@@ -41,15 +41,20 @@ public class PlayerManager : MonoBehaviour
     {
         this._playerMovementScript.CheckOnGround();
 
-        if (Input.GetKeyDown(KeyCode.Space) && this._playerMovementScript.GetGrounded())
+        if (Input.GetKeyDown(KeyCode.Space)
+            && !this._playerMovementScript.fatigueForJumping()
+            && this._playerMovementScript.GetGrounded())
         {
             this.PlayerIsJumping();
         }
-        /*else */
-        if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)) && this._playerMovementScript.canClimb())
+        
+        if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+            && !this._playerMovementScript.fatigueForClimbing()
+            && this._playerMovementScript.canClimb())
         {
             this.PlayerIsClimbingVertically();
         }
+
         this._currentPlayerState.Update();
     }
 

@@ -10,9 +10,18 @@ public class IOSystem
     private static readonly IOSystem instance = new IOSystem();
     public IOData data;
    
-    public static IOSystem Instance { get { return instance; } }
+    public static IOSystem Instance
+    {
+        get
+        {
+            return instance;
+        }
+    }
 
-    private IOSystem () { data = new IOData(); }
+    private IOSystem ()
+    {
+        data = new IOData();
+    }
 
     public void AutoSave()
     {

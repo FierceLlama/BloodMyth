@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
     public float tiredFatigueRangeLow = 30.0f;
     public float fatigueDownRate = 1.0f;
     public float fatigueRestingRate = 10.0f;
+    public float fatigueHazardEffect = 50.0f;
 
     // Use this for initialization
     void Start () 
@@ -213,6 +214,26 @@ public class Player : MonoBehaviour
         else
         {
             this._currentTemperature = this._zero;
+        }
+    }
+
+    public void FatigueHazard()
+    {
+        this._currentFatigue -= this.fatigueHazardEffect;
+        if (this.CheckCrisis())
+        {
+            Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
+        }
+        else
+        {
+            if (this._playerMovement.isActivelyClimbing())
+            {
+                this.DetermineFatigueClimbing();
+            }
+            else
+            {
+                this.DetermineFatigue();
+            }
         }
     }
 

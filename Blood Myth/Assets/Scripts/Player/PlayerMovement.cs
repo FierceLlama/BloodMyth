@@ -8,8 +8,9 @@ public class PlayerMovement : MonoBehaviour
     private bool _isGrounded;
     // Player interacting with climbing object
     private bool _canClimb = false;
-    // Player's ability to climb based on fatigue state
-    private bool _climbingFatigue = false;
+    // Player's ability to climb/jump based on fatigue state
+    private bool _climbingFatigued = false;
+    private bool _jumpingFatigued = false;
     private bool _activelyClimbing = false;
 
     private Animator _animController;
@@ -151,12 +152,13 @@ public class PlayerMovement : MonoBehaviour
     public void SetTiredMovementValues()
     {
         this._currentSpeed = this.tiredSpeed;
-        this._climbingFatigue = true;
+        this._climbingFatigued = true;
     }
 
     public void SetExhaustedMovementValues()
     {
         this._currentSpeed = this.exhaustedSpeed;
+        this._jumpingFatigued = true;
     }
 
     public void SetSprintingMovementValues()
@@ -193,5 +195,15 @@ public class PlayerMovement : MonoBehaviour
     public bool isActivelyClimbing()
     {
         return this._activelyClimbing;
+    }
+
+    public bool fatigueForClimbing()
+    {
+        return this._climbingFatigued;
+    }
+
+    public bool fatigueForJumping()
+    {
+        return this._jumpingFatigued;
     }
 }
