@@ -10,10 +10,10 @@ public enum SceneId
     MainMenu = 0,
     Loading,
 
-    Spring,
-    Summer,
+    //Spring,
+    //Summer,
     Fall,
-    Winter,
+    //Winter,
 
     Settings,
     Credits,

@@ -53,7 +53,6 @@ public class BM_SceneManager : MonoBehaviour
     }
 
     //DEBUG
-    // If loading scene script
     void Update()
     {
         //if (Input.GetKeyUp(KeyCode.Space) && loading == false)
@@ -78,19 +77,33 @@ public class BM_SceneManager : MonoBehaviour
         switch(scene.buildIndex)
         {
             case (int)SceneId.MainMenu:
-                gpInterface.MainMenuOnLoad(mode);
-            break;
-
+                {
+                    gpInterface.MainMenuOnLoad(mode);
+                    break;
+                }
             case (int)SceneId.Loading:
-                GameObject.Find("LoadController").GetComponent<LoadingScene>().SceneToLoad = sceneToLoad;
-                gpInterface.LoadingOnLoad(mode);
-            break;
-            //case (int)SceneId.Level1:
-            //    gpInterface.GameOnLoad(mode);
-            break;
-
-            default: loading = false; break;
+                {
+                    GameObject.Find("LoadController").GetComponent<LoadingScene>().SceneToLoad = sceneToLoad;
+                    gpInterface.LoadingOnLoad(mode);
+                    break;
+                }
+            case (int)SceneId.Fall:
+                {
+                    gpInterface.GameOnLoad(mode);
+                    break;
+                }
+            default:
+                {
+                    loading = false;
+                    break;
+                }
         }
+
         currentScene = (SceneId)scene.buildIndex;
+    }
+
+    public void pubLoadGameScene(SceneId inSceneID)
+    {
+        this.LoadGameScene(inSceneID);
     }
 }

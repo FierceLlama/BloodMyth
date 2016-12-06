@@ -79,5 +79,13 @@ public class GameManager : MonoBehaviour
         IOSystem.Instance.Load();
     }
 
-    public void ChangeGameState(GameStateId GameStateID) { GameSManager.CurrentState = GameStateID; }    
+    public void ChangeGameState(GameStateId GameStateID)
+    {
+        GameSManager.CurrentState = GameStateID;
+    }
+
+    public void LoadGameScene(SceneId inSceneID)
+    {
+        SceneManager.pubLoadGameScene(inSceneID);
+    }
 }

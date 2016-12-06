@@ -26,7 +26,13 @@ public class MainMenuState : GameState
 
     public override void Enter() { }
     public override void Exit() { }
-    public override void Update() { }
+    public override void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            GameManager.Instance.LoadGameScene(SceneId.Fall);
+        }
+    }
 }
 
 public class LoadingState : GameState
@@ -44,5 +50,8 @@ public class GameplayState : GameState
 
     public override void Enter() { }
     public override void Exit() { }
-    public override void Update() { }
+    public override void Update()
+    {
+        // Add pause game functionality
+    }
 }
