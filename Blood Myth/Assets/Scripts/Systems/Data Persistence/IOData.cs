@@ -32,7 +32,7 @@ public class IOData
 
     /* Game Progress */
     private int _levelscompleted;
-    private int LevelsCompleted
+    public int LevelsCompleted
     {
         get
         {
@@ -46,7 +46,7 @@ public class IOData
     }
 
     private int _totemscollected;
-    private int TotemsCollected
+    public int TotemsCollected
     {
         get
         {

@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
             if (!gmMan)
             {
                 GameSManager = gameObject.GetComponent<GameStateManager>();
-                if (!scMan)
+                if (!gmMan)
                     GameSManager = gameObject.AddComponent<GameStateManager>();
             }
 
