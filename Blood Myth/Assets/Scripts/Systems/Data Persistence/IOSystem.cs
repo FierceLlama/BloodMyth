@@ -48,4 +48,11 @@ public class IOSystem
             file.Close();
         }   
     }
+    
+    public void ClearData()
+    {
+        data = new IOData();
+        data.isChanged = true;
+        this.AutoSave();
+    }
 }
