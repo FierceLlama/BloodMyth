@@ -14,6 +14,10 @@ public class IOData
         {
             return this._ischanged;
         }
+        set
+        {
+            this._ischanged = value;
+        }
     }
 
     private string _playername = "Tommy";
