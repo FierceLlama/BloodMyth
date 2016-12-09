@@ -35,8 +35,13 @@ public class AudioObjectPool
 
     private GameObject FindInSFX(string clipname)
     {
-        AudioObject AObj = SFXList.Find(x => (x.ClipName == clipname) && (x.free = true));
-        if (AObj) return AObj.gameObject;
+        AudioObject AObj = SFXList.Find(x => (x.ClipName == clipname) && (x.free == true));
+
+        if (AObj)
+        {
+            Debug.Log(AObj.free);
+            return AObj.gameObject;
+        }
 
         return null;
     }
