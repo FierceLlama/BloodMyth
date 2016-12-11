@@ -21,9 +21,9 @@ public class IOData
     private int TotemsCollected { get { return this._totemscollected; } set { this._totemscollected = value; _ischanged = true; } }
     
     /*System Settings*/
-    private int _musiclevels;
-    public int MusicLevels { get { return this._musiclevels; } set { this._musiclevels = value; _ischanged = true; } }
+    private float _musiclevels;
+    public float MusicLevels { get { return this._musiclevels; } set { this._musiclevels = value; _ischanged = true; } }
 
-    private int _sfxlevels;
-    public int SFXLevels { get { return this._sfxlevels; } set { this._sfxlevels = value; _ischanged = true; } }
+    private float _sfxlevels;
+    public float SFXLevels { get { return this._sfxlevels; } set { this._sfxlevels = value; _ischanged = true; } }
 }

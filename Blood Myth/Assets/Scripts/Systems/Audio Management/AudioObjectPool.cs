@@ -2,6 +2,49 @@
 using System.Collections;
 using System.Collections.Generic;
 
+abstract class AudioObject : MonoBehaviour
+{
+    public bool free = false;
+    private string clipname;
+    public string ClipName
+    {
+        get { return this.clipname; }
+        set
+        {
+            this.clipname = value;
+            if (!AudioSrc)
+                InitAudioSrc();
+
+            this.AudioSrc.clip = Resources.Load(clipname) as AudioClip;
+            // this.AudioSrc.clip = AudioClip.Create("MySinusoid", samplerate * 2, 1, samplerate, false, OnAudioRead, OnAudioSetPosition);
+        }
+    }
+    public AudioSource AudioSrc;
+
+    public abstract void PlayAudio();
+    public abstract void UpdateVolume(float inVol);
+
+    protected void InitAudioSrc()
+    {
+        AudioSrc = gameObject.GetComponent<AudioSource>();
+    }
+
+    public void SetLoopingMode(bool Looping)
+    {
+        AudioSrc.loop = Looping;
+    }
+    protected void CheckObjectStatus()
+    {
+        if (!AudioSrc.isPlaying)
+            free = true;
+    }
+
+    public void setVolume(float newVol)
+    {
+        AudioSrc.volume = newVol;
+    }
+}
+
 public class AudioObjectPool
 {
     List<AudioObject> MusicList; //Music//
@@ -88,5 +131,16 @@ public class AudioObjectPool
         }
       
         return gObj;
+    }
+
+    public void ApplyVolumeChange (AudioType inAudioType, float inVol)
+    {
+        if (inAudioType == AudioType.Music)
+            foreach (AudioObject AObj in MusicList)
+                AObj.setVolume(inVol);
+
+        if (inAudioType == AudioType.SFX)
+            foreach (AudioObject AObj in SFXList)
+                AObj.setVolume(inVol);
     }
 }
