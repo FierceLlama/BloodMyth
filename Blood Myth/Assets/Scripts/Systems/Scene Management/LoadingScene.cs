@@ -43,6 +43,6 @@ public class LoadingScene : MonoBehaviour
 
     public void Awake()
     {
-        IOSystem.Instance.AutoSave();   
+        IOSystem.Instance.AutoSave();
     }
 }

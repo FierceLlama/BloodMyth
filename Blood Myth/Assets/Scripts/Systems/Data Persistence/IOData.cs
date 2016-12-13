@@ -3,6 +3,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+public enum WorldTotems
+{
+    NO_TOTEMS       = 0x00000001,
+    // Fall Totems -- values will change based on spring and summer totems
+    FALL_TOTEMS_1   = 0x00000002,
+    FALL_TOTEMS_2   = 0x00000004
+};
+
 [Serializable]
 public class IOData
 {
@@ -62,7 +70,21 @@ public class IOData
             _ischanged = true;
         }
     }
-    
+
+    private int _worldTotems = (int)WorldTotems.NO_TOTEMS;
+    public int worldTotems
+        {
+        get
+        {
+        return this._worldTotems;
+        }
+        set
+        {
+            this._worldTotems = value;
+            this._ischanged = true;
+        }
+        }
+
     /*System Settings*/
     private int _musiclevels;
     public int MusicLevels
@@ -90,5 +112,10 @@ public class IOData
             this._sfxlevels = value;
             _ischanged = true;
         }
+    }
+
+    public void TotemCollected(WorldTotems inTotem)
+    {
+        this.worldTotems = this._worldTotems | (int)inTotem;
     }
 }

@@ -55,4 +55,9 @@ public class IOSystem
         data.isChanged = true;
         this.AutoSave();
     }
+
+    public int GetLevelTotems()
+    {
+        return this.data.worldTotems;
+    }
 }
