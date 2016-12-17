@@ -16,6 +16,11 @@ public enum TemperatureEffect
 
 public class Player : MonoBehaviour
 {
+    // Input variables
+    private InputManager _inputManager;
+    private TouchInputData _primaryTouch;
+    private TouchInputData _secondaryTouch;
+
     // Temperature change stuffies -- will be removed later
     Material curMat;
     Material otherMat;
@@ -66,11 +71,15 @@ public class Player : MonoBehaviour
         this._currentFatigue = maxFatigue;
         this._currentHydration = maxHydration;
         this._currentTemperature = maxTemperature;
+        this._inputManager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
     }
 	
 	// Update is called once per frame
 	void Update () 
     {
+        this._primaryTouch = this._inputManager.GetPrimaryInputData();
+        this._secondaryTouch = this._inputManager.GetSecondryInputData();
+
         UpdateMat();
 
         // Hydration Check
@@ -326,5 +335,15 @@ public class Player : MonoBehaviour
         {
             this._currentFatigue += this.fatigueRestingRate * Time.deltaTime;
         }
+    }
+
+    public TouchInputData getPrimaryTouch()
+    {
+        return this._primaryTouch;
+    }
+
+    public TouchInputData getSecondaryTouch()
+    {
+        return this._secondaryTouch;
     }
 }

@@ -80,6 +80,21 @@ public class PlayerMovement : MonoBehaviour
     void Movement()
     {
         this._move = Input.GetAxis("Horizontal");
+//*
+#if UNITY_ANDROID
+        if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        {
+            this._move = 1.0f;
+        }
+        else if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        {
+            this._move = -1.0f;
+        }
+        else
+        {
+            this._move = 0.0f;
+        }
+#endif//*/
         this._animController.SetFloat("speed", Mathf.Abs(this._move));
 
         this.VerifySpriteDirection();
@@ -104,12 +119,12 @@ public class PlayerMovement : MonoBehaviour
         this._activelyClimbing = true;
     }
 
-    public void ClimbingVerticallyUp()
+    public void ClimbingUp()
     {
         this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, this.climbingSpeed);
     }
 
-    public void ClimbingVerticallyDown()
+    public void ClimbingDown()
     {
         this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, -this.climbingSpeed);
     }
@@ -120,12 +135,12 @@ public class PlayerMovement : MonoBehaviour
         this._activelyClimbing = true;
     }
 
-    public void ClimbingVerticallyRight()
+    public void ClimbingRight()
     {
         this._rb2D.velocity = new Vector2(this.climbingSpeed, this._rb2D.velocity.y);
     }
 
-    public void ClimbingVerticallyLeft()
+    public void ClimbingLeft()
     {
         this._rb2D.velocity = new Vector2(-this.climbingSpeed, this._rb2D.velocity.y);
     }

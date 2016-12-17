@@ -59,8 +59,24 @@ public class PlayerManager : MonoBehaviour
     void FixedUpdate()
     {
         this._playerMovementScript.CheckOnGround();
+        //*
+#if UNITY_ANDROID
+        if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Bottom || this._player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Bottom)
+            && !this._playerMovementScript.fatigueForJumping()
+            && this._playerMovementScript.GetGrounded())
+        {
+            this.PlayerIsJumping();
+        }
 
-        if (Input.GetKeyDown(KeyCode.Space)
+        if (((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+            || (this._player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getSecondaryTouch().getTouchPhase() == TouchPhase.Stationary))
+            && !this._playerMovementScript.fatigueForClimbing()
+            && this._playerMovementScript.canClimb())
+        {
+            this.DeterminePlayerClimbDirection();
+        }
+#endif//*/
+            if (Input.GetKeyDown(KeyCode.Space)
             && !this._playerMovementScript.fatigueForJumping()
             && this._playerMovementScript.GetGrounded())
         {
@@ -108,26 +124,6 @@ public class PlayerManager : MonoBehaviour
     {
         this.SwitchPlayerState(this._jumping);
     }
-
-    //private void PlayerIsClimbingUp()
-    //{
-    //    this.SwitchPlayerState(this._climbingUp);
-    //}
-
-    //private void PlayerIsClimbingDown()
-    //{
-    //    this.SwitchPlayerState(this._climbingDown);
-    //}
-
-    //private void PlayerIsClimbingRight()
-    //{
-    //    this.SwitchPlayerState(this._climbingRight);
-    //}
-
-    //private void PlayerIsClimbingLeft()
-    //{
-    //    this.SwitchPlayerState(this._climbingLeft);
-    //}
 
     public void DeterminePlayerClimbDirection()
     {

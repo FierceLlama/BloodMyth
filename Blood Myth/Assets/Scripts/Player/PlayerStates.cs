@@ -30,6 +30,14 @@ public class PlayerNormal : PlayerStates
     public override void Update()
     {
         this._playerMovementScript.NormalMovement();
+//*
+#if UNITY_ANDROID
+        if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
+            && this._player.getPrimaryTouch().getTouchTapCount() >= 2 && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        {
+            this._playerManager.PlayerIsSprinting();
+        }
+#endif//*/
         if (Input.GetKey(KeyCode.LeftShift))
         {
             this._playerManager.PlayerIsSprinting();
@@ -119,6 +127,18 @@ public class PlayerSprinting : PlayerStates
     {
         this._playerMovementScript.SprintingMovement();
         this._player.Sprinting();
+//*
+#if UNITY_ANDROID
+        if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
+            && this._player.getPrimaryTouch().getTouchTapCount() >= 2 && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        {
+            this._playerManager.CheckPlayerFatigue();
+        }
+        else
+        {
+            this._playerManager.PlayerIsNormal();
+        }
+#endif//*/
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             this._playerManager.CheckPlayerFatigue();
@@ -180,9 +200,22 @@ public class PlayerClimbingUp : PlayerStates
 
     public override void Update()
     {
+        //*
+#if UNITY_ANDROID
+        if (((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+            || (this._player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getSecondaryTouch().getTouchPhase() == TouchPhase.Stationary))
+            && this._playerMovementScript.canClimb())
+        //if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top
+        //    && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary
+        //    && this._playerMovementScript.canClimb())
+        {
+            this._playerMovementScript.ClimbingUp();
+            this._player.Climbing();
+        }
+#endif//*/
         if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
         {
-            this._playerMovementScript.ClimbingVerticallyUp();
+            this._playerMovementScript.ClimbingUp();
             this._player.Climbing();
         }
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
@@ -221,9 +254,19 @@ public class PlayerClimbingDown : PlayerStates
 
     public override void Update()
     {
+//*
+#if UNITY_ANDROID
+        if (((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+            || (this._player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getSecondaryTouch().getTouchPhase() == TouchPhase.Stationary))
+            && this._playerMovementScript.canClimb())
+        {
+            this._playerMovementScript.ClimbingDown();
+            this._player.Climbing();
+        }
+#endif//*/
         if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
         {
-            this._playerMovementScript.ClimbingVerticallyDown();
+            this._playerMovementScript.ClimbingDown();
             this._player.Climbing();
         }
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
@@ -264,7 +307,7 @@ public class PlayerClimbingRight : PlayerStates
     {
         if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
         {
-            this._playerMovementScript.ClimbingVerticallyRight();
+            this._playerMovementScript.ClimbingRight();
             this._player.Climbing();
         }
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
@@ -305,7 +348,7 @@ public class PlayerClimbingLeft : PlayerStates
     {
         if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
         {
-            this._playerMovementScript.ClimbingVerticallyLeft();
+            this._playerMovementScript.ClimbingLeft();
             this._player.Climbing();
         }
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
@@ -317,32 +360,6 @@ public class PlayerClimbingLeft : PlayerStates
         {
             this._playerMovementScript.StationaryWhileClimbing();
         }
-    }
-
-    public override void Exit()
-    {
-    }
-}
-
-public class PlayerClimbingHorizontal : PlayerStates
-{
-    private PlayerManager _playerManager;
-    private Player _player;
-    private PlayerMovement _playerMovementScript;
-
-    public PlayerClimbingHorizontal(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
-    {
-        this._playerManager = playerManager;
-        this._player = player;
-        this._playerMovementScript = playerMovementScript;
-    }
-
-    public override void Enter()
-    {
-    }
-
-    public override void Update()
-    {
     }
 
     public override void Exit()

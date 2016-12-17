@@ -3,24 +3,40 @@ using System.Collections;
 
 public class ClimbingAreas : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject _player;
     public ClimbingDirection climbDirection;
+    public GameObject globalClimbingArea;
+    public GameObject otherClimbingArea;
+    public GameObject platformToClimbThrough;
+
+    void Start()
+    {
+        this._player = GameObject.FindWithTag("Player");
+        this.globalClimbingArea.GetComponent<BoxCollider2D>().enabled = false;
+    }
 
     void OnTriggerEnter2D(Collider2D inPlayer)
     {
         if (inPlayer.gameObject.tag == "Player")
         {
-            player.GetComponent<PlayerMovement>().inClimbingArea();
-            player.GetComponent<PlayerManager>().setClimbingDirection(climbDirection);
+            
+            this._player.GetComponent<PlayerMovement>().inClimbingArea();
+            this._player.GetComponent<PlayerManager>().setClimbingDirection(climbDirection);
         }
     }
 
-    void OnTriggerExit2D(Collider2D inPlayer)
+    void OnTriggerStay2D(Collider2D inPlayer)
     {
-        if (inPlayer.gameObject.tag == "Player")
+        if (this._player.GetComponent<PlayerMovement>().isActivelyClimbing())
         {
-            player.GetComponent<PlayerMovement>().outOfClimbingArea();
-            player.GetComponent<PlayerManager>().setClimbingDirection(ClimbingDirection.NOT_CLIMBING);
+            this.globalClimbingArea.GetComponent<BoxCollider2D>().enabled = true;
+            // Will be removed when we have actual level design and art assets
+            if (this.platformToClimbThrough)
+            {
+                this.platformToClimbThrough.GetComponent<BoxCollider2D>().enabled = false;
+            }
+            this.otherClimbingArea.GetComponent<BoxCollider2D>().enabled = false;
+            this.globalClimbingArea.GetComponent<ExitingClimbingArea>().setGameObjects(this.platformToClimbThrough, this.otherClimbingArea);
         }
     }
 }
