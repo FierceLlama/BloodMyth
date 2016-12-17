@@ -140,16 +140,26 @@ public class InputManager : MonoBehaviour
 
     private ScreenSection ScreenSectionEnabled( Vector2 inputpos)
     {
-        if ( PointInTriangle2(scrCord.TopLeft, scrCord.Middle, scrCord.TopRight, inputpos))
-            return ScreenSection.Top;
-        else if (PointInTriangle2(scrCord.BottomLeft, scrCord.Middle, scrCord.BottomRight, inputpos))
-            return ScreenSection.Bottom;
-        else if (PointInTriangle2(scrCord.TopLeft, scrCord.Middle, scrCord.BottomLeft, inputpos))
-            return ScreenSection.Left;
-        else if (PointInTriangle2(scrCord.TopRight, scrCord.Middle, scrCord.BottomRight, inputpos))
-            return ScreenSection.Right;
+        ScreenSection section = ScreenSection.None;
 
-        return ScreenSection.None;
+        if (PointInTriangle2(scrCord.TopLeft, scrCord.Middle, scrCord.TopRight, inputpos))
+        {
+            section = ScreenSection.Top;
+        }
+        else if (PointInTriangle2(scrCord.BottomLeft, scrCord.Middle, scrCord.BottomRight, inputpos))
+        {
+            section = ScreenSection.Bottom;
+        }
+        else if (PointInTriangle2(scrCord.TopLeft, scrCord.Middle, scrCord.BottomLeft, inputpos))
+        {
+            section = ScreenSection.Left;
+        }
+        else if (PointInTriangle2(scrCord.TopRight, scrCord.Middle, scrCord.BottomRight, inputpos))
+        {
+            section = ScreenSection.Right;
+        }
+
+        return section;
     }
 
     float sign(Vector2 p1, Vector2 p2, Vector2 p3)

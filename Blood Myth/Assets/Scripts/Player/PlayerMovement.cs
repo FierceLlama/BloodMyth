@@ -98,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
         return moving;
     }
 
-    public void StartedClimbing()
+    public void StartedClimbingVertically()
     {
         this._rb2D.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         this._activelyClimbing = true;
@@ -112,6 +112,22 @@ public class PlayerMovement : MonoBehaviour
     public void ClimbingVerticallyDown()
     {
         this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, -this.climbingSpeed);
+    }
+
+    public void StartedClimbingHorizontally()
+    {
+        this._rb2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        this._activelyClimbing = true;
+    }
+
+    public void ClimbingVerticallyRight()
+    {
+        this._rb2D.velocity = new Vector2(this.climbingSpeed, this._rb2D.velocity.y);
+    }
+
+    public void ClimbingVerticallyLeft()
+    {
+        this._rb2D.velocity = new Vector2(-this.climbingSpeed, this._rb2D.velocity.y);
     }
 
     public void StationaryWhileClimbing()

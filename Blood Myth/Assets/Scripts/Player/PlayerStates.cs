@@ -160,13 +160,13 @@ public class PlayerJumping : PlayerStates
     }
 }
 
-public class PlayerClimbingVertical : PlayerStates
+public class PlayerClimbingUp : PlayerStates
 {
     private PlayerManager _playerManager;
     private Player _player;
     private PlayerMovement _playerMovementScript;
 
-    public PlayerClimbingVertical(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
+    public PlayerClimbingUp(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
     {
         this._playerManager = playerManager;
         this._player = player;
@@ -175,7 +175,7 @@ public class PlayerClimbingVertical : PlayerStates
 
     public override void Enter()
     {
-        this._playerMovementScript.StartedClimbing();
+        this._playerMovementScript.StartedClimbingVertically();
     }
 
     public override void Update()
@@ -185,9 +185,127 @@ public class PlayerClimbingVertical : PlayerStates
             this._playerMovementScript.ClimbingVerticallyUp();
             this._player.Climbing();
         }
-        else if (Input.GetKey(KeyCode.S) && this._playerMovementScript.canClimb())
+        else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
+        {
+            this._playerManager.CheckPlayerFatigue();
+            this._playerMovementScript.StoppedClimbing();
+        }
+        else
+        {
+            this._playerMovementScript.StationaryWhileClimbing();
+        }
+    }
+
+    public override void Exit()
+    {
+    }
+}
+
+public class PlayerClimbingDown : PlayerStates
+{
+    private PlayerManager _playerManager;
+    private Player _player;
+    private PlayerMovement _playerMovementScript;
+
+    public PlayerClimbingDown(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
+    {
+        this._playerManager = playerManager;
+        this._player = player;
+        this._playerMovementScript = playerMovementScript;
+    }
+
+    public override void Enter()
+    {
+        this._playerMovementScript.StartedClimbingVertically();
+    }
+
+    public override void Update()
+    {
+        if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
         {
             this._playerMovementScript.ClimbingVerticallyDown();
+            this._player.Climbing();
+        }
+        else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
+        {
+            this._playerManager.CheckPlayerFatigue();
+            this._playerMovementScript.StoppedClimbing();
+        }
+        else
+        {
+            this._playerMovementScript.StationaryWhileClimbing();
+        }
+    }
+
+    public override void Exit()
+    {
+    }
+}
+
+public class PlayerClimbingRight : PlayerStates
+{
+    private PlayerManager _playerManager;
+    private Player _player;
+    private PlayerMovement _playerMovementScript;
+
+    public PlayerClimbingRight(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
+    {
+        this._playerManager = playerManager;
+        this._player = player;
+        this._playerMovementScript = playerMovementScript;
+    }
+
+    public override void Enter()
+    {
+        this._playerMovementScript.StartedClimbingHorizontally();
+    }
+
+    public override void Update()
+    {
+        if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
+        {
+            this._playerMovementScript.ClimbingVerticallyRight();
+            this._player.Climbing();
+        }
+        else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
+        {
+            this._playerManager.CheckPlayerFatigue();
+            this._playerMovementScript.StoppedClimbing();
+        }
+        else
+        {
+            this._playerMovementScript.StationaryWhileClimbing();
+        }
+    }
+
+    public override void Exit()
+    {
+    }
+}
+
+public class PlayerClimbingLeft : PlayerStates
+{
+    private PlayerManager _playerManager;
+    private Player _player;
+    private PlayerMovement _playerMovementScript;
+
+    public PlayerClimbingLeft(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
+    {
+        this._playerManager = playerManager;
+        this._player = player;
+        this._playerMovementScript = playerMovementScript;
+    }
+
+    public override void Enter()
+    {
+        this._playerMovementScript.StartedClimbingHorizontally();
+    }
+
+    public override void Update()
+    {
+        if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
+        {
+            this._playerMovementScript.ClimbingVerticallyLeft();
             this._player.Climbing();
         }
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())

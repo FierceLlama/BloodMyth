@@ -1,6 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum ClimbingDirection
+{
+    CLIMBING_UP,
+    CLIMBING_DOWN,
+    CLIMBING_RIGHT,
+    CLIMBING_LEFT,
+    NOT_CLIMBING
+}
+
 public class PlayerManager : MonoBehaviour
 {
     private PlayerStates _currentPlayerState;
@@ -9,11 +18,16 @@ public class PlayerManager : MonoBehaviour
     private PlayerStates _exhaustedMovement;
     private PlayerStates _sprinting;
     private PlayerStates _jumping;
-    private PlayerStates _climbingVertical;
+    private PlayerStates _climbingUp;
+    private PlayerStates _climbingDown;
+    private PlayerStates _climbingRight;
+    private PlayerStates _climbingLeft;
     private PlayerStates _fatigueCheck;
 
     private PlayerMovement _playerMovementScript;
     private Player _player;
+
+    private ClimbingDirection _climbDirection;
 
     void Awake()
     {
@@ -30,11 +44,16 @@ public class PlayerManager : MonoBehaviour
         this._exhaustedMovement = new PlayerExhaustedMovement(this, this._player, this._playerMovementScript);
         this._sprinting = new PlayerSprinting(this, this._player, this._playerMovementScript);
         this._jumping = new PlayerJumping(this, this._player, this._playerMovementScript);
-        this._climbingVertical = new PlayerClimbingVertical(this, this._player, this._playerMovementScript);
+        this._climbingUp = new PlayerClimbingUp(this, this._player, this._playerMovementScript);
+        this._climbingDown = new PlayerClimbingDown(this, this._player, this._playerMovementScript);
+        this._climbingLeft = new PlayerClimbingRight(this, this._player, this._playerMovementScript);
+        this._climbingRight = new PlayerClimbingLeft(this, this._player, this._playerMovementScript);
         this._fatigueCheck = new FatigueCheck(this, this._player, this._playerMovementScript);
 
         this._currentPlayerState = this._normalMovement;
         this._currentPlayerState.Enter();
+
+        this._climbDirection = ClimbingDirection.NOT_CLIMBING;
     }
 
     void FixedUpdate()
@@ -48,11 +67,11 @@ public class PlayerManager : MonoBehaviour
             this.PlayerIsJumping();
         }
         
-        if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+        if ((Input.GetKey(KeyCode.W))
             && !this._playerMovementScript.fatigueForClimbing()
             && this._playerMovementScript.canClimb())
         {
-            this.PlayerIsClimbingVertically();
+            this.DeterminePlayerClimbDirection();
         }
 
         this._currentPlayerState.Update();
@@ -90,10 +109,45 @@ public class PlayerManager : MonoBehaviour
         this.SwitchPlayerState(this._jumping);
     }
 
-    public void PlayerIsClimbingVertically()
+    //private void PlayerIsClimbingUp()
+    //{
+    //    this.SwitchPlayerState(this._climbingUp);
+    //}
+
+    //private void PlayerIsClimbingDown()
+    //{
+    //    this.SwitchPlayerState(this._climbingDown);
+    //}
+
+    //private void PlayerIsClimbingRight()
+    //{
+    //    this.SwitchPlayerState(this._climbingRight);
+    //}
+
+    //private void PlayerIsClimbingLeft()
+    //{
+    //    this.SwitchPlayerState(this._climbingLeft);
+    //}
+
+    public void DeterminePlayerClimbDirection()
     {
-        // Need to separate climbing vertically from horizontally
-        this.SwitchPlayerState(this._climbingVertical);
+        switch (this._climbDirection)
+        {
+            case ClimbingDirection.CLIMBING_UP:
+                this.SwitchPlayerState(this._climbingUp);
+                break;
+            case ClimbingDirection.CLIMBING_DOWN:
+                this.SwitchPlayerState(this._climbingDown);
+                break;
+            case ClimbingDirection.CLIMBING_RIGHT:
+                this.SwitchPlayerState(this._climbingRight);
+                break;
+            case ClimbingDirection.CLIMBING_LEFT:
+                this.SwitchPlayerState(this._climbingLeft);
+                break;
+            default:
+                break;
+        }
     }
 
     public void CheckPlayerFatigue()
@@ -104,5 +158,10 @@ public class PlayerManager : MonoBehaviour
     public bool GetMovement()
     {
         return this._playerMovementScript.GetMovement();
+    }
+
+    public void setClimbingDirection(ClimbingDirection inClimbDirection)
+    {
+        this._climbDirection = inClimbDirection;
     }
 }

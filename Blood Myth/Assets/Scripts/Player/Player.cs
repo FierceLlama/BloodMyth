@@ -292,7 +292,7 @@ public class Player : MonoBehaviour
         if (this._currentFatigue > this.tiredFatigueRangeHigh)
         {
             this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
-            this._playerManager.PlayerIsClimbingVertically();
+            this._playerManager.DeterminePlayerClimbDirection();
         }
         else if (this._currentFatigue > this.tiredFatigueRangeLow)
         {
