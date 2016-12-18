@@ -282,7 +282,14 @@ public class Player : MonoBehaviour
         if (this._currentFatigue > this.tiredFatigueRangeHigh)
         {
             this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
-            this._playerManager.PlayerIsNormal();
+            if (this._playerManager.getMoveAction() == MoveActions.SPRINTING_ACTION)
+            {
+                this._playerManager.PlayerIsSprinting();
+            }
+            else
+            {
+                this._playerManager.PlayerIsNormal();
+            }
         }
         else if (this._currentFatigue > this.tiredFatigueRangeLow)
         {

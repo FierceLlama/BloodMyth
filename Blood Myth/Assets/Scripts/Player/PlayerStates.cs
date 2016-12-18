@@ -30,7 +30,7 @@ public class PlayerNormal : PlayerStates
     public override void Update()
     {
         this._playerMovementScript.NormalMovement();
-//*
+        //* When using Android
 #if UNITY_ANDROID
         if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
             && this._player.getPrimaryTouch().getTouchTapCount() >= 2 && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
@@ -38,10 +38,12 @@ public class PlayerNormal : PlayerStates
             this._playerManager.PlayerIsSprinting();
         }
 #endif//*/
+
+        /* When using editor
         if (Input.GetKey(KeyCode.LeftShift))
         {
             this._playerManager.PlayerIsSprinting();
-        }
+        }//*/
     }
 
     public override void Exit()
@@ -127,7 +129,8 @@ public class PlayerSprinting : PlayerStates
     {
         this._playerMovementScript.SprintingMovement();
         this._player.Sprinting();
-//*
+        
+        //* When using Android
 #if UNITY_ANDROID
         if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
             && this._player.getPrimaryTouch().getTouchTapCount() >= 2 && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
@@ -139,10 +142,12 @@ public class PlayerSprinting : PlayerStates
             this._playerManager.PlayerIsNormal();
         }
 #endif//*/
+
+        /* When using editor
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             this._playerManager.CheckPlayerFatigue();
-        }
+        }//*/
     }
 
     public override void Exit()
@@ -200,24 +205,24 @@ public class PlayerClimbingUp : PlayerStates
 
     public override void Update()
     {
-        //*
+        //* When using Android
 #if UNITY_ANDROID
-        if (((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
-            || (this._player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getSecondaryTouch().getTouchPhase() == TouchPhase.Stationary))
+        if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top
+            && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary
             && this._playerMovementScript.canClimb())
-        //if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top
-        //    && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary
-        //    && this._playerMovementScript.canClimb())
         {
             this._playerMovementScript.ClimbingUp();
             this._player.Climbing();
         }
 #endif//*/
+
+        /* When using editor
         if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
         {
             this._playerMovementScript.ClimbingUp();
             this._player.Climbing();
-        }
+        }//*/
+
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
         {
             this._playerManager.CheckPlayerFatigue();
@@ -254,21 +259,24 @@ public class PlayerClimbingDown : PlayerStates
 
     public override void Update()
     {
-//*
+        //* When using Andriod
 #if UNITY_ANDROID
-        if (((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
-            || (this._player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getSecondaryTouch().getTouchPhase() == TouchPhase.Stationary))
+        if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top
+            && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary
             && this._playerMovementScript.canClimb())
         {
             this._playerMovementScript.ClimbingDown();
             this._player.Climbing();
         }
 #endif//*/
+
+        /* When using editor
         if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
         {
             this._playerMovementScript.ClimbingDown();
             this._player.Climbing();
-        }
+        }//*/
+
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
         {
             this._playerManager.CheckPlayerFatigue();
@@ -305,11 +313,13 @@ public class PlayerClimbingRight : PlayerStates
 
     public override void Update()
     {
+        //* When using editor
         if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
         {
             this._playerMovementScript.ClimbingRight();
             this._player.Climbing();
-        }
+        }//*/
+
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
         {
             this._playerManager.CheckPlayerFatigue();
@@ -346,11 +356,13 @@ public class PlayerClimbingLeft : PlayerStates
 
     public override void Update()
     {
+        //* When using editor
         if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())
         {
             this._playerMovementScript.ClimbingLeft();
             this._player.Climbing();
-        }
+        }//*/
+
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
         {
             this._playerManager.CheckPlayerFatigue();

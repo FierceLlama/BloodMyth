@@ -10,6 +10,13 @@ public enum ClimbingDirection
     NOT_CLIMBING
 }
 
+public enum MoveActions
+{
+    NORMAL_ACTION,
+    SPRINTING_ACTION,
+    CLIMBING_ACTION,
+}
+
 public class PlayerManager : MonoBehaviour
 {
     private PlayerStates _currentPlayerState;
@@ -28,6 +35,7 @@ public class PlayerManager : MonoBehaviour
     private Player _player;
 
     private ClimbingDirection _climbDirection;
+    private MoveActions _moveAction;
 
     void Awake()
     {
@@ -54,12 +62,14 @@ public class PlayerManager : MonoBehaviour
         this._currentPlayerState.Enter();
 
         this._climbDirection = ClimbingDirection.NOT_CLIMBING;
+        this._moveAction = MoveActions.NORMAL_ACTION;
     }
 
     void FixedUpdate()
     {
         this._playerMovementScript.CheckOnGround();
-        //*
+
+        //* When using Android
 #if UNITY_ANDROID
         if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Bottom || this._player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Bottom)
             && !this._playerMovementScript.fatigueForJumping()
@@ -74,11 +84,14 @@ public class PlayerManager : MonoBehaviour
             && this._playerMovementScript.canClimb())
         {
             this.DeterminePlayerClimbDirection();
+            this._moveAction = MoveActions.CLIMBING_ACTION;
         }
 #endif//*/
-            if (Input.GetKeyDown(KeyCode.Space)
-            && !this._playerMovementScript.fatigueForJumping()
-            && this._playerMovementScript.GetGrounded())
+
+        /* When using editor
+        if (Input.GetKeyDown(KeyCode.Space)
+        && !this._playerMovementScript.fatigueForJumping()
+        && this._playerMovementScript.GetGrounded())
         {
             this.PlayerIsJumping();
         }
@@ -88,7 +101,7 @@ public class PlayerManager : MonoBehaviour
             && this._playerMovementScript.canClimb())
         {
             this.DeterminePlayerClimbDirection();
-        }
+        }//*/
 
         this._currentPlayerState.Update();
     }
@@ -103,6 +116,7 @@ public class PlayerManager : MonoBehaviour
     public void PlayerIsNormal()
     {
         this.SwitchPlayerState(this._normalMovement);
+        this._moveAction = MoveActions.NORMAL_ACTION;
     }
 
     public void PlayerIsTired()
@@ -118,6 +132,7 @@ public class PlayerManager : MonoBehaviour
     public void PlayerIsSprinting()
     {
         this.SwitchPlayerState(this._sprinting);
+        this._moveAction = MoveActions.SPRINTING_ACTION;
     }
 
     public void PlayerIsJumping()
@@ -159,5 +174,10 @@ public class PlayerManager : MonoBehaviour
     public void setClimbingDirection(ClimbingDirection inClimbDirection)
     {
         this._climbDirection = inClimbDirection;
+    }
+
+    public MoveActions getMoveAction()
+    {
+        return this._moveAction;
     }
 }
