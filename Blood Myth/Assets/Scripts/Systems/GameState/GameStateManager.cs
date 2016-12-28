@@ -53,11 +53,15 @@ public class GameStateManager : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        _currentState = null;
+        
         this._stateslist = new List<GameState>();
         this._stateslist.Add(new MainMenuState());
         this._stateslist.Add(new LoadingState());
         this._stateslist.Add(new GameplayState());
+
+        //May need to change this in the future!//
+        // CurrentState = GameStateId.MainMenu;
+        this.CurrentState = GameStateId.MainMenu;
     }
 
     void Update ()
