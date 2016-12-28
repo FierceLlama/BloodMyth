@@ -16,7 +16,6 @@ abstract class AudioObject : MonoBehaviour
                 InitAudioSrc();
 
             this.AudioSrc.clip = Resources.Load(clipname) as AudioClip;
-            // this.AudioSrc.clip = AudioClip.Create("MySinusoid", samplerate * 2, 1, samplerate, false, OnAudioRead, OnAudioSetPosition);
         }
     }
     public AudioSource AudioSrc;
@@ -81,10 +80,7 @@ public class AudioObjectPool
         AudioObject AObj = SFXList.Find(x => (x.ClipName == clipname) && (x.free == true));
 
         if (AObj)
-        {
-            Debug.Log(AObj.free);
             return AObj.gameObject;
-        }
 
         return null;
     }

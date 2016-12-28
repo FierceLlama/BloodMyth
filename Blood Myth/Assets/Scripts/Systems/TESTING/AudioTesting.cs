@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class AudioTesting : MonoBehaviour {
-
-    public AudioClip X;
+   
 	// Use this for initialization
 	void Start () {
 	

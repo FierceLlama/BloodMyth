@@ -18,11 +18,13 @@ class AudioManager: MonoBehaviour
     GameObject MusicParentObject;
 
     [Range(0,1)]
+    [SerializeField]
     private float BackGroundMusicVolume;
+
     [Range(0, 1)]
+    [SerializeField]
     private float SoundEffectsVolume;
 
-    [SerializeField]
     AudioObjectPool AudioPool;
 
     void Awake()
@@ -40,7 +42,7 @@ class AudioManager: MonoBehaviour
     {
         AudioPool = new AudioObjectPool();
         AudioPool.Init();
-    }
+   }
 
     void Update()
     {
@@ -53,12 +55,12 @@ class AudioManager: MonoBehaviour
 
         if (inType == AudioType.SFX)
         { 
-            GObj = AudioPool.PlaySound(clipname, SFXParentObject);
+            GObj = AudioPool.PlaySound("sfx/"+clipname, SFXParentObject);
             GObj.GetComponent<AudioObject>().setVolume(SoundEffectsVolume);
         }
         else if (inType == AudioType.Music)
         {
-            GObj = AudioPool.PlaySound(clipname, MusicParentObject);
+            GObj = AudioPool.PlaySound("music/"+clipname, MusicParentObject);
             GObj.GetComponent<AudioObject>().SetLoopingMode(true);
             GObj.GetComponent<AudioObject>().setVolume(BackGroundMusicVolume);
         }
