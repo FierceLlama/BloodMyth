@@ -88,7 +88,8 @@ public class PlayerManager : MonoBehaviour
         }
 #endif//*/
 
-        /* When using editor
+#if UNITY_EDITOR
+        //* When using editor
         if (Input.GetKeyDown(KeyCode.Space)
         && !this._playerMovementScript.fatigueForJumping()
         && this._playerMovementScript.GetGrounded())
@@ -102,6 +103,7 @@ public class PlayerManager : MonoBehaviour
         {
             this.DeterminePlayerClimbDirection();
         }//*/
+#endif
 
         this._currentPlayerState.Update();
     }

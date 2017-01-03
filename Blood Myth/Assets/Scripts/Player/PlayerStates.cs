@@ -39,11 +39,13 @@ public class PlayerNormal : PlayerStates
         }
 #endif//*/
 
-        /* When using editor
+#if UNITY_EDITOR
+        //* When using editor
         if (Input.GetKey(KeyCode.LeftShift))
         {
             this._playerManager.PlayerIsSprinting();
         }//*/
+#endif
     }
 
     public override void Exit()
@@ -142,6 +144,7 @@ public class PlayerSprinting : PlayerStates
             this._playerManager.PlayerIsNormal();
         }
 #endif//*/
+
 #if UNITY_EDITOR
         //* When using editor
         if (Input.GetKeyUp(KeyCode.LeftShift))
@@ -174,6 +177,7 @@ public class PlayerJumping : PlayerStates
     {
         this._playerMovementScript.Jumped();
         this._player.Jumped();
+        AudioManager.Instance.PlaySound("Jump", AudioType.SFX);
         this._playerManager.CheckPlayerFatigue();
     }
 
@@ -271,6 +275,7 @@ public class PlayerClimbingDown : PlayerStates
             this._player.Climbing();
         }
 #endif//*/
+
 #if UNITY_EDITOR
         //* When using editor
         if (Input.GetKey(KeyCode.W) && this._playerMovementScript.canClimb())

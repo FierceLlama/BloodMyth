@@ -79,8 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Movement()
     {
-        this._move = Input.GetAxis("Horizontal");
-//*
+        //*
 #if UNITY_ANDROID
         if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
         {
@@ -95,6 +94,11 @@ public class PlayerMovement : MonoBehaviour
             this._move = 0.0f;
         }
 #endif//*/
+
+#if UNITY_EDITOR
+        this._move = Input.GetAxis("Horizontal");
+#endif
+
         this._animController.SetFloat("speed", Mathf.Abs(this._move));
 
         this.VerifySpriteDirection();
