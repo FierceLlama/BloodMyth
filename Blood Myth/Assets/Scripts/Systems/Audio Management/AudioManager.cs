@@ -42,6 +42,8 @@ class AudioManager: MonoBehaviour
     {
         AudioPool = new AudioObjectPool();
         AudioPool.Init();
+        this.BackGroundMusicVolume = 1.0f;
+        this.SoundEffectsVolume = 1.0f;
    }
 
     void Update()

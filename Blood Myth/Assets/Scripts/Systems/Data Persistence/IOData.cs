@@ -86,8 +86,8 @@ public class IOData
         }
 
     /*System Settings*/
-    private int _musiclevels;
-    public int MusicLevels
+    private float _musiclevels;
+    public float MusicLevels
     {
         get
         {
@@ -100,8 +100,8 @@ public class IOData
         }
     }
 
-    private int _sfxlevels;
-    public int SFXLevels
+    private float _sfxlevels;
+    public float SFXLevels
     {
         get
         {
