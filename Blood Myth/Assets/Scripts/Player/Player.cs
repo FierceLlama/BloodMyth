@@ -250,7 +250,7 @@ public class Player : MonoBehaviour
     {
         if (this.CheckCrisis())
         {
-            Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
+            Camera.main.gameObject.GetComponent<SceneController>(). RestartScene();
         }
         else
         {
