@@ -12,4 +12,12 @@ public class Resting : MonoBehaviour
             player.GetComponent<Player>().Resting();
         }
     }
+
+    void OnTriggerExit2D(Collider2D inPlayer)
+    {
+        if (inPlayer.gameObject.tag == "Player")
+        {
+            player.GetComponent<PlayerManager>().CheckPlayerFatigue();
+        }
+    }
 }
