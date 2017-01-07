@@ -18,8 +18,7 @@ public class ClimbingAreas : MonoBehaviour
     void OnTriggerEnter2D(Collider2D inPlayer)
     {
         if (inPlayer.gameObject.tag == "Player")
-        {
-            
+        {            
             this._player.GetComponent<PlayerMovement>().inClimbingArea();
             this._player.GetComponent<PlayerManager>().setClimbingDirection(climbDirection);
         }
@@ -39,4 +38,12 @@ public class ClimbingAreas : MonoBehaviour
             this.globalClimbingArea.GetComponent<ExitingClimbingArea>().setGameObjects(this.platformToClimbThrough, this.otherClimbingArea);
         }
     }
-}
+
+    private void OnTriggerExit2D(Collider2D inPlayer)
+        {
+        if (inPlayer.gameObject.tag == "Player" && !this._player.GetComponent<PlayerMovement>().isActivelyClimbing())
+            {
+            this._player.GetComponent<PlayerMovement>().outOfClimbingArea();
+            }
+        }
+    }

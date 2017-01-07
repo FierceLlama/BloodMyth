@@ -15,7 +15,7 @@ public class ExitingClimbingArea : MonoBehaviour
             this.player.GetComponent<PlayerMovement>().outOfClimbingArea();
             this.player.GetComponent<PlayerManager>().setClimbingDirection(ClimbingDirection.NOT_CLIMBING);
             this._platformToClimbThrough.GetComponent<BoxCollider2D>().enabled = true;
-            this._otherClimbingArea.GetComponent<BoxCollider2D>().enabled = true;
+            StartCoroutine(this.ClimbingDelay());
             this.GetComponent<BoxCollider2D>().enabled = false;
         }
     }
@@ -25,4 +25,10 @@ public class ExitingClimbingArea : MonoBehaviour
         this._platformToClimbThrough = inPlatformToClimbThrough;
         this._otherClimbingArea = inOtherClimbingArea;
     }
+
+    IEnumerator ClimbingDelay()
+        {
+        yield return new WaitForSeconds(1.0f);
+        this._otherClimbingArea.GetComponent<BoxCollider2D>().enabled = true;
+        }
 }
