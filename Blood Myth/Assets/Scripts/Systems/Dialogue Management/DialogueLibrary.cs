@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -13,20 +15,36 @@ public class DialogueHandle
         directory = "dialogue";
     }
 }
+public class DialogueLine
+{
+    public Actors Actor;
+    public string line;
+
+    public DialogueLine (string inline, Actors inActor)
+    {
+        line = inline;
+        Actor = inActor;
+    }
+}
 public class DialogueData
 {
     public DialogueHandle handle;
-    public List<string> Lines = new List<string>();
+    public List<DialogueLine> Lines = new List<DialogueLine>();
 
-    public void AddLines (string[] inLines)
+    public DialogueData()
     {
-        Lines = new List<string>(inLines);
+        Lines = new List<DialogueLine>();
     }
-    public void AddLine (string inLine)
+    public void AddLine (string inLine, Actors inActor)
     {
-        Lines.Add(inLine);
+        Lines.Add(new DialogueLine( inLine, inActor ));
+    }
+    public void AddDialogueLine ( DialogueLine InDialogueLine)
+    {
+        Lines.Add(InDialogueLine);
     }
 }
+
 public class DialogueLibrary
 {
     List<DialogueHandle> CurrentActiveDialogues;
@@ -47,6 +65,7 @@ public class DialogueLibrary
     }
     public void PreLoadDialogueHandle(string inKey)
     {
+        CurrentActiveDialogues.Clear();
         CurrentActiveDialogues.Add(ParseDialogueKey(inKey));
     }
 
@@ -73,30 +92,37 @@ public class DialogueLibrary
         }
     }
 
+    private DialogueLine ParseDialogueLine(string inline, Actors inActor)
+    {
+        string Diagline;
+
+        if (inline[0] == '|')
+        {
+            inActor = (Actors)Enum.Parse(typeof(Actors), inline.Substring(1, 3));
+            Diagline = inline.Remove(0, 5);
+        }
+        else
+            Diagline = inline;
+
+        return new DialogueLine(Regex.Replace(Diagline, "#PLAYER#", IOSystem.Instance.data.PlayerName), inActor);
+    }
+
     private void ParseDialogueFile(DialogueData inData, DialogueHandle inHandle)
     {
-
         ///Use Unity's Text Assets.
         inData.handle = inHandle;
+        Actors LineSpeaker = 0;
         TextAsset x = Resources.Load(inHandle.directory) as TextAsset;
  
         using (StringReader reader = new StringReader(x.text))
         {
-            string line = string.Empty;
-            do
+            string line = reader.ReadLine();
+            while (line != null)
             {
+                inData.AddDialogueLine(ParseDialogueLine(line, LineSpeaker));
                 line = reader.ReadLine();
-                if (line != null)
-                {
-                    inData.AddLine(line);           
-                }
-
-            } while (line != null);
+            } 
         }
-
-        //File.ReadAllLines("Resources/"+inHandle.directory);
-        
-        //inData.AddLines (File.ReadAllLines(inHandle.directory));
     }
     private DialogueHandle FindDialogueHandle(string Key)
     {

@@ -1,5 +1,5 @@
-Line 1
-Line 2
-Line 3
-Line 4
+|PLY|Line 1
+|NPC|Line 2 the players Name is #PLAYER#
+|TTM|Line 3 #PLAYER# POTATO POTATO
+#PLAYER#
 Line 5
