@@ -69,7 +69,8 @@ public class DialogueManager : MonoBehaviour
         if (CurrentDialogue != null)
         {
 
-            //Testing!!
+            //Testing!! 
+            /*
             Debug.Log(CurrentDialogue.Lines[0].line);
             Debug.Log(CurrentDialogue.Lines[0].Actor);
 
@@ -78,16 +79,19 @@ public class DialogueManager : MonoBehaviour
 
             Debug.Log(CurrentDialogue.Lines[2].line);
             Debug.Log(CurrentDialogue.Lines[2].Actor);
+            */
+            GameManager.Instance.ChangeGameState(GameStateId.Dialogue);
 
-
-            //TODO(OMAR)
-            //Connect to UI and Start the Dialogue Interface// etc..
-                //Input scheme change.
-                //Change of Game State.
-                //Soft Pause - (Idle animations still work).
             return true;
         }
    
         return false;
+    }
+
+    public bool GetNextLine (out DialogueLine outDialogueLine)
+    {
+        outDialogueLine = CurrentDialogue.GetNextDialogueLine();
+        
+        return outDialogueLine == null ? false : true;
     }
 }

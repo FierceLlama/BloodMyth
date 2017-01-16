@@ -12,6 +12,7 @@ public enum GameStateId
     MainMenu = 0,
     Loading,
     Gameplay,
+    Dialogue,
     SelectLevel,
     Settings,
     Pause
@@ -58,6 +59,7 @@ public class GameStateManager : MonoBehaviour
         this._stateslist.Add(new MainMenuState());
         this._stateslist.Add(new LoadingState());
         this._stateslist.Add(new GameplayState());
+        this._stateslist.Add(new DialogueState());
 
         //May need to change this in the future!//
         // CurrentState = GameStateId.MainMenu;

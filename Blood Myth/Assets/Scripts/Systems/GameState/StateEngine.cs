@@ -55,3 +55,19 @@ public class GameplayState : GameState
         // Add pause game functionality
     }
 }
+
+
+public class DialogueState: GameState
+{
+    /*
+     * Add Input control scheme here. 
+     * UI Actions must be done here.
+     * 
+     * 
+     */
+    public DialogueState() { }
+
+    public override void Enter()   { }
+    public override void Exit()   { }
+    public override void Update() { }
+}

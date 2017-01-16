@@ -74,6 +74,9 @@ public class BM_SceneManager : MonoBehaviour
 
     void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
     {
+        //TODO (CHRIS) 
+        //ADD Dialogue Handle Loading in here so the dialogue handles are preloaded
+        //At Scene Load.
         switch(scene.buildIndex)
         {
             case (int)SceneId.MainMenu:

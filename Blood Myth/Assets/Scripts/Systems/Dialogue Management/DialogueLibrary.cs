@@ -28,6 +28,7 @@ public class DialogueLine
 }
 public class DialogueData
 {
+    public int index = 0;
     public DialogueHandle handle;
     public List<DialogueLine> Lines = new List<DialogueLine>();
 
@@ -42,6 +43,14 @@ public class DialogueData
     public void AddDialogueLine ( DialogueLine InDialogueLine)
     {
         Lines.Add(InDialogueLine);
+    }
+
+    public DialogueLine GetNextDialogueLine ()
+    {
+        if (index < Lines.Count)
+            return Lines[index++];
+        else
+            return null;
     }
 }
 
