@@ -13,6 +13,7 @@ public enum GameStateId
     Loading,
     Gameplay,
     Dialogue,
+
     SelectLevel,
     Settings,
     Pause

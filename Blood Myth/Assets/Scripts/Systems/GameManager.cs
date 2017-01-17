@@ -3,14 +3,16 @@ using System.Collections;
 
 /// <summary>
 /// TODO (OMAR) Research Logging systems ---> will help debugging in this and next projects.
-/// TODO (OMAR) Make sure this manager doesn't become a God Object.. Define specific behaviour and never increase its role.
 /// TODO (OMAR) Keep Comments Updated.
 /// TODO (OMAR) Rework Folder structure (remove systems folder) when done.
-/// TODO (OMAR) Figure out Script Execution Order for these Systems.
 /// </summary>
 [RequireComponent(typeof(GameStateManager))]
 [RequireComponent(typeof(BM_SceneManager))]
 [RequireComponent(typeof(GamePlayInterface))]
+[RequireComponent(typeof(AudioManager))]
+[RequireComponent(typeof(DialogueManager))]
+[RequireComponent(typeof(InputManager))]
+
 [DisallowMultipleComponent]
 public class GameManager : MonoBehaviour
 {

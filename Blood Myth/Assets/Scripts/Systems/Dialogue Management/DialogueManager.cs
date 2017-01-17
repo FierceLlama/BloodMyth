@@ -37,6 +37,7 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager Instance;
     DialogueLibrary dialogueLibrary;
     DialogueData CurrentDialogue;
+    public DialogueActor currentActor;
 
     [SerializeField]
     public DialogueActor[] Characters;
@@ -88,7 +89,28 @@ public class DialogueManager : MonoBehaviour
         return false;
     }
 
-    public bool GetNextLine (out DialogueLine outDialogueLine)
+
+    public bool GetNextLine(out DialogueLine outDialogueLine)
+    {
+        if ( privGetNextLine(out outDialogueLine) )
+        {
+            currentActor = GetNextActor(outDialogueLine);
+            return true;
+        }
+
+        return false;
+           
+    }
+    public DialogueActor GetNextActor(DialogueLine inDialogue)
+    {
+        for (int i = 0; i < Characters.Length; ++i)
+        {
+            if (Characters[i].Actor == inDialogue.Actor)
+                return Characters[i];
+        }
+        return null;
+    }
+    public bool privGetNextLine (out DialogueLine outDialogueLine)
     {
         outDialogueLine = CurrentDialogue.GetNextDialogueLine();
         
