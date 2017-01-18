@@ -12,7 +12,7 @@ public class InputSpriteTesting : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        Debug.Log(InputManager.InputHitSprite(this.gameObject));
+       // Debug.Log(InputManager.InputHitSprite(this.gameObject));
 		
 	}
 }

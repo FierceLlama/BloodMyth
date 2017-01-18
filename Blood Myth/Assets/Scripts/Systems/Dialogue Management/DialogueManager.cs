@@ -71,7 +71,7 @@ public class DialogueManager : MonoBehaviour
         {
 
             //Testing!! 
-            /*
+            
             Debug.Log(CurrentDialogue.Lines[0].line);
             Debug.Log(CurrentDialogue.Lines[0].Actor);
 
@@ -80,8 +80,8 @@ public class DialogueManager : MonoBehaviour
 
             Debug.Log(CurrentDialogue.Lines[2].line);
             Debug.Log(CurrentDialogue.Lines[2].Actor);
-            */
-            GameManager.Instance.ChangeGameState(GameStateId.Dialogue);
+            
+           // GameManager.Instance.ChangeGameState(GameStateId.Dialogue);
 
             return true;
         }

@@ -12,7 +12,7 @@ public class DialogueHandle
 
     public DialogueHandle()
     {
-        directory = "dialogue";
+        directory = "dialogue/";
     }
 }
 public class DialogueLine
@@ -80,25 +80,13 @@ public class DialogueLibrary
 
     private DialogueHandle ParseDialogueKey(string inKey)
     {
-        //Temporary Format// 111222333
-        //FALL TOTEM 1    // FLLTTM001
+        //FALL TOTEM 1    // FALL|TOTEM|001
         DialogueHandle handle = new DialogueHandle();
         handle.dialogueKey = inKey;
-
-        handle.directory += "/" + TranslateKey(inKey.Substring(0, 3));
-        handle.directory += "/" + TranslateKey(inKey.Substring(3, 3));
-        handle.directory += "/" + inKey.Substring(6, 3);
+        
+        handle.directory += inKey.Replace("|", "/").ToLower();
        
         return handle;
-    }
-    private string TranslateKey(string ParseString)
-    {
-        switch (ParseString)
-        {
-            case "FLL": return "fall";
-            case "TTM": return "totem";
-            default: return "";
-        }
     }
 
     private DialogueLine ParseDialogueLine(string inline, Actors inActor)

@@ -15,7 +15,7 @@ public class NPCDialogue : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        DialogueManager.Instance.LoadDialogueKeys("FLLTTM001");
+        DialogueManager.Instance.LoadDialogueKeys(DialogueKey);
         DialogueManager.Instance.StartDialogue(DialogueKey);	
     }
 }
