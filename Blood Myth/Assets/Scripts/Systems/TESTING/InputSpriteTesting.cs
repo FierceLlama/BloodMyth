@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputSpriteTesting : MonoBehaviour {
-
+public class InputSpriteTesting : MonoBehaviour
+{
 	// Use this for initialization
 	void Start () {
 		
@@ -12,7 +12,9 @@ public class InputSpriteTesting : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-       // Debug.Log(InputManager.InputHitSprite(this.gameObject));
-		
-	}
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            Debug.Log(InputManager.InputHitSprite(this.gameObject));
+        }
+    }
 }

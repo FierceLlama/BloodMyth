@@ -182,34 +182,34 @@ public class InputManager : MonoBehaviour
     public static bool InputHitSprite(GameObject inObject)
     {
         
-        if (Input.touchCount > 0)
-        {
-            for (int i = 0; i < Input.touchCount; i++)
-            {
-                Touch currentTouch = Input.GetTouch(i);
-                if (currentTouch.phase == TouchPhase.Began)
-                {
-                    Vector2 v2 = new Vector2(Camera.main.ScreenToWorldPoint(currentTouch.position).x, Camera.main.ScreenToWorldPoint(currentTouch.position).y);
-                    Collider2D c2d = Physics2D.OverlapPoint(v2);
+        //if (Input.touchCount > 0)
+        //{
+        //    for (int i = 0; i < Input.touchCount; i++)
+        //    {
+        //        Touch currentTouch = Input.GetTouch(i);
+        //        if (currentTouch.phase == TouchPhase.Began)
+        //        {
+        //            Vector2 v2 = new Vector2(Camera.main.ScreenToWorldPoint(currentTouch.position).x, Camera.main.ScreenToWorldPoint(currentTouch.position).y);
+        //            Collider2D c2d = Physics2D.OverlapPoint(v2);
 
-                    if (c2d != null)
-                        return true;
-                }
-            }
-        }
+        //            if (c2d != null)
+        //                return true;
+        //        }
+        //    }
+        //}
 
-        return false;
-        
-        /*
-         * 
-        Vector2 v2 = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+        //return false;
+
+
+       
+       Vector2 v2 = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
         Collider2D c2d = Physics2D.OverlapPoint(v2);
 
         if (c2d != null)
             return true;
 
         return false;
-        */
+
     }
 
 
