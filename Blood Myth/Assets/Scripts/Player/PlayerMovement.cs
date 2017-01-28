@@ -182,6 +182,8 @@ public class PlayerMovement : MonoBehaviour
     public void SetNormalMovementValues()
     {
         this._currentSpeed = this.normalSpeed;
+        this._climbingFatigued = false;
+        this._jumpingFatigued = false;
     }
 
     public void SetTiredMovementValues()
