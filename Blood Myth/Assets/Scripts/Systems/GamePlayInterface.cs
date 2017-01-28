@@ -33,4 +33,5 @@ public class GamePlayInterface : MonoBehaviour
     public void GameOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameStateId.Gameplay); }
     
     #endregion
+    
 }
