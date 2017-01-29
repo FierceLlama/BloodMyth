@@ -13,10 +13,9 @@ public enum GameStateId
     Loading,
     Gameplay,
     Dialogue,
-
+    Pause,
     SelectLevel,
-    Settings,
-    Pause
+    Settings
 };
 
 public class GameStateManager : MonoBehaviour
@@ -61,6 +60,7 @@ public class GameStateManager : MonoBehaviour
         this._stateslist.Add(new LoadingState());
         this._stateslist.Add(new GameplayState());
         this._stateslist.Add(new DialogueState());
+        this._stateslist.Add(new PauseState());
 
         //May need to change this in the future!//
         // CurrentState = GameStateId.MainMenu;

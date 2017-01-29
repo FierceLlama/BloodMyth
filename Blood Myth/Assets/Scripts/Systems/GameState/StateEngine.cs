@@ -71,3 +71,16 @@ public class DialogueState: GameState
     public override void Exit()   { }
     public override void Update() { }
 }
+
+public class PauseState : GameState
+{
+    /*
+     * 
+     */
+    public PauseState() {}
+
+    public override void Enter() { Time.timeScale = 0; }
+    public override void Exit() { Time.timeScale = 1;  }
+    public override void Update() { }
+}
+
