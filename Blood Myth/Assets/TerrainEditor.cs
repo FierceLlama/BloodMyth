@@ -6,32 +6,46 @@ using UnityEngine;
 public class TerrainEditor : MonoBehaviour {
 #if UNITY_EDITOR
 
-    public string MehsName
-    {
-        get { return _mesh.name; }
-        set { _mesh.name = value; }
-    }
+    public string meshName;
+    public float width, height;
+
+    private bool Generated = false;
     private Mesh _mesh;
 
-    public float width = 5;
-    public float height = 5 ;
-
-	// Use this for initialization
-	void Awake ()
+    public void UpdateTerrain()
     {
-        MeshFilter meshFilter = (MeshFilter)gameObject.AddComponent<MeshFilter>();
-        _mesh = meshFilter.mesh = CreateMesh(5, 5);
+        _mesh.name = meshName;
+    }
+    public void GenerateTerrain()
+    {
+       if (!Generated)
+       { 
+            MeshFilter meshFilter = (MeshFilter)gameObject.AddComponent<MeshFilter>();
+            _mesh = meshFilter.mesh = CreateMesh(5, 5);
 
-        MeshRenderer renderer = gameObject.AddComponent<MeshRenderer>();
-        renderer.sharedMaterial = new Material(Shader.Find("Standard"));
+            MeshRenderer renderer = gameObject.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = new Material(Shader.Find("Standard"));
 
-        Texture2D tex = new Texture2D(1, 1);
-        tex.SetPixel(0, 0, Color.green);
-        tex.alphaIsTransparency = false;    
-        tex.Apply();
+            Texture2D tex = new Texture2D(1, 1);
+            tex.SetPixel(0, 0, Color.green);
+            tex.alphaIsTransparency = false;
+            tex.Apply();
 
-        renderer.sharedMaterial.mainTexture = tex;
-        renderer.sharedMaterial.color = Color.green;
+            renderer.sharedMaterial.mainTexture = tex;
+            renderer.sharedMaterial.color = Color.green;
+
+            Generated = true;
+        }
+    }
+    public void ClearTerrain()
+    {
+        if (Generated)
+        { 
+            DestroyImmediate(gameObject.GetComponent<MeshRenderer>());
+            DestroyImmediate(gameObject.GetComponent<MeshFilter>());
+
+            Generated = false;
+        }
     }
 
     Mesh CreateMesh (float width, float height)
@@ -61,10 +75,18 @@ public class TerrainEditor : MonoBehaviour {
 
         return m;
     }
-#endif
 
     // Update is called once per frame
-    void Update () {
-		
+    void Update ()
+    {
+        if (width < 1) width = 1;
+        if (height < 1) height = 1;	
 	}
+
+    void OnDrawGizmos()
+    {
+        
+    }
+
+#endif
 }
