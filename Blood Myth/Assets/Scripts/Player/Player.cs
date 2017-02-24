@@ -73,30 +73,51 @@ public class Player : MonoBehaviour
         this._currentTemperature = maxTemperature;
         this._inputManager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
     }
-	
-	// Update is called once per frame
-	void Update () 
-    {
-        this._primaryTouch = this._inputManager.GetPrimaryInputData();
-        this._secondaryTouch = this._inputManager.GetSecondryInputData();
 
+    private void Update()
+        {
         UpdateMat();
 
         // Hydration Check
         if (this._currentHydration <= this.fatigueLoweringThreshold)
-        {
+            {
             // Lower Fatigue
             this.LowerFatigue();
-        }
+            }
 
         // Temp Checks
         if (this._currentTemperature <= this.fatigueLoweringThreshold)
-        {
+            {
             // Lower Fatigue
             this.LowerFatigue();
             // Swap player material for arms based on last temperature hazard encountered
             // TODO
+            }
         }
+
+    // Update is called once per frame
+    void FixedUpdate () 
+    {
+        this._primaryTouch = this._inputManager.GetPrimaryInputData();
+        this._secondaryTouch = this._inputManager.GetSecondryInputData();
+
+        //UpdateMat();
+
+        //// Hydration Check
+        //if (this._currentHydration <= this.fatigueLoweringThreshold)
+        //{
+        //    // Lower Fatigue
+        //    this.LowerFatigue();
+        //}
+
+        //// Temp Checks
+        //if (this._currentTemperature <= this.fatigueLoweringThreshold)
+        //{
+        //    // Lower Fatigue
+        //    this.LowerFatigue();
+        //    // Swap player material for arms based on last temperature hazard encountered
+        //    // TODO
+        //}
 
         //// Fatigue Check for crisis
         //if (this._currentFatigue <= this._zero)
