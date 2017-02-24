@@ -76,6 +76,9 @@ public class Player : MonoBehaviour
 
     private void Update()
         {
+        //this._primaryTouch = this._inputManager.GetPrimaryInputData();
+        //this._secondaryTouch = this._inputManager.GetSecondryInputData();
+
         UpdateMat();
 
         // Hydration Check
@@ -125,7 +128,7 @@ public class Player : MonoBehaviour
         //    // Crisis -- needs better management later
         //    Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
         //}
-	}
+        }
 
     void UpdateMat()
     {        

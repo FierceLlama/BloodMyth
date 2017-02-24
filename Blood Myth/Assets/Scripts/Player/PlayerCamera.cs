@@ -18,7 +18,7 @@ public class PlayerCamera : MonoBehaviour
     {        
     }
 
-	void Update () 
+	void FixedUpdate () 
 	{
 		curPos = Camera.main.transform.position;
 		playerPos = player.transform.position;
