@@ -10,12 +10,13 @@ public class MoveWindGale : MonoBehaviour
     public float stoppingDistance;
     public float delayTime;
     public string clipName;
+    public float delayStartUp;
 
     void Start()
         {
         this._xForm = this.gameObject;
         this._xForm.transform.position = this.start.transform.position;
-        AudioManager.Instance.PlaySound(clipName, AudioType.SFX);
+        StartCoroutine(DelayInitialize());
         }
 
     void FixedUpdate()
@@ -58,5 +59,12 @@ public class MoveWindGale : MonoBehaviour
         this.gameObject.SetActive(true);
         AudioManager.Instance.PlaySound(clipName, AudioType.SFX);
         this._xForm.transform.position = start.transform.position;
+        }
+
+    IEnumerator DelayInitialize()
+        {
+        this.gameObject.SetActive(false);
+        Invoke("TurnOn", this.delayStartUp);
+        yield return new WaitForSeconds(this.delayStartUp);
         }
     }
