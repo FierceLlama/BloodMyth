@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-
 [CustomEditor(typeof(TerrainEditor))]
 public class TerrainEditorEditor : Editor {
 
