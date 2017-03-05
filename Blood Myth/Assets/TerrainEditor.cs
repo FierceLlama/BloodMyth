@@ -71,8 +71,6 @@ public class TerrainEditor : MonoBehaviour {
         m.triangles = new int[] { 0, 3, 2, 0, 2, 1 };
         m.RecalculateNormals();
 
-       // Debug.Log(m.normals);
-
         return m;
     }
 
@@ -83,10 +81,5 @@ public class TerrainEditor : MonoBehaviour {
         if (height < 1) height = 1;	
 	}
 
-    void OnDrawGizmos()
-    {
-        
-    }
-
 #endif
-}
+    }

@@ -7,6 +7,7 @@ using UnityEditor;
 public class TestingMeshCreationEditor : Editor
 {
     TestingMeshCreation terrainEditor;
+    string EditButtonString = "";
 
     private void OnEnable()
     {
@@ -18,11 +19,27 @@ public class TestingMeshCreationEditor : Editor
         DrawDefaultInspector();
        
         if (GUILayout.Button("Clear Terrain"))
-            terrainEditor.ClearTerrain();
+            terrainEditor.ClearMesh();
+
+        if (!terrainEditor.EditMode)
+        { 
+            if (GUILayout.Button("Turn on Edit Mode"))
+                terrainEditor.EditMode = true;    
+        }
+        else
+        if(GUILayout.Button("Turn off Edit Mode"))
+                terrainEditor.EditMode = false;
+
     }
 
-        //only runs when the referenced object is selected.
-        //Locking the inspector makes it work.
+    [DrawGizmo(GizmoType.Selected | GizmoType.Active)]
+    static void DrawGizmoForTerrainEditor(TerrainEditor src, GizmoType gizmoType)
+    {
+        Gizmos.DrawSphere(Vector3.zero, 10);
+    }
+
+    //only runs when the referenced object is selected.
+    //Locking the inspector makes it work.
     void OnSceneGUI()
     {
         Debug.Log("OnScene");
