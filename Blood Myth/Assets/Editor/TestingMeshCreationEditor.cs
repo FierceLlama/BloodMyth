@@ -9,9 +9,17 @@ public class TestingMeshCreationEditor : Editor
     TestingMeshCreation terrainEditor;
     string EditButtonString = "";
 
+    Tool LastTool = Tool.None;
+    
     private void OnEnable()
     {
         terrainEditor = (TestingMeshCreation)target;
+         LastTool = Tools.current;
+        Tools.current = Tool.None;
+    }
+    void OnDisable()
+    {
+        Tools.current = LastTool;
     }
 
     public override void OnInspectorGUI()
@@ -32,24 +40,34 @@ public class TestingMeshCreationEditor : Editor
 
     }
 
-    [DrawGizmo(GizmoType.Selected | GizmoType.Active)]
-    static void DrawGizmoForTerrainEditor(TerrainEditor src, GizmoType gizmoType)
-    {
-        Gizmos.DrawSphere(Vector3.zero, 10);
-    }
-
     //only runs when the referenced object is selected.
     //Locking the inspector makes it work.
     void OnSceneGUI()
     {
-        Debug.Log("OnScene");
-        if (Event.current.type == EventType.MouseDown)
+        terrainEditor.transform.position = Vector3.zero;
+
+        //Handles.color = Color.magenta;
+
+        // EditorGUI.BeginChangeCheck();
+        foreach ( Vector3 vert in terrainEditor.vect)
         {
-            Vector3 screenPosition = Event.current.mousePosition;
-            screenPosition.y = Camera.current.pixelHeight - screenPosition.y;
-            Ray ray = Camera.current.ScreenPointToRay(screenPosition);
-            
-            terrainEditor.GetVertexOnClick(ray.origin);
+            Handles.DotCap(0, vert, Quaternion.identity, .3f);
+        }
+        
+
+        //Vector3 lookTarget = PositionHandle(terrainEditor.transform.position, Quaternion.identity);
+
+        if (terrainEditor.EditMode)
+        { 
+            if (Event.current.type == EventType.MouseDown)
+            {
+                Debug.Log(Event.current.mousePosition);
+                Vector3 screenPosition = Event.current.mousePosition;
+                screenPosition.y = SceneView.currentDrawingSceneView.camera.pixelHeight - screenPosition.y;
+                Vector3 ray = Camera.current.ScreenToWorldPoint(screenPosition);
+           //     Debug.Log(ray);
+                terrainEditor.GetVertexOnClick(ray);
+            }
         }
     }
 }

@@ -11,7 +11,8 @@ public class TestingMeshCreation : MonoBehaviour {
 
     Mesh _mesh;
     LineRenderer lr;
-    Vector3[] vect;
+    [HideInInspector]
+    public Vector3[] vect;
 
     int vertCount;
     [HideInInspector]
@@ -31,9 +32,8 @@ public class TestingMeshCreation : MonoBehaviour {
     public void GetVertexOnClick(Vector3 position)
     {
         vertCount = vect.Length + 1;
-
         Vector3 V = new Vector3(position.x, position.y, 1.0f);
-
+        Debug.Log(V);
         Vector3[] vectTemp = new Vector3[vertCount];
         for (int i = 0; i < vect.Length; ++i)
             vectTemp[i] = vect[i];
@@ -48,18 +48,25 @@ public class TestingMeshCreation : MonoBehaviour {
 
     private void AddRequiredComponents()
     {
-        meshFilter = (MeshFilter)gameObject.AddComponent<MeshFilter>();
-        renderer = gameObject.AddComponent<MeshRenderer>();
+        meshFilter = gameObject.GetComponent<MeshFilter>();
+        renderer = gameObject.GetComponent<MeshRenderer>();
 
-        renderer.sharedMaterial = new Material(Shader.Find("Standard"));
+        if (meshFilter == null)
+            meshFilter = (MeshFilter)gameObject.AddComponent<MeshFilter>();
 
-        Texture2D tex = new Texture2D(1, 1);
-        tex.SetPixel(0, 0, Color.green);
-        tex.alphaIsTransparency = false;
-        tex.Apply();
+        if (renderer == null)
+        { 
+            renderer = gameObject.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = new Material(Shader.Find("Standard"));
 
-        renderer.sharedMaterial.mainTexture = tex;
-        renderer.sharedMaterial.color = Color.green;
+            Texture2D tex = new Texture2D(1, 1);
+            tex.SetPixel(0, 0, Color.green);
+            tex.alphaIsTransparency = false;
+            tex.Apply();
+
+            renderer.sharedMaterial.mainTexture = tex;
+            renderer.sharedMaterial.color = Color.green;
+        }
     }
     private void InitalizeMesh()
     {
@@ -102,8 +109,6 @@ public class TestingMeshCreation : MonoBehaviour {
 
         vect = _mesh.vertices = new Vector3[0];
         Generated = false;
-
-        Debug.Log(_mesh.vertexCount);
     }
     
 #endif
