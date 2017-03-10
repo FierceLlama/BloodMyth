@@ -12,13 +12,16 @@ public class TestingMeshCreation : MonoBehaviour {
     Mesh _mesh;
     LineRenderer lr;
     [HideInInspector]
-    public Vector3[] vect;
+    public Vector3[] OrigVerts;
+    [HideInInspector]
+    public Vector3[] transVerts;
 
     int vertCount;
     [HideInInspector]
     public bool EditMode;
-    private bool Generated = false;
-
+    [HideInInspector]
+    public bool Generated = false;
+    
     MeshFilter meshFilter;
     MeshRenderer renderer;
 
@@ -31,17 +34,17 @@ public class TestingMeshCreation : MonoBehaviour {
 
     public void GetVertexOnClick(Vector3 position)
     {
-        vertCount = vect.Length + 1;
+        vertCount = OrigVerts.Length + 1;
         Vector3 V = new Vector3(position.x, position.y, 1.0f);
-        Debug.Log(V);
+  
         Vector3[] vectTemp = new Vector3[vertCount];
-        for (int i = 0; i < vect.Length; ++i)
-            vectTemp[i] = vect[i];
+        for (int i = 0; i < OrigVerts.Length; ++i)
+            vectTemp[i] = OrigVerts[i];
 
-        vectTemp[vect.Length] = V;
+        vectTemp[OrigVerts.Length] = V;
 
-        vect = vectTemp;
-        _mesh.vertices = vect;
+        transVerts = OrigVerts = vectTemp;
+        _mesh.vertices = OrigVerts;
 
         GenerateMesh();
     }
@@ -71,9 +74,11 @@ public class TestingMeshCreation : MonoBehaviour {
     private void InitalizeMesh()
     {
         _mesh = new Mesh();
-        meshFilter.mesh = _mesh;
+        meshFilter.sharedMesh = _mesh;
         _mesh.name = "ScriptedMesh";
 
+        OrigVerts = new Vector3[0];
+        transVerts = new Vector3[0];
         vertCount = 0;
     }
 
@@ -95,7 +100,7 @@ public class TestingMeshCreation : MonoBehaviour {
 
                 _mesh.triangles = new int[] { 0, 3, 2, 0, 2, 1 };
                 _mesh.RecalculateNormals();
-                meshFilter.mesh = _mesh;
+                meshFilter.sharedMesh = _mesh;
                 Generated = true;
             }
         }
@@ -105,11 +110,18 @@ public class TestingMeshCreation : MonoBehaviour {
     {
         _mesh = new Mesh();
         _mesh.name = "Terrain";
-        meshFilter.mesh = _mesh;
+        meshFilter.sharedMesh = _mesh;
 
-        vect = _mesh.vertices = new Vector3[0];
+        transVerts = OrigVerts = _mesh.vertices = new Vector3[0];
         Generated = false;
+        transform.position = Vector3.zero;
     }
-    
+
+    private void Update()
+    {
+        if (transform.hasChanged)
+            meshFilter.sharedMesh.vertices = transVerts;
+    }
+ 
 #endif
 }
