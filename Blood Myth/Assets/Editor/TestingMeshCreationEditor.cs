@@ -7,14 +7,10 @@ using UnityEditor;
 public class TestingMeshCreationEditor : Editor
 {
     TestingMeshCreation terrainEditor;
-    string EditButtonString = "";
-
-    Tool LastTool = Tool.None;
     
     private void OnEnable()
     {
         terrainEditor = (TestingMeshCreation)target;
-         LastTool = Tools.current;
     }
     void OnDisable(){}
 
@@ -58,19 +54,21 @@ public class TestingMeshCreationEditor : Editor
                 screenPosition.y = SceneView.currentDrawingSceneView.camera.pixelHeight - screenPosition.y;
                 Vector3 vect = Camera.current.ScreenToWorldPoint(screenPosition);
                 terrainEditor.GetVertexOnClick(vect);
+                UpdateVertsTransfrom();
             }
         }
 
         if (terrainEditor.EditMode == false && terrainEditor.Generated == true)
-        {
             if (Event.current.type == EventType.MouseUp)
-            {
-                for (int i = 0; i < terrainEditor.transVerts.Length; ++i)
-                    terrainEditor.transVerts[i] = terrainEditor.OrigVerts[i]
-                        + terrainEditor.transform.position;
-                    
-                terrainEditor.transform.position = Vector3.zero; 
-            }
+                UpdateVertsTransfrom();
+    }
+
+    void UpdateVertsTransfrom ()
+    {
+        for (int i = 0; i < terrainEditor.transVerts.Length; ++i)
+        {
+            terrainEditor.transVerts[i] = terrainEditor.OrigVerts[i]
+                + terrainEditor.transform.position;
         }
     }
 }

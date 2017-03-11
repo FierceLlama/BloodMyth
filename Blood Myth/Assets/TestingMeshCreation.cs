@@ -33,9 +33,9 @@ public class TestingMeshCreation : MonoBehaviour {
     }
 
     public void GetVertexOnClick(Vector3 position)
-    {
+    {   
         vertCount = OrigVerts.Length + 1;
-        Vector3 V = new Vector3(position.x, position.y, 1.0f);
+        Vector3 V = transform.InverseTransformPoint(new Vector3(position.x, position.y, 1.0f));
   
         Vector3[] vectTemp = new Vector3[vertCount];
         for (int i = 0; i < OrigVerts.Length; ++i)
@@ -43,8 +43,12 @@ public class TestingMeshCreation : MonoBehaviour {
 
         vectTemp[OrigVerts.Length] = V;
 
-        transVerts = OrigVerts = vectTemp;
-        _mesh.vertices = OrigVerts;
+        OrigVerts = new Vector3[vectTemp.Length];
+        Array.Copy(vectTemp, OrigVerts, vectTemp.Length);
+        transVerts = new Vector3[vectTemp.Length];
+        Array.Copy(vectTemp, transVerts, vectTemp.Length);
+
+        _mesh.vertices = transVerts;
 
         GenerateMesh();
     }
@@ -100,6 +104,7 @@ public class TestingMeshCreation : MonoBehaviour {
 
                 _mesh.triangles = new int[] { 0, 3, 2, 0, 2, 1 };
                 _mesh.RecalculateNormals();
+                //This is a reference -- remember this
                 meshFilter.sharedMesh = _mesh;
                 Generated = true;
             }
@@ -112,16 +117,12 @@ public class TestingMeshCreation : MonoBehaviour {
         _mesh.name = "Terrain";
         meshFilter.sharedMesh = _mesh;
 
-        transVerts = OrigVerts = _mesh.vertices = new Vector3[0];
+        transVerts = new Vector3[0];
+        OrigVerts = new Vector3[0];
+        _mesh.vertices = new Vector3[0];
+
         Generated = false;
         transform.position = Vector3.zero;
-    }
-
-    private void Update()
-    {
-        if (transform.hasChanged)
-            meshFilter.sharedMesh.vertices = transVerts;
-    }
- 
+    } 
 #endif
 }
