@@ -14,13 +14,19 @@ public class PlayerMovement : MonoBehaviour
     private bool _activelyClimbing = false;
 
     private Animator _animController;
+
+    public Spine.Unity.SkeletonAnimation _skeletonAnimation;
+    public bool _isSprinting = false;
+    public bool _isJumping = false;
+    public bool _isClimbing = false;
+
     private bool _facingRight = true;
     private Rigidbody2D _rb2D;
     private SpriteRenderer _flipSprite;
     private float _move;
 
     public Transform groundCheck;
-    private float _groundRadius = 0.2f;
+    public float _groundRadius = 0.2f;
     public LayerMask whatIsGround;
 
     private float _currentSpeed = 0;
@@ -40,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        this._skeletonAnimation = this.GetComponent<Spine.Unity.SkeletonAnimation>();
         this._animController = this.gameObject.GetComponent<Animator>();
         this._rb2D = GetComponent<Rigidbody2D>();
         this._flipSprite = GetComponent<SpriteRenderer>();
@@ -49,8 +56,9 @@ public class PlayerMovement : MonoBehaviour
     public void CheckOnGround()
     {
         this._isGrounded = Physics2D.OverlapCircle(this.groundCheck.position, this._groundRadius, this.whatIsGround);
-        this._animController.SetBool("grounded", this._isGrounded);
-    }
+        //this._animController.SetBool("grounded", this._isGrounded);
+
+        }
 
     public bool GetGrounded()
     {
@@ -99,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
         this._move = Input.GetAxis("Horizontal");
 #endif
 
-        this._animController.SetFloat("speed", Mathf.Abs(this._move));
+        //this._animController.SetFloat("speed", Mathf.Abs(this._move));
 
         this.VerifySpriteDirection();
 
@@ -164,20 +172,30 @@ public class PlayerMovement : MonoBehaviour
     {
         if (this._move < 0 && this._facingRight)
         {
-            this._flipSprite.flipX = true;
+            //this._flipSprite.flipX = true;
+            _skeletonAnimation.skeleton.FlipX = true;
             this._facingRight = false;
         }
         else if (this._move > 0 && !this._facingRight)
         {
-            this._flipSprite.flipX = false;
+            //this._flipSprite.flipX = false;
+            _skeletonAnimation.skeleton.FlipX = false;
             this._facingRight = true;
         }
     }
 
     public void Jumped()
     {
-        this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, this.jumpVelocity);
+        StartCoroutine(QuarterSecondDelay());
+        
     }
+
+    public IEnumerator QuarterSecondDelay()
+        {
+        yield return new WaitForSeconds(0.25f);
+        this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, this.jumpVelocity);
+
+        }
 
     public void SetNormalMovementValues()
     {
@@ -201,12 +219,12 @@ public class PlayerMovement : MonoBehaviour
     public void SetSprintingMovementValues()
     {
         this._currentSpeed = this.sprintSpeed;
-        this._animController.SetBool("sprinting", true);
+        //this._animController.SetBool("sprinting", true);
     }
 
     public void StoppedSprinting()
     {
-        this._animController.SetBool("sprinting", false);
+        //this._animController.SetBool("sprinting", false);
     }
 
     public bool canClimb()

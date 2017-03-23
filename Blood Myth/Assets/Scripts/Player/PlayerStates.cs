@@ -29,6 +29,19 @@ public class PlayerNormal : PlayerStates
 
     public override void Update()
     {
+        if (this._playerMovementScript.GetMovement())
+            {
+            this._playerMovementScript._skeletonAnimation.timeScale = 1f;
+            this._playerMovementScript._skeletonAnimation.loop = true;
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Run";
+            }
+        else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
+            {
+            this._playerMovementScript._skeletonAnimation.timeScale = 1f;
+            this._playerMovementScript._skeletonAnimation.loop = true;
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle";
+            }
+
         this._playerMovementScript.NormalMovement();
         //* When using Android
 #if UNITY_ANDROID
@@ -114,6 +127,7 @@ public class PlayerSprinting : PlayerStates
     private PlayerManager _playerManager;
     private Player _player;
     private PlayerMovement _playerMovementScript;
+    
 
     public PlayerSprinting(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
     {
@@ -124,11 +138,18 @@ public class PlayerSprinting : PlayerStates
 
     public override void Enter()
     {
+        this._playerMovementScript._isSprinting = true;
         this._playerMovementScript.SetSprintingMovementValues();
     }
 
     public override void Update()
     {
+        if (this._playerMovementScript._isSprinting)
+            {
+            this._playerMovementScript._skeletonAnimation.timeScale = 1f;
+            this._playerMovementScript._skeletonAnimation.loop = true;
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Sprint";
+            }
         this._playerMovementScript.SprintingMovement();
         this._player.Sprinting();
 
@@ -156,6 +177,7 @@ public class PlayerSprinting : PlayerStates
 
     public override void Exit()
     {
+        this._playerMovementScript._isSprinting = false;
         this._playerMovementScript.StoppedSprinting();
     }
 }
@@ -165,6 +187,7 @@ public class PlayerJumping : PlayerStates
     private PlayerManager _playerManager;
     private Player _player;
     private PlayerMovement _playerMovementScript;
+    private bool ok;
 
     public PlayerJumping(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
     {
@@ -175,18 +198,35 @@ public class PlayerJumping : PlayerStates
 
     public override void Enter()
     {
+        ok = true;
+        AudioManager.Instance.PlaySound("Jump", AudioType.SFX);
+        this._playerMovementScript._skeletonAnimation.timeScale = 1f;
+        this._playerMovementScript._skeletonAnimation.loop = false;
+        this._playerMovementScript._skeletonAnimation.AnimationName = "Jump";
         this._playerMovementScript.Jumped();
         this._player.Jumped();
-        AudioManager.Instance.PlaySound("Jump", AudioType.SFX);
-        this._playerManager.CheckPlayerFatigue();
-    }
+
+        }
+
+    public void GetOK()
+        {
+        this.ok = false;
+        }
 
     public override void Update()
     {
-    }
+
+        if (this._playerMovementScript.GetGrounded() && !ok)
+            {
+            this._playerManager.CheckPlayerFatigue();
+            }
+
+
+        }
 
     public override void Exit()
     {
+
     }
 }
 

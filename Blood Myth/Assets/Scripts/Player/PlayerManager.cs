@@ -37,6 +37,12 @@ public class PlayerManager : MonoBehaviour
     private ClimbingDirection _climbDirection;
     private MoveActions _moveAction;
 
+
+    public PlayerStates GetCurrent()
+        {
+        return this._jumping;
+        }
+
     void Awake()
     {
         this.Initialize();
@@ -94,6 +100,7 @@ public class PlayerManager : MonoBehaviour
         && !this._playerMovementScript.fatigueForJumping()
         && this._playerMovementScript.GetGrounded())
         {
+
             this.PlayerIsJumping();
         }
         
