@@ -186,14 +186,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jumped()
     {
-        StartCoroutine(QuarterSecondDelay());
-        
+        this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, this.jumpVelocity);
+
     }
 
     public IEnumerator QuarterSecondDelay()
         {
         yield return new WaitForSeconds(0.25f);
-        this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, this.jumpVelocity);
 
         }
 

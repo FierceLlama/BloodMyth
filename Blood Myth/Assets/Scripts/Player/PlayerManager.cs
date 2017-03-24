@@ -37,6 +37,8 @@ public class PlayerManager : MonoBehaviour
     private ClimbingDirection _climbDirection;
     private MoveActions _moveAction;
 
+    public bool _isTired;
+    public bool _isExhausted;
 
     public PlayerStates GetCurrent()
         {
@@ -124,17 +126,23 @@ public class PlayerManager : MonoBehaviour
 
     public void PlayerIsNormal()
     {
+        _isTired = false;
+        _isExhausted = false;
         this.SwitchPlayerState(this._normalMovement);
         this._moveAction = MoveActions.NORMAL_ACTION;
     }
 
     public void PlayerIsTired()
     {
+        _isTired = true;
+        _isExhausted = false;
         this.SwitchPlayerState(this._tiredMovement);
     }
 
     public void PlayerIsExhausted()
     {
+        _isTired = false;
+        _isExhausted = true;
         this.SwitchPlayerState(this._exhaustedMovement);
     }
 
