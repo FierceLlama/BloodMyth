@@ -33,13 +33,13 @@ public class PlayerNormal : PlayerStates
             {
             this._playerMovementScript._skeletonAnimation.timeScale = 1f;
             this._playerMovementScript._skeletonAnimation.loop = true;
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Run";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Run_Normal";
             }
         else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
             {
             this._playerMovementScript._skeletonAnimation.timeScale = 1f;
             this._playerMovementScript._skeletonAnimation.loop = true;
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle_Normal";
             }
 
         this._playerMovementScript.NormalMovement();
@@ -90,7 +90,7 @@ public class PlayerTiredMovement : PlayerStates
         {
             this._playerMovementScript._skeletonAnimation.timeScale = 1f;
             this._playerMovementScript._skeletonAnimation.loop = true;
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Walk_Tired";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Run_Tired";
         }
         else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
         {
@@ -130,7 +130,7 @@ public class PlayerExhaustedMovement : PlayerStates
         {
             this._playerMovementScript._skeletonAnimation.timeScale = 1f;
             this._playerMovementScript._skeletonAnimation.loop = true;
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Walk_Exhausted";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Run_Exhausted";
         }
         else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
         {
@@ -172,13 +172,13 @@ public class PlayerSprinting : PlayerStates
             {
             this._playerMovementScript._skeletonAnimation.timeScale = 1f;
             this._playerMovementScript._skeletonAnimation.loop = true;
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Sprint";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Sprint_Normal";
             }
         else if (this._playerMovementScript._isSprinting && this._playerManager._isTired)
         {
             this._playerMovementScript._skeletonAnimation.timeScale = 1f;
             this._playerMovementScript._skeletonAnimation.loop = true;
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Run_Tired";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Sprint_Tired";
         }
         this._playerMovementScript.SprintingMovement();
         this._player.Sprinting();
@@ -235,11 +235,27 @@ public class PlayerJumping : PlayerStates
 
     public override void Update()
     {
+        if (this._playerManager._isTired)
+        {
+            this._playerMovementScript._skeletonAnimation.timeScale = 1f;
+            this._playerMovementScript._skeletonAnimation.loop = false;
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Jump_Tired";
+        }
+        else if (this._playerManager._isExhausted)
+        {
+            this._playerMovementScript._skeletonAnimation.timeScale = 1f;
+            this._playerMovementScript._skeletonAnimation.loop = false;
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Jump_Exhausted";
+        }
+        else
+        {
+            this._playerMovementScript._skeletonAnimation.timeScale = 1f;
+            this._playerMovementScript._skeletonAnimation.loop = false;
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Jump_Normal";
+        }
 
         AudioManager.Instance.PlaySound("Jump", AudioType.SFX);
-        //this._playerMovementScript._skeletonAnimation.timeScale = 1f;
-        //this._playerMovementScript._skeletonAnimation.loop = false;
-        //this._playerMovementScript._skeletonAnimation.AnimationName = "Jump";
+
         this._playerMovementScript.Jumped();
         this._player.Jumped();
     }
@@ -289,7 +305,7 @@ public class PlayerClimbingUp : PlayerStates
             this._player.Climbing();
             this._playerMovementScript._skeletonAnimation.timeScale = 1f;
             this._playerMovementScript._skeletonAnimation.loop = true;
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb_Vertical";
         }//*/
 #endif
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
