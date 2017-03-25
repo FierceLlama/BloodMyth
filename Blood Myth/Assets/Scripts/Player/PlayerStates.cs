@@ -364,7 +364,7 @@ public class PlayerClimbingDown : PlayerStates
             this._player.Climbing();
             this._playerMovementScript._skeletonAnimation.timeScale = 1f;
             this._playerMovementScript._skeletonAnimation.loop = true;
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb_Vertical";
         }//*/
 #endif
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
