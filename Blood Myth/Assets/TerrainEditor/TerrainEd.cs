@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-
 [ExecuteInEditMode]
-public class TestingMeshCreation : MonoBehaviour {
+public class TerrainEd : MonoBehaviour
+{
 
 #if UNITY_EDITOR
 
@@ -21,22 +21,22 @@ public class TestingMeshCreation : MonoBehaviour {
     public bool EditMode;
     [HideInInspector]
     public bool Generated = false;
-    
+
     MeshFilter meshFilter;
     MeshRenderer renderer;
 
     // Use this for initialization
-    void Awake ()
+    void Awake()
     {
         AddRequiredComponents();
         InitalizeMesh();
     }
 
-    public void GetVertexOnClick(Vector3 position)
-    {   
+    public Vector3 GetVertexOnClick(Vector3 position)
+    {
         vertCount = OrigVerts.Length + 1;
         Vector3 V = transform.InverseTransformPoint(new Vector3(position.x, position.y, 1.0f));
-  
+
         Vector3[] vectTemp = new Vector3[vertCount];
         for (int i = 0; i < OrigVerts.Length; ++i)
             vectTemp[i] = OrigVerts[i];
@@ -51,6 +51,20 @@ public class TestingMeshCreation : MonoBehaviour {
         _mesh.vertices = transVerts;
 
         GenerateMesh();
+
+        return V;
+    }
+
+    public void UpdateMeshVertices(int indx)
+    {
+        OrigVerts[indx] = VertexHandleUtility.VertexList[indx].MeshVertex;
+        transVerts[indx] = VertexHandleUtility.VertexList[indx].MeshVertex;
+
+        for (int i = 0; i < transVerts.Length; ++i)
+            transVerts[i] = OrigVerts[i] + transform.position;
+
+        _mesh.vertices = transVerts;
+        meshFilter.sharedMesh = _mesh;
     }
 
     private void AddRequiredComponents()
@@ -62,7 +76,7 @@ public class TestingMeshCreation : MonoBehaviour {
             meshFilter = (MeshFilter)gameObject.AddComponent<MeshFilter>();
 
         if (renderer == null)
-        { 
+        {
             renderer = gameObject.AddComponent<MeshRenderer>();
             renderer.sharedMaterial = new Material(Shader.Find("Standard"));
 
@@ -111,7 +125,7 @@ public class TestingMeshCreation : MonoBehaviour {
         }
     }
 
-    public void ClearMesh ()
+    public void ClearMesh()
     {
         _mesh = new Mesh();
         _mesh.name = "Terrain";
@@ -123,6 +137,6 @@ public class TestingMeshCreation : MonoBehaviour {
 
         Generated = false;
         transform.position = Vector3.zero;
-    } 
+    }
 #endif
 }

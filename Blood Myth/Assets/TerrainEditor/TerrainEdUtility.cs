@@ -3,142 +3,114 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(TestingMeshCreation))]
-public class TestingMeshCreationEditor : Editor
+public enum DragHandleResult
 {
-    TestingMeshCreation terrainEditor;
-    
-    private void OnEnable()
-    {
-        terrainEditor = (TestingMeshCreation)target;
-    }
-    void OnDisable(){}
+    none = 0,
 
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-       
-        if (GUILayout.Button("Clear Terrain"))
-            terrainEditor.ClearMesh();
+    LMBPress,
+    LMBClick,
+    LMBDoubleClick,
+    LMBDrag,
+    LMBRelease,
 
-        if (!terrainEditor.EditMode)
-        { 
-            if (GUILayout.Button("Turn on Edit Mode"))
-            {
-                terrainEditor.EditMode = true;
-                Tools.current = Tool.None;
-            }
-        }
-        else
-        if(GUILayout.Button("Turn off Edit Mode"))
-        {
-            terrainEditor.EditMode = false;
-            Tools.current = Tool.Move;
+    RMBPress,
+    RMBClick,
+    RMBDoubleClick,
+    RMBDrag,
+    RMBRelease,
+};
+
+public class VertexHandleUtility
+{
+    private static List<VertexHandle> vertexList;
+    public static List<VertexHandle> VertexList
+    {
+        get {
+            if (vertexList == null) vertexList = new List<VertexHandle>();
+            return vertexList;
         }
     }
 
-    //only runs when the referenced object is selected.
-    //Locking the inspector makes it work.
-    ///////////////////////////////////////////////////////////
-    //create a list of handles,
-    //Add an index to each handle,
-    //To "Drag" loop through the Handles instead of the vertices
-    void OnSceneGUI()
+    public static void AddToList(Vector3 inMeshVertex, int indx)
     {
-        VertexHandle.DragHandleResult dhResult;
-
-        foreach (Vector3 vert in terrainEditor.transVerts)
-            VertexHandle.CreateHandle(vert, .3f, Handles.DotCap);
-
-        if (terrainEditor.EditMode)
-        {
-            if (Event.current.type == EventType.MouseDown)
-            {
-                Vector3 screenPosition = Event.current.mousePosition;
-                screenPosition.y = SceneView.currentDrawingSceneView.camera.pixelHeight - screenPosition.y;
-                Vector3 vect = Camera.current.ScreenToWorldPoint(screenPosition);
-                terrainEditor.GetVertexOnClick(vect);
-                UpdateVertsTransfrom();
-            }
-        }
-
-        if (terrainEditor.EditMode == false && terrainEditor.Generated == true)
-        {
-            Vector3[] vert = terrainEditor.transVerts;
-            for (int i = 0; i < vert.Length; i++)
-            {
-                Vector3 newPosition = VertexHandle.DragHandle(vert[i], .3f, Handles.SphereCap, Color.red, out dhResult);
-
-                switch (dhResult)
-                {
-                    case VertexHandle.DragHandleResult.LMBRelease:
-                        vert[i] = newPosition;
-                        UpdateVertsTransfrom();
-                        break;
-                }
-            }
-
-            if (Event.current.type == EventType.MouseUp)
-                UpdateVertsTransfrom();
-        }
+        AddToList(new VertexHandle(inMeshVertex, indx));
     }
 
-    void UpdateVertsTransfrom ()
+    public static void AddToList(VertexHandle inHandle)
     {
-        for (int i = 0; i < terrainEditor.transVerts.Length; ++i)
-        {
-            terrainEditor.transVerts[i] = terrainEditor.OrigVerts[i]
-                + terrainEditor.transform.position;
-        }
+        vertexList.Add(inHandle);
+    }
+
+    public static void ClearList()
+    {
+        vertexList.Clear();
     }
 }
 
 public class VertexHandle
 {
+    public VertexHandle(Vector3 inVect, int inID)
+    {
+        meshVertex = inVect;
+        controlID = inID;
+    }
+    Vector3 meshVertex;
+    public Vector3 MeshVertex { get { return meshVertex; } set { meshVertex = value; } }
+
+    int controlID;
+    public int ControlID { get { return controlID; } }
+}
+
+/*
+public class VertexHandleFactory
+{
+    public static VertexHandle CreateVertexHandle(Vector3 position, float handleSize, Handles.DrawCapFunction capFunc)
+    {
+        VertexHandle VertHand = new VertexHandle(position, handleSize, capFunc);
+        return VertHand;
+    }
+}
+*/
+/*
+public class VertexHandles
+{
     // internal state for DragHandle()
-    static int s_DragHandleHash = "VertexHandle".GetHashCode();
-    static Vector2 s_DragHandleMouseStart;
-    static Vector2 s_DragHandleMouseCurrent;
-    static Vector3 s_DragHandleWorldStart;
-    static float s_DragHandleClickTime = 0;
-    static int s_DragHandleClickID;
-    static float s_DragHandleDoubleClickInterval = 0.5f;
-    static bool s_DragHandleHasMoved;
+    int s_DragHandleHash = "VertexHandle".GetHashCode();
+    Vector2 s_DragHandleMouseStart;
+    Vector2 s_DragHandleMouseCurrent;
+    Vector3 s_DragHandleWorldStart;
+    float s_DragHandleClickTime = 0;
+    int s_DragHandleClickID;
+    float s_DragHandleDoubleClickInterval = 0.5f;
+    bool s_DragHandleHasMoved;
 
     // externally accessible to get the ID of the most resently processed DragHandle
     public static int lastDragHandleID;
 
-    public enum DragHandleResult
-    {
-        none = 0,
+    Vector3 position;
+    float handleSize;
+    Handles.DrawCapFunction capFunc;
+    Color colorSelected; 
 
-        LMBPress,
-        LMBClick,
-        LMBDoubleClick,
-        LMBDrag,
-        LMBRelease,
-
-        RMBPress,
-        RMBClick,
-        RMBDoubleClick,
-        RMBDrag,
-        RMBRelease,
-    };
-
-    public static void CreateHandle(Vector3 position, float handleSize, Handles.DrawCapFunction capFunc)
+    public VertexHandles(Vector3 Inposition, float InhandleSize, Handles.DrawCapFunction IncapFunc)
     {
         int id = GUIUtility.GetControlID(s_DragHandleHash, FocusType.Passive);
         lastDragHandleID = id;
 
-        Vector3 screenPosition = Handles.matrix.MultiplyPoint(position);
+        Vector3 screenPosition = Handles.matrix.MultiplyPoint(Inposition);
         Matrix4x4 cachedMatrix = Handles.matrix;
 
         Handles.matrix = Matrix4x4.identity;
-        capFunc(id, screenPosition, Quaternion.identity, handleSize);
+        IncapFunc(id, screenPosition, Quaternion.identity, InhandleSize);
         Handles.matrix = cachedMatrix;
+
+        position = Inposition;
+        handleSize = InhandleSize;
+        capFunc = IncapFunc;
+        colorSelected = Color.white;
     }
 
-    public static Vector3 DragHandle(Vector3 position, float handleSize, Handles.DrawCapFunction capFunc, Color colorSelected, out DragHandleResult result)
+    public Vector3 DragHandle( out DragHandleResult result)
     {
         int id = GUIUtility.GetControlID(s_DragHandleHash, FocusType.Passive);
         lastDragHandleID = id;
@@ -245,3 +217,5 @@ public class VertexHandle
         return position;
     }
 }
+
+    */
