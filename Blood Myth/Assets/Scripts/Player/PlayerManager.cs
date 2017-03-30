@@ -40,6 +40,8 @@ public class PlayerManager : MonoBehaviour
     public bool _isTired;
     public bool _isExhausted;
 
+
+
     public PlayerStates GetCurrent()
         {
         return this._jumping;
@@ -102,7 +104,6 @@ public class PlayerManager : MonoBehaviour
         && !this._playerMovementScript.fatigueForJumping()
         && this._playerMovementScript.GetGrounded())
         {
-
             this.PlayerIsJumping();
         }
         
@@ -113,7 +114,10 @@ public class PlayerManager : MonoBehaviour
             this.DeterminePlayerClimbDirection();
         }//*/
 #endif
-
+        // move
+        // sprint
+        // jump
+        // climb
         this._currentPlayerState.Update();
     }
 
