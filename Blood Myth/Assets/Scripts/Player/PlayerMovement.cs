@@ -234,11 +234,13 @@ public class PlayerMovement : MonoBehaviour
     public void inClimbingArea()
     {
         this._canClimb = true;
+        GameObject.FindWithTag("Actions").GetComponent<SetActionIcon>().DisplayIcon(SetActionIcon.IconType.CLIMB);
     }
 
     public void outOfClimbingArea()
     {
         this._canClimb = false;
+        GameObject.FindWithTag("Actions").GetComponent<SetActionIcon>().HideIcon();
     }
 
     public bool isFacingRight()
