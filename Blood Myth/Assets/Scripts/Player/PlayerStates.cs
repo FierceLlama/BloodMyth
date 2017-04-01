@@ -213,13 +213,7 @@ public class PlayerJumping : PlayerStates
 
     public override void Enter()
         {
-
-
-        }
-
-
-    public override void Update()
-        {
+        AudioManager.Instance.PlaySound("Jump", AudioType.SFX);
         if (this._playerManager._isTired)
             {
             this._playerMovementScript._skeletonAnimation.AnimationName = "Jump_Tired";
@@ -230,13 +224,17 @@ public class PlayerJumping : PlayerStates
             }
         else
             {
+            //this._playerMovementScript._skeletonAnimation.state.SetAnimation(0, "Jump_Normal", false);
             this._playerMovementScript._skeletonAnimation.AnimationName = "Jump_Normal";
             }
-
-        AudioManager.Instance.PlaySound("Jump", AudioType.SFX);
-
         this._playerMovementScript.Jumped();
         this._player.Jumped();
+        }
+
+
+    public override void Update()
+        {
+        this._playerMovementScript.Movement();
         }
 
     public override void Exit()
