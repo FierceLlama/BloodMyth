@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerMovement : MonoBehaviour
 {
     private Player _player;
+    private PlayerManager _playerManager;
     // Is player on the ground
     private bool _isGrounded;
     // Player interacting with climbing object
@@ -89,11 +90,11 @@ public class PlayerMovement : MonoBehaviour
     {
         //*
 #if UNITY_ANDROID
-        if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        if (this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
         {
             this._move = 1.0f;
         }
-        else if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        else if (this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
         {
             this._move = -1.0f;
         }
@@ -187,14 +188,7 @@ public class PlayerMovement : MonoBehaviour
     public void Jumped()
     {
         this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, this.jumpVelocity);
-
     }
-
-    public IEnumerator QuarterSecondDelay()
-        {
-        yield return new WaitForSeconds(0.25f);
-
-        }
 
     public void SetNormalMovementValues()
     {

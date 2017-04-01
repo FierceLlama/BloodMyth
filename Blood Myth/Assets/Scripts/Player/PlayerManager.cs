@@ -19,6 +19,11 @@ public enum MoveActions
 
 public class PlayerManager : MonoBehaviour
 {
+    // Input variables
+    private InputManager _inputManager;
+    private TouchInputData _primaryTouch;
+    private TouchInputData _secondaryTouch;
+
     private PlayerStates _currentPlayerState;
     private PlayerStates _normalMovement;
     private PlayerStates _tiredMovement;
@@ -39,8 +44,6 @@ public class PlayerManager : MonoBehaviour
 
     public bool _isTired;
     public bool _isExhausted;
-
-
 
     public PlayerStates GetCurrent()
         {
@@ -73,23 +76,27 @@ public class PlayerManager : MonoBehaviour
 
         this._climbDirection = ClimbingDirection.NOT_CLIMBING;
         this._moveAction = MoveActions.NORMAL_ACTION;
-    }
+        this._inputManager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
+        }
 
     void FixedUpdate()
     {
+        this._primaryTouch = this._inputManager.GetPrimaryInputData();
+        this._secondaryTouch = this._inputManager.GetSecondryInputData();
+
         this._playerMovementScript.CheckOnGround();
 
         //* When using Android
 #if UNITY_ANDROID
-        if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Bottom || this._player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Bottom)
+        if ((this.getPrimaryTouch().CurrentScreenSection == ScreenSection.Bottom || this.getSecondaryTouch().CurrentScreenSection == ScreenSection.Bottom)
             && !this._playerMovementScript.fatigueForJumping()
             && this._playerMovementScript.GetGrounded())
         {
             this.PlayerIsJumping();
         }
 
-        if (((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
-            || (this._player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getSecondaryTouch().getTouchPhase() == TouchPhase.Stationary))
+        if (((this.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top && this.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+            || (this.getSecondaryTouch().CurrentScreenSection == ScreenSection.Top && this.getSecondaryTouch().getTouchPhase() == TouchPhase.Stationary))
             && !this._playerMovementScript.fatigueForClimbing()
             && this._playerMovementScript.canClimb())
         {
@@ -201,4 +208,14 @@ public class PlayerManager : MonoBehaviour
     {
         return this._moveAction;
     }
-}
+
+    public TouchInputData getPrimaryTouch()
+        {
+        return this._primaryTouch;
+        }
+
+    public TouchInputData getSecondaryTouch()
+        {
+        return this._secondaryTouch;
+        }
+    }

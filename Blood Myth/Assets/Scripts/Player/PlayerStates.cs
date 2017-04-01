@@ -41,8 +41,8 @@ public class PlayerNormal : PlayerStates
         this._playerMovementScript.NormalMovement();
         //* When using Android
 #if UNITY_ANDROID
-        if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
-            && this._player.getPrimaryTouch().getTouchTapCount() >= 2 && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        if ((this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
+            && this._playerManager.getPrimaryTouch().getTouchTapCount() >= 2 && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
         {
             this._playerManager.PlayerIsSprinting();
         }
@@ -170,8 +170,8 @@ public class PlayerSprinting : PlayerStates
 
         //* When using Android
 #if UNITY_ANDROID
-        if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
-            && this._player.getPrimaryTouch().getTouchTapCount() >= 2 && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        if ((this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
+            && this._playerManager.getPrimaryTouch().getTouchTapCount() >= 2 && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
         {
             this._playerManager.CheckPlayerFatigue();
         }
@@ -267,8 +267,8 @@ public class PlayerClimbingUp : PlayerStates
         {
         //* When using Android
 #if UNITY_ANDROID
-        if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top
-            && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary
+        if (this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top
+            && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary
             && this._playerMovementScript.canClimb())
         {
             this._playerMovementScript.ClimbingUp();
@@ -326,8 +326,8 @@ public class PlayerClimbingDown : PlayerStates
         {
         //* When using Andriod
 #if UNITY_ANDROID
-        if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top
-            && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary
+        if (this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top
+            && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary
             && this._playerMovementScript.canClimb())
         {
             this._playerMovementScript.ClimbingDown();

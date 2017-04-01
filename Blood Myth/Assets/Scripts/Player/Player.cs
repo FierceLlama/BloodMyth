@@ -16,11 +16,6 @@ public enum TemperatureEffect
 
 public class Player : MonoBehaviour
 {
-    // Input variables
-    private InputManager _inputManager;
-    private TouchInputData _primaryTouch;
-    private TouchInputData _secondaryTouch;
-
     // Temperature change stuffies -- will be removed later
     Material curMat;
     Material otherMat;
@@ -45,7 +40,6 @@ public class Player : MonoBehaviour
     public float maxHydration = 100.0f;
     public float maxFatigue = 100.0f;
     public float fatigueLoweringThreshold = 50.0f;
-    public float temperatureAffectOnHydration = 75.0f;
     public float temperatureEffect = 25.0f;
     public float hydrationEffectSprinting = 2.0f;
     public float hydrationEffectClimbing = 4.0f;
@@ -71,16 +65,12 @@ public class Player : MonoBehaviour
         this._currentFatigue = maxFatigue;
         this._currentHydration = maxHydration;
         this._currentTemperature = maxTemperature;
-        this._inputManager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
+        
+        this.UpdateMat();
     }
 
     private void Update()
         {
-        //this._primaryTouch = this._inputManager.GetPrimaryInputData();
-        //this._secondaryTouch = this._inputManager.GetSecondryInputData();
-
-        UpdateMat();
-
         // Hydration Check
         if (this._currentHydration <= this.fatigueLoweringThreshold)
             {
@@ -98,55 +88,24 @@ public class Player : MonoBehaviour
             }
         }
 
-    // Update is called once per frame
-    void FixedUpdate () 
+    public void UpdateMat()
     {
-        this._primaryTouch = this._inputManager.GetPrimaryInputData();
-        this._secondaryTouch = this._inputManager.GetSecondryInputData();
-
-        //UpdateMat();
-
-        //// Hydration Check
-        //if (this._currentHydration <= this.fatigueLoweringThreshold)
-        //{
-        //    // Lower Fatigue
-        //    this.LowerFatigue();
-        //}
-
-        //// Temp Checks
-        //if (this._currentTemperature <= this.fatigueLoweringThreshold)
-        //{
-        //    // Lower Fatigue
-        //    this.LowerFatigue();
-        //    // Swap player material for arms based on last temperature hazard encountered
-        //    // TODO
-        //}
-
-        //// Fatigue Check for crisis
-        //if (this._currentFatigue <= this._zero)
-        //{
-        //    // Crisis -- needs better management later
-        //    Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
-        //}
-        }
-
-    void UpdateMat()
-    {        
         if (this._currentTemperature < this.fatigueLoweringThreshold)
-        {
-            // swap material on player based on _hazardEffect
-            otherMat.color = new Color(1, otherMat.color.g, otherMat.color.b,1);
-            otherMat.color -= new Color(0, 0.01f, 0.01f, 0);
-        }
-        //else if (this._currentTemperature < this.minTemperature)
-        //{
-        //    otherMat.color = new Color(otherMat.color.r, otherMat.color.g, 1, 1);
-        //    otherMat.color -= new Color(0.01f, 0.01f, 0, 0); 
-        //}
+            {
+            switch (this._hazardEffect)
+                {
+                case TemperatureEffect.COLD_HAZARD:
+                    otherMat.color = new Color(0, 0, 1, 1);
+                    break;
+                case TemperatureEffect.HOT_HAZARD:
+                    otherMat.color = new Color(1, 0, 0, 1);
+                    break;
+                }
+            }
         else
-        {
+            {
             otherMat.color = Color.white;
-        }
+            }
 
         tempuratureObj.GetComponent<Renderer>().material = otherMat;
         curMat.color = new Color(this._currentHydration/this._colorDivisor, this._currentHydration / this._colorDivisor,
@@ -248,6 +207,7 @@ public class Player : MonoBehaviour
         {
             this._currentTemperature = this._zero;
         }
+        this.UpdateMat();
     }
 
     public void FatigueHazard()
@@ -366,15 +326,5 @@ public class Player : MonoBehaviour
         {
             this._currentFatigue += this.fatigueRestingRate * Time.deltaTime;
         }
-    }
-
-    public TouchInputData getPrimaryTouch()
-    {
-        return this._primaryTouch;
-    }
-
-    public TouchInputData getSecondaryTouch()
-    {
-        return this._secondaryTouch;
     }
 }
