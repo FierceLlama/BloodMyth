@@ -41,6 +41,7 @@ public class PlayerNormal : PlayerStates
         this._playerMovementScript.NormalMovement();
         //* When using Android
 #if UNITY_ANDROID
+        //add isSprint check
         if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
             && this._player.getPrimaryTouch().getTouchTapCount() >= 2 && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
         {

@@ -39,6 +39,7 @@ public class PlayerManager : MonoBehaviour
 
     public bool _isTired;
     public bool _isExhausted;
+    public bool _isMoveRight, _isMoveLeft, _isInteract, _isJump;
 
 
 
@@ -85,6 +86,7 @@ public class PlayerManager : MonoBehaviour
             && !this._playerMovementScript.fatigueForJumping()
             && this._playerMovementScript.GetGrounded())
         {
+            if (!_isJump) return;
             this.PlayerIsJumping();
         }
 
@@ -93,6 +95,7 @@ public class PlayerManager : MonoBehaviour
             && !this._playerMovementScript.fatigueForClimbing()
             && this._playerMovementScript.canClimb())
         {
+            if (!_isInteract) return;
             this.DeterminePlayerClimbDirection();
             this._moveAction = MoveActions.CLIMBING_ACTION;
         }
@@ -104,6 +107,7 @@ public class PlayerManager : MonoBehaviour
         && !this._playerMovementScript.fatigueForJumping()
         && this._playerMovementScript.GetGrounded())
         {
+            if (!_isJump) return;
             this.PlayerIsJumping();
         }
         
@@ -111,6 +115,7 @@ public class PlayerManager : MonoBehaviour
             && !this._playerMovementScript.fatigueForClimbing()
             && this._playerMovementScript.canClimb())
         {
+            if (!_isInteract) return;
             this.DeterminePlayerClimbDirection();
         }//*/
 #endif

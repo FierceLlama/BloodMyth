@@ -1,0 +1,209 @@
+
+Main_Character.png
+size: 2119,2119
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Fur
+  rotate: false
+  xy: 1544, 1265
+  size: 373, 180
+  orig: 373, 180
+  offset: 0, 0
+  index: -1
+Head_Base
+  rotate: false
+  xy: 687, 1054
+  size: 65, 182
+  orig: 65, 182
+  offset: 0, 0
+  index: -1
+Horns
+  rotate: false
+  xy: 1824, 162
+  size: 212, 210
+  orig: 212, 210
+  offset: 0, 0
+  index: -1
+L_Bicep
+  rotate: false
+  xy: 2, 312
+  size: 683, 924
+  orig: 683, 924
+  offset: 0, 0
+  index: -1
+L_Calf
+  rotate: false
+  xy: 1614, 371
+  size: 182, 600
+  orig: 182, 600
+  offset: 0, 0
+  index: -1
+R_Calf
+  rotate: false
+  xy: 1614, 371
+  size: 182, 600
+  orig: 182, 600
+  offset: 0, 0
+  index: -1
+L_Foot
+  rotate: false
+  xy: 2008, 1036
+  size: 97, 70
+  orig: 97, 70
+  offset: 0, 0
+  index: -1
+R_Foot
+  rotate: false
+  xy: 2008, 1036
+  size: 97, 70
+  orig: 97, 70
+  offset: 0, 0
+  index: -1
+L_Forearm
+  rotate: false
+  xy: 757, 1552
+  size: 797, 565
+  orig: 797, 565
+  offset: 0, 0
+  index: -1
+L_Hand
+  rotate: false
+  xy: 1556, 1628
+  size: 561, 489
+  orig: 561, 489
+  offset: 0, 0
+  index: -1
+L_Thigh
+  rotate: true
+  xy: 687, 186
+  size: 191, 582
+  orig: 191, 582
+  offset: 0, 0
+  index: -1
+Mask
+  rotate: false
+  xy: 1919, 1272
+  size: 155, 173
+  orig: 155, 173
+  offset: 0, 0
+  index: -1
+Neck
+  rotate: false
+  xy: 2008, 1108
+  size: 97, 162
+  orig: 97, 162
+  offset: 0, 0
+  index: -1
+Pony1
+  rotate: false
+  xy: 1001, 38
+  size: 241, 146
+  orig: 241, 146
+  offset: 0, 0
+  index: -1
+Pony2
+  rotate: false
+  xy: 1798, 374
+  size: 184, 312
+  orig: 184, 312
+  offset: 0, 0
+  index: -1
+Pony3
+  rotate: false
+  xy: 1767, 999
+  size: 239, 264
+  orig: 239, 264
+  offset: 0, 0
+  index: -1
+Pony4
+  rotate: true
+  xy: 1271, 208
+  size: 206, 300
+  orig: 206, 300
+  offset: 0, 0
+  index: -1
+Pony5
+  rotate: false
+  xy: 686, 4
+  size: 313, 180
+  orig: 313, 180
+  offset: 0, 0
+  index: -1
+Pony6
+  rotate: true
+  xy: 1544, 973
+  size: 290, 221
+  orig: 290, 221
+  offset: 0, 0
+  index: -1
+Pony7
+  rotate: true
+  xy: 1798, 688
+  size: 309, 191
+  orig: 309, 191
+  offset: 0, 0
+  index: -1
+Pony8
+  rotate: true
+  xy: 533, 49
+  size: 261, 151
+  orig: 261, 151
+  offset: 0, 0
+  index: -1
+Pony_Rope
+  rotate: true
+  xy: 1244, 41
+  size: 143, 118
+  orig: 143, 118
+  offset: 0, 0
+  index: -1
+R_Bicep
+  rotate: false
+  xy: 2, 1238
+  size: 753, 879
+  orig: 753, 879
+  offset: 0, 0
+  index: -1
+R_Forearm
+  rotate: true
+  xy: 757, 973
+  size: 577, 785
+  orig: 577, 785
+  offset: 0, 0
+  index: -1
+R_Hand
+  rotate: false
+  xy: 1134, 416
+  size: 478, 555
+  orig: 478, 555
+  offset: 0, 0
+  index: -1
+R_Thigh
+  rotate: true
+  xy: 1556, 1447
+  size: 179, 518
+  orig: 179, 518
+  offset: 0, 0
+  index: -1
+Skirt
+  rotate: false
+  xy: 687, 379
+  size: 445, 592
+  orig: 445, 592
+  offset: 0, 0
+  index: -1
+Skull
+  rotate: true
+  xy: 1573, 178
+  size: 191, 249
+  orig: 191, 249
+  offset: 0, 0
+  index: -1
+Torso
+  rotate: true
+  xy: 2, 47
+  size: 263, 529
+  orig: 263, 529
+  offset: 0, 0
+  index: -1
