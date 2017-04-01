@@ -25,19 +25,18 @@ public class PlayerNormal : PlayerStates
     public override void Enter()
         {
         this._playerMovementScript.SetNormalMovementValues();
-        this._playerMovementScript._skeletonAnimation.state.SetAnimation(0, "Idle_Normal", true);
         }
 
     public override void Update()
         {
-        //if (this._playerMovementScript.GetMovement())
-        //    {
-        //    this._playerMovementScript._skeletonAnimation.state.SetAnimation(0, "Run_Normal", true);
-        //    }
-        //else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
-        //    {
-        //    this._playerMovementScript._skeletonAnimation.state.SetAnimation(0, "Idle_Normal", true);
-        //    }
+        if (this._playerMovementScript.GetMovement())
+        {
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Run_Normal";
+        }
+        else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
+        {
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle_Normal";
+        }
 
         this._playerMovementScript.NormalMovement();
         //* When using Android
