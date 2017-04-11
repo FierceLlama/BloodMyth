@@ -107,12 +107,12 @@ public class PlayerManager : MonoBehaviour
 
 #if UNITY_EDITOR
         //* When using editor
-        if (Input.GetKeyDown(KeyCode.Space)
-        && !this._playerMovementScript.fatigueForJumping()
-        && this._playerMovementScript.GetGrounded())
-        {
-            this.PlayerIsJumping();
-        }
+        //if (Input.GetKeyDown(KeyCode.Space)
+        //&& !this._playerMovementScript.fatigueForJumping()
+        //&& this._playerMovementScript.GetGrounded())
+        //{
+        //    this.PlayerIsJumping();
+        //}
         
         if ((Input.GetKey(KeyCode.W))
             && !this._playerMovementScript.fatigueForClimbing()
