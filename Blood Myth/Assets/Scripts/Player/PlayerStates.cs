@@ -31,11 +31,11 @@ public class PlayerNormal : PlayerStates
         {
         if (this._playerMovementScript.GetMovement())
         {
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Run_Normal";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Run"/*"Run_Normal"*/;
         }
         else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
         {
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle_Normal";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle"/*"Idle_Normal"*/;
         }
 
         this._playerMovementScript.NormalMovement();
@@ -84,7 +84,7 @@ public class PlayerTiredMovement : PlayerStates
         {
         if (this._playerMovementScript.GetMovement())
             {
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Run_Tired";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Walk_Tired";
             }
         else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
             {
@@ -121,7 +121,7 @@ public class PlayerExhaustedMovement : PlayerStates
         if (this._playerMovementScript.GetMovement())
             {
 
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Run_Exhausted";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Walk_Exhausted";
             }
         else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
             {
@@ -159,11 +159,11 @@ public class PlayerSprinting : PlayerStates
         {
         if (this._playerMovementScript._isSprinting && !this._playerManager._isTired)
             {
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Sprint_Normal";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Sprint"/*"Sprint_Normal"*/;
             }
         else if (this._playerMovementScript._isSprinting && this._playerManager._isTired)
             {
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Sprint_Tired";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Run_Tired"/*"Sprint_Tired"*/;
             }
         this._playerMovementScript.SprintingMovement();
         this._player.Sprinting();
@@ -213,10 +213,10 @@ public class PlayerJumping : PlayerStates
 
     public override void Enter()
         {
-
-
+        AudioManager.Instance.PlaySound("Jump", AudioType.SFX);
+        this._playerMovementScript.Jumped();
+        this._player.Jumped();
         }
-
 
     public override void Update()
         {
@@ -230,13 +230,8 @@ public class PlayerJumping : PlayerStates
             }
         else
             {
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Jump_Normal";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Jump"/*"Jump_Normal"*/;
             }
-
-        AudioManager.Instance.PlaySound("Jump", AudioType.SFX);
-
-        this._playerMovementScript.Jumped();
-        this._player.Jumped();
         }
 
     public override void Exit()
@@ -273,7 +268,7 @@ public class PlayerClimbingUp : PlayerStates
         {
             this._playerMovementScript.ClimbingUp();
             this._player.Climbing();
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb_Vertical";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb"/*"Climb_Vertical"*/;
 
         }
 #endif//*/
@@ -284,7 +279,7 @@ public class PlayerClimbingUp : PlayerStates
             {
             this._playerMovementScript.ClimbingUp();
             this._player.Climbing();
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb_Vertical";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb"/*"Climb_Vertical"*/;
             }//*/
 #endif
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
@@ -332,9 +327,9 @@ public class PlayerClimbingDown : PlayerStates
         {
             this._playerMovementScript.ClimbingDown();
             this._player.Climbing();
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb_Vertical";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb"/*"Climb_Vertical"*/;
 
-        }
+            }
 #endif//*/
 
 #if UNITY_EDITOR
@@ -343,7 +338,7 @@ public class PlayerClimbingDown : PlayerStates
             {
             this._playerMovementScript.ClimbingDown();
             this._player.Climbing();
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb_Vertical";
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Climb"/*"Climb_Vertical"*/;
             }//*/
 #endif
         else if (!this._playerMovementScript.canClimb() || this._playerMovementScript.GetGrounded())
