@@ -232,6 +232,10 @@ public class PlayerJumping : PlayerStates
             {
             this._playerMovementScript._skeletonAnimation.AnimationName = "Jump"/*"Jump_Normal"*/;
             }
+        if (this._playerMovementScript.GetGrounded())
+            {
+            this._player.DetermineFatigue();
+            }
         }
 
     public override void Exit()

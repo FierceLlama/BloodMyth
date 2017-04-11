@@ -45,11 +45,6 @@ public class PlayerManager : MonoBehaviour
     public bool _isTired;
     public bool _isExhausted;
 
-    public PlayerStates GetCurrent()
-        {
-        return this._jumping;
-        }
-
     void Awake()
     {
         this.Initialize();
@@ -79,7 +74,7 @@ public class PlayerManager : MonoBehaviour
         this._inputManager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
         }
 
-    void FixedUpdate()
+    void /*Fixed*/Update()
     {
         this._primaryTouch = this._inputManager.GetPrimaryInputData();
         this._secondaryTouch = this._inputManager.GetSecondryInputData();
@@ -119,7 +114,8 @@ public class PlayerManager : MonoBehaviour
             && this._playerMovementScript.canClimb())
         {
             this.DeterminePlayerClimbDirection();
-        }//*/
+            this._moveAction = MoveActions.CLIMBING_ACTION;
+            }//*/
 #endif
         // move
         // sprint
