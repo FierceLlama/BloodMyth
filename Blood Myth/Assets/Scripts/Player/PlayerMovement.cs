@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private float _move;
 
     public Transform groundCheck;
-    public float _groundRadius = 0.2f;
+    public float _groundRadius = 0.02f;
     public LayerMask whatIsGround;
 
     private float _currentSpeed = 0;
@@ -74,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator InAir()
         {
         yield return new WaitForSeconds(0.2f);
-        this._inAir = false;
+        this._inAir = Physics2D.OverlapCircle(this.groundCheck.position, this._groundRadius, this.whatIsGround);
         }
 
     public void NormalMovement()
