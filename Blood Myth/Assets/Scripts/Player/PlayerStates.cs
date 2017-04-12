@@ -45,6 +45,7 @@ public class PlayerNormal : PlayerStates
         if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
             && this._player.getPrimaryTouch().getTouchTapCount() >= 2 && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
         {
+            if(!this._playerMovementScript._canRun) return;
             this._playerManager.PlayerIsSprinting();
         }
 #endif//*/
@@ -53,6 +54,7 @@ public class PlayerNormal : PlayerStates
         //* When using editor
         if (Input.GetKey(KeyCode.LeftShift))
             {
+            if (!this._playerMovementScript._canRun) return;
             this._playerManager.PlayerIsSprinting();
             }//*/
 #endif

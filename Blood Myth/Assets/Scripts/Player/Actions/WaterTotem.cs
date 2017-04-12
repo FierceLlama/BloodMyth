@@ -4,6 +4,7 @@ using System.Collections;
 public class WaterTotem : MonoBehaviour
     {
     public GameObject _player;
+    public TutorialManager tutorialManager;
 
     void OnTriggerStay2D(Collider2D inPlayer)
         {
@@ -21,7 +22,9 @@ public class WaterTotem : MonoBehaviour
             || (this._player.GetComponent<Player>().getSecondaryTouch().CurrentScreenSection == ScreenSection.Top &&
             this._player.GetComponent<Player>().getSecondaryTouch().getTouchPhase() == TouchPhase.Stationary))
             {
+            if (!tutorialManager.playerMovement._canInteract) return;
             inPlayer.GetComponent<Player>().DrinkingWater();
+            tutorialManager.PassedInteract();
             }
 #endif
         }

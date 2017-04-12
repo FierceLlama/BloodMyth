@@ -43,6 +43,11 @@ public class PlayerMovement : MonoBehaviour
     public float climbingSpeed = 10.0f;
     // Jump velocity
     public float jumpVelocity = 15.0f;
+    /// <summary>
+    /// jim added shit below
+    /// </summary>
+    public bool _canMoveRight, _canMoveLeft, _canInteract, _canJump, _canRun;
+    public TutorialManager tutorialManager;
 
     void Start()
     {
@@ -91,11 +96,15 @@ public class PlayerMovement : MonoBehaviour
 #if UNITY_ANDROID
         if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
         {
+            if (!_canMoveRight) return;
             this._move = 1.0f;
+            this.tutorialManager.PassedWalkRight();
         }
         else if (this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
         {
+            if (!_canMoveLeft) return;
             this._move = -1.0f;
+            this.tutorialManager.PassedWalkLeft();
         }
         else
         {
