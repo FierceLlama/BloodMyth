@@ -114,7 +114,7 @@ public class TutorialManager : MonoBehaviour {
         yield return new WaitForSeconds(4);
         instructionText.text = "Great job! Now you can adventure through the story mode";
         yield return new WaitForSeconds(4);
-        
+        GameManager.Instance.LoadGameScene(0);
     }
     //public void GameOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameStateId.Gameplay); }
 
