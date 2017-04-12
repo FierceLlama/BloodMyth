@@ -25,9 +25,12 @@ public class TerrainEd : MonoBehaviour
     MeshFilter meshFilter;
     MeshRenderer renderer;
 
+    Triangulator triangluator;
+
     // Use this for initialization
     void Awake()
     {
+        triangluator = new Triangulator();
         AddRequiredComponents();
         InitalizeMesh();
     }
@@ -48,13 +51,32 @@ public class TerrainEd : MonoBehaviour
         transVerts = new Vector3[vectTemp.Length];
         Array.Copy(vectTemp, transVerts, vectTemp.Length);
 
-        _mesh.vertices = transVerts;
 
-        GenerateMesh();
+        if (triangluator == null)
+            triangluator = new Triangulator();
+        
+        _mesh = triangluator.TriangulateMesh(transVerts);
+        meshFilter.sharedMesh = _mesh;
+        //_mesh.vertices = transVerts;
+        //GenerateMesh();
 
         return V;
     }
+    public void Update()
+    {
+        if (transform.hasChanged)
+        {
+            UpdateMeshVertices();
+            transform.hasChanged = false;
+        }
+    }
+    public void UpdateMeshVertices()
+    {
+        for (int i = 0; i < transVerts.Length; ++i)
+            transVerts[i] = OrigVerts[i] + transform.position;
 
+        meshFilter.sharedMesh.vertices = transVerts;
+    }
     public void UpdateMeshVertices(int indx)
     {
         OrigVerts[indx] = VertexHandleUtility.VertexList[indx].MeshVertex;
@@ -63,7 +85,8 @@ public class TerrainEd : MonoBehaviour
         for (int i = 0; i < transVerts.Length; ++i)
             transVerts[i] = OrigVerts[i] + transform.position;
 
-        _mesh.vertices = transVerts;
+       // _mesh.vertices = transVerts;
+       _mesh = triangluator.TriangulateMesh(transVerts);
         meshFilter.sharedMesh = _mesh;
     }
 
@@ -106,7 +129,7 @@ public class TerrainEd : MonoBehaviour
         if (!Generated)
         {
             //Testing
-            if (_mesh.vertexCount >= 4)
+          /*  if (_mesh.vertexCount >= 4)
             {
                 _mesh.uv = new Vector2[]
                {
@@ -115,20 +138,22 @@ public class TerrainEd : MonoBehaviour
                     new Vector2(1, 1),
                     new Vector2 (1, 0)
                };
-
-                _mesh.triangles = new int[] { 0, 3, 2, 0, 2, 1 };
-                _mesh.RecalculateNormals();
+            */
+              //  _mesh.triangles = new int[] { 0, 3, 2, 0, 2, 1 };
+               // _mesh.RecalculateNormals();
                 //This is a reference -- remember this
-                meshFilter.sharedMesh = _mesh;
+
+
+              //  meshFilter.sharedMesh = triangluator.TriangulateMesh( );
                 Generated = true;
-            }
+            //}
         }
     }
 
     public void ClearMesh()
     {
         _mesh = new Mesh();
-        _mesh.name = "Terrain";
+        _mesh.name = "Cleared Terrain";
         meshFilter.sharedMesh = _mesh;
 
         transVerts = new Vector3[0];
