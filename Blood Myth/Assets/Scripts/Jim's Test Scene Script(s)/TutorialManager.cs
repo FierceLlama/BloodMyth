@@ -113,7 +113,7 @@ public class TutorialManager : MonoBehaviour {
         instructionText.text = "You can also use this to climp ladders by standing in front of the ladder and Tap and Holding the Top of your screen";
         yield return new WaitForSeconds(4);
         instructionText.text = "Great job! Now you can adventure through the story mode";
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(15);
         GameManager.Instance.LoadGameScene(0);
     }
     //public void GameOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameStateId.Gameplay); }
