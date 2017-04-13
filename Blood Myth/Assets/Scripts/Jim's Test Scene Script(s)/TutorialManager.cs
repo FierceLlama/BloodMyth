@@ -20,6 +20,7 @@ public class TutorialManager : MonoBehaviour {
 	
     public IEnumerator iStartTutorial()
         {
+        yield return new WaitForSeconds(5f);
         instructionText.text = "Welcome to Blood Myth";
         yield return new WaitForSeconds(4);
         instructionText.text = "Here we will teach you how to play";
@@ -34,76 +35,94 @@ public class TutorialManager : MonoBehaviour {
         {
         if (_walkR) return;
         StartCoroutine(iStartWalkLeft());
+        _walkR = true;
         }
 
     public IEnumerator iStartWalkLeft()
         {
         rightMoveButton.alpha = 0;
-        yield return new WaitForSeconds(2f);        
+        yield return new WaitForSeconds(5f);
         instructionText.text = "Great, now tap the Left side of your screen to move Left";
         yield return new WaitForSeconds(1);
         leftMoveButton.alpha = 1;
         playerMovement._canMoveLeft = true;
-        _walkR = true;
+        
         }
 
     public void PassedWalkLeft()
     {
         if (_walkL) return;
         StartCoroutine(iStartJump());
+        _walkL = true;
     }
 
     public IEnumerator iStartJump()
     {
         leftMoveButton.alpha = 0;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(5f);
         instructionText.text = "Now that you can move around, tap the Bottom of your screen to Jump, Remember you can jump while walking";
         yield return new WaitForSeconds(1);
         jumpButton.alpha = 1;
         playerMovement._canJump = true;
-        _jump = true;
     }
 
     public void PassedJump()
     {
-        if (_run) return;
+        if (_jump) return;
         StartCoroutine(iStartRun());
+        _jump = true;
     }
 
     public IEnumerator iStartRun()
     {
         jumpButton.alpha = 0;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(5f);
         instructionText.text = "To move faster, double-tap either Left or Right to Sprint";
         yield return new WaitForSeconds(1);
         rightMoveButton.alpha = 1;
         leftMoveButton.alpha = 1;
         playerMovement._canRun = true;
-        _run = true;
+        
     }
 
     public void PassedRun()
     {
-        if (_interact) return;
+        if (_run) return;
+        StartCoroutine(iEndRun());
+        _run = true;
+    }
+
+    public IEnumerator iEndRun()
+    {
+        leftMoveButton.alpha = 0;
+        rightMoveButton.alpha = 0;
+        yield return new WaitForSeconds(0.5f);
+        instructionText.text = "Now try Leaping over these rocks to continue forward";
+        yield return new WaitForSeconds(5f);
+        StartInteract();
+    }
+
+    public void StartInteract()
+    {
         StartCoroutine(iStartInteract());
     }
 
     public IEnumerator iStartInteract()
     {
-        leftMoveButton.alpha = 0;
-        rightMoveButton.alpha = 0;
         yield return new WaitForSeconds(0.5f);
         instructionText.text = "You are DeHydrated, stand in  front of a waterfall and tap Up on your screen to drink water";
         yield return new WaitForSeconds(1);
         interactButton.alpha = 1;
         playerMovement._canInteract = true;
-        _interact = true;
+        
     }
 
     public void PassedInteract()
     {
+        interactButton.alpha = 0;
         if (_interact) return;
         StartCoroutine(iPassed());
+        _interact = true;
     }
 
     public IEnumerator iPassed()
