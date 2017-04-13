@@ -88,6 +88,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (!this._playerMovementScript._canJump) return;
             this.PlayerIsJumping();
+            this._playerMovementScript.tutorialManager.PassedJump();
         }
 
         if (((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Top && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)

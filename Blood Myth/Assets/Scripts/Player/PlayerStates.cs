@@ -47,6 +47,7 @@ public class PlayerNormal : PlayerStates
         {
             if(!this._playerMovementScript._canRun) return;
             this._playerManager.PlayerIsSprinting();
+            this._playerMovementScript.tutorialManager.PassedRun();
         }
 #endif//*/
 
