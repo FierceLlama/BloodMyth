@@ -8,6 +8,10 @@ public class TutorialManager : MonoBehaviour {
     public UnityEngine.UI.Text instructionText;
     private bool _walkR = false, _walkL = false, _run = false, _jump = false, _interact = false;
 
+    public GameObject leaf;
+    public GameObject player;
+    public Transform firstSpawn, secondSpawn;
+
     // Use this for initialization
     void Start ()
         {
@@ -132,14 +136,70 @@ public class TutorialManager : MonoBehaviour {
         instructionText.text = "You can also use this to climp ladders by standing in front of the ladder and Tap and Holding the Top of your screen";
         yield return new WaitForSeconds(4);
         instructionText.text = "Great job! Now you can adventure through the story mode";
-        yield return new WaitForSeconds(15);
-        GameManager.Instance.LoadGameScene(0);
+        yield return new WaitForSeconds(4);
+        instructionText.text = "";
+        yield return new WaitForSeconds(3);
+
+        StartTut2();
     }
     //public void GameOnLoad(LoadSceneMode mode) { GameManager.Instance.ChangeGameState(GameStateId.Gameplay); }
 
-    // Update is called once per frame
-    void Update ()
-        {
-		
-	    }
+        //PART 2
+
+    public void StartTut2()
+    {
+        StartCoroutine(iStartTutorialPartDue());
+    }
+
+    public IEnumerator iStartTutorialPartDue()
+    {
+        player.transform.position = firstSpawn.transform.position;
+        instructionText.text = "Now that you know the basics, let's see what is out there!";
+        yield return new WaitForSeconds(4);
+        instructionText.text = "Be careful of any Monsters!";
+        yield return new WaitForSeconds(4);
+        instructionText.text = "";
+    }
+
+    public void GoToSecondSpawn()
+    {
+        StartCoroutine(iStartSecondTutorial());
+    }
+
+    public IEnumerator iStartSecondTutorial()
+    {
+        player.transform.position = secondSpawn.transform.position;
+        instructionText.text = "Oh no! You were not protected from the Fatigue Monster!";
+        yield return new WaitForSeconds(4);
+        instructionText.text = "Pick up leaves to gain protection from the Fatigue Monster";
+        yield return new WaitForSeconds(4);
+        instructionText.text = "";
+    }
+
+    public void LeafTutorial()
+    {
+        StartCoroutine(iLeafTutorial());
+    }
+
+    public IEnumerator iLeafTutorial()
+    {
+        Destroy(leaf, 0.5f);
+        instructionText.text = "Great job! Now you are protected from harm!";
+        yield return new WaitForSeconds(2);
+        instructionText.text = "Continue your adventure without fear!";
+        yield return new WaitForSeconds(2);
+        instructionText.text = "";
+    }
+
+    public void EndTutorial()
+    {
+        StartCoroutine(iEndTutorial());
+    }
+
+    public IEnumerator iEndTutorial()
+    {
+        instructionText.text = "Great job! Now that you have defeated the Fatigue Monster, you are ready to set out on your adventure!";
+        yield return new WaitForSeconds(4);
+        instructionText.text = "";
+    }
 }
