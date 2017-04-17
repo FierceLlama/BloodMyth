@@ -21,7 +21,7 @@ public class PlayerNormal : PlayerStates
         this._player = player;
         this._playerMovementScript = playerMovementScript;
         }
-    
+
     public override void Enter()
         {
         this._playerMovementScript.SetNormalMovementValues();
@@ -30,31 +30,32 @@ public class PlayerNormal : PlayerStates
     public override void Update()
         {
         if (this._playerMovementScript.GetMovement())
-        {
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Run"/*"Run_Normal"*/;
-        }
-        else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
-        {
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle"/*"Idle_Normal"*/;
-        }
-
-        this._playerMovementScript.NormalMovement();
-        //* When using Android
+            {
+            //* When using Android
 #if UNITY_ANDROID
-        if ((this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
-            && this._playerManager.getPrimaryTouch().getTouchTapCount() >= 2 && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
-        {
-            this._playerManager.PlayerIsSprinting();
-        }
+            if ((this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
+                && this._playerManager.getPrimaryTouch().getTouchTapCount() >= 2 && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+                {
+                this._playerManager.PlayerIsSprinting();
+                }
 #endif//*/
 
 #if UNITY_EDITOR
-        //* When using editor
-        if (Input.GetKey(KeyCode.LeftShift))
-            {
-            this._playerManager.PlayerIsSprinting();
-            }//*/
+            //* When using editor
+            if (Input.GetKey(KeyCode.LeftShift))
+                {
+                this._playerManager.PlayerIsSprinting();
+                }//*/
 #endif
+
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Run"/*"Run_Normal"*/;
+            }
+        else if (!this._playerMovementScript.GetMovement() /*&& !this._playerMovementScript._isSprinting*/ && this._playerMovementScript.GetGrounded())
+            {
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle"/*"Idle_Normal"*/;
+            }
+
+        this._playerMovementScript.NormalMovement();
         }
 
     public override void Exit()
@@ -86,7 +87,7 @@ public class PlayerTiredMovement : PlayerStates
             {
             this._playerMovementScript._skeletonAnimation.AnimationName = "Walk_Tired";
             }
-        else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
+        else if (!this._playerMovementScript.GetMovement() /*&& !this._playerMovementScript._isSprinting*/ && this._playerMovementScript.GetGrounded())
             {
             this._playerMovementScript._skeletonAnimation.AnimationName = "Idle_Tired";
             }
@@ -123,7 +124,7 @@ public class PlayerExhaustedMovement : PlayerStates
 
             this._playerMovementScript._skeletonAnimation.AnimationName = "Walk_Exhausted";
             }
-        else if (!this._playerMovementScript.GetMovement() && !this._playerMovementScript._isSprinting && this._playerMovementScript.GetGrounded())
+        else if (!this._playerMovementScript.GetMovement() /*&& !this._playerMovementScript._isSprinting*/ && this._playerMovementScript.GetGrounded())
             {
             this._playerMovementScript._skeletonAnimation.AnimationName = "Idle_Exhausted";
             }
@@ -151,17 +152,16 @@ public class PlayerSprinting : PlayerStates
 
     public override void Enter()
         {
-        this._playerMovementScript._isSprinting = true;
         this._playerMovementScript.SetSprintingMovementValues();
         }
 
     public override void Update()
         {
-        if (this._playerMovementScript._isSprinting && !this._playerManager._isTired)
+        if (/*this._playerMovementScript._isSprinting && */!this._playerManager._isTired)
             {
             this._playerMovementScript._skeletonAnimation.AnimationName = "Sprint"/*"Sprint_Normal"*/;
             }
-        else if (this._playerMovementScript._isSprinting && this._playerManager._isTired)
+        else if (/*this._playerMovementScript._isSprinting &&*/ this._playerManager._isTired)
             {
             this._playerMovementScript._skeletonAnimation.AnimationName = "Run_Tired"/*"Sprint_Tired"*/;
             }
@@ -183,17 +183,20 @@ public class PlayerSprinting : PlayerStates
 
 #if UNITY_EDITOR
         //* When using editor
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && this._playerMovementScript.GetMovement())
             {
             this._playerManager.CheckPlayerFatigue();
             }//*/
+        else
+            {
+            this._playerManager.PlayerIsNormal();
+            }
 #endif
-        }
+    }
 
     public override void Exit()
         {
-        this._playerMovementScript._isSprinting = false;
-        this._playerMovementScript.StoppedSprinting();
+        
         }
     }
 
@@ -216,10 +219,6 @@ public class PlayerJumping : PlayerStates
         AudioManager.Instance.PlaySound("Jump", AudioType.SFX);
         this._playerMovementScript.Jumped();
         this._player.Jumped();
-        }
-
-    public override void Update()
-        {
         if (this._playerManager._isTired)
             {
             this._playerMovementScript._skeletonAnimation.AnimationName = "Jump_Tired";
@@ -232,6 +231,10 @@ public class PlayerJumping : PlayerStates
             {
             this._playerMovementScript._skeletonAnimation.AnimationName = "Jump"/*"Jump_Normal"*/;
             }
+        }
+
+    public override void Update()
+        {
         if (this._playerMovementScript.GetGrounded())
             {
             this._player.DetermineFatigue();

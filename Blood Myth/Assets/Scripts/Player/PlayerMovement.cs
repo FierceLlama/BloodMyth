@@ -18,7 +18,6 @@ public class PlayerMovement : MonoBehaviour
     private Animator _animController;
 
     public Spine.Unity.SkeletonAnimation _skeletonAnimation;
-    public bool _isSprinting = false;
     public bool _isJumping = false;
     public bool _isClimbing = false;
 

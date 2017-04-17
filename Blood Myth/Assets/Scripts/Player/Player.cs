@@ -71,20 +71,29 @@ public class Player : MonoBehaviour
 
     private void Update()
         {
+        this.HydrationCheck();
+        this.TemperatureCheck();
+
+
+        }
+
+    void HydrationCheck()
+        {
         // Hydration Check
         if (this._currentHydration <= this.fatigueLoweringThreshold)
             {
             // Lower Fatigue
             this.LowerFatigue();
             }
+        }
 
-        // Temp Checks
+    void TemperatureCheck()
+        {
+        // Temp Check
         if (this._currentTemperature <= this.fatigueLoweringThreshold)
             {
             // Lower Fatigue
             this.LowerFatigue();
-            // Swap player material for arms based on last temperature hazard encountered
-            // TODO
             }
         }
 
@@ -130,16 +139,9 @@ public class Player : MonoBehaviour
 
     public void Sprinting()
     {
-        if (this._playerManager.GetMovement() && !this.checkLowHydration())
+        if (/*this._playerManager.GetMovement() && */!this.checkLowHydration())
         {
-            if (!this._temperatureAffectingHydration)
-            {
-                this._currentHydration -= this.hydrationEffectSprinting * Time.deltaTime;
-            }
-            else
-            {
-                this._currentHydration -= this.temperatureEffectSprinting * Time.deltaTime;
-            }
+            this._currentHydration -= this.hydrationEffectSprinting * Time.deltaTime;
         }
     }
 
@@ -147,14 +149,7 @@ public class Player : MonoBehaviour
     {
         if (!this.checkLowHydration())
         {
-            if (!this._temperatureAffectingHydration)
-            {
-                this._currentHydration -= this.hydrationEffectClimbing * Time.deltaTime;
-            }
-            else
-            {
-                this._currentHydration -= this.hydrationEffectClimbing * Time.deltaTime;
-            }
+            this._currentHydration -= this.hydrationEffectClimbing * Time.deltaTime;
         }
         this.DetermineFatigueClimbing();
     }

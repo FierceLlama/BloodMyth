@@ -74,11 +74,14 @@ public class PlayerManager : MonoBehaviour
         this._inputManager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
         }
 
-    void /*Fixed*/Update()
-    {
+    void Update()
+        {
         this._primaryTouch = this._inputManager.GetPrimaryInputData();
         this._secondaryTouch = this._inputManager.GetSecondryInputData();
+        }
 
+        void FixedUpdate()
+        {
         this._playerMovementScript.CheckOnGround();
 
         //* When using Android
