@@ -50,12 +50,50 @@ public class PlayerNormal : PlayerStates
 
             this._playerMovementScript._skeletonAnimation.AnimationName = "Run"/*"Run_Normal"*/;
             }
-        else if (!this._playerMovementScript.GetMovement() /*&& !this._playerMovementScript._isSprinting*/ && this._playerMovementScript.GetGrounded())
-            {
-            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle"/*"Idle_Normal"*/;
-            }
+        //else if (!this._playerMovementScript.GetMovement() /*&& !this._playerMovementScript._isSprinting*/ && this._playerMovementScript.GetGrounded())
+        //    {
+        //    this._playerMovementScript._skeletonAnimation.AnimationName = "Idle"/*"Idle_Normal"*/;
+        //    }
 
         this._playerMovementScript.NormalMovement();
+        }
+
+    public override void Exit()
+        {
+        }
+    }
+
+public class PlayerIdle : PlayerStates
+    {
+    private PlayerManager _playerManager;
+    private Player _player;
+    private PlayerMovement _playerMovementScript;
+
+    public PlayerIdle(PlayerManager playerManager, Player player, PlayerMovement playerMovementScript)
+        {
+        this._playerManager = playerManager;
+        this._player = player;
+        this._playerMovementScript = playerMovementScript;
+        }
+
+    public override void Enter()
+        {
+        }
+
+    public override void Update()
+        {
+        if (this._playerManager._isTired)
+            {
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle_Tired";
+            }
+        else if (this._playerManager._isExhausted)
+            {
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle_Exhausted";
+            }
+        else
+            {
+            this._playerMovementScript._skeletonAnimation.AnimationName = "Idle";
+            }
         }
 
     public override void Exit()
@@ -219,6 +257,10 @@ public class PlayerJumping : PlayerStates
         AudioManager.Instance.PlaySound("Jump", AudioType.SFX);
         this._playerMovementScript.Jumped();
         this._player.Jumped();
+        }
+
+    public override void Update()
+        {
         if (this._playerManager._isTired)
             {
             this._playerMovementScript._skeletonAnimation.AnimationName = "Jump_Tired";
@@ -233,17 +275,8 @@ public class PlayerJumping : PlayerStates
             }
         }
 
-    public override void Update()
-        {
-        if (this._playerMovementScript.GetGrounded())
-            {
-            this._player.DetermineFatigue();
-            }
-        }
-
     public override void Exit()
         {
-
         }
     }
 

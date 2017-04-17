@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerManager _playerManager;
     // Is player on the ground
     private bool _isGrounded;
-    private bool _inAir = false;
+    public bool _inAir = false;
     // Player interacting with climbing object
     private bool _canClimb = false;
     // Player's ability to climb/jump based on fatigue state
@@ -22,15 +22,15 @@ public class PlayerMovement : MonoBehaviour
     public bool _isClimbing = false;
 
     private bool _facingRight = true;
-    private Rigidbody2D _rb2D;
+    public Rigidbody2D rb2D;
     private SpriteRenderer _flipSprite;
-    private float _move;
+    public float move;
 
     public Transform groundCheck;
     public float _groundRadius = 0.02f;
     public LayerMask whatIsGround;
 
-    private float _currentSpeed = 0;
+    public float currentSpeed = 0;
     [Header("Movement Variables:")]
     // Movement speed
     public float normalSpeed = 10.0f;
@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
         {
         this._skeletonAnimation = this.GetComponent<Spine.Unity.SkeletonAnimation>();
         this._animController = this.gameObject.GetComponent<Animator>();
-        this._rb2D = GetComponent<Rigidbody2D>();
+        this.rb2D = GetComponent<Rigidbody2D>();
         this._flipSprite = GetComponent<SpriteRenderer>();
         this._player = GetComponent<Player>();
         }
@@ -57,7 +57,6 @@ public class PlayerMovement : MonoBehaviour
     public void CheckOnGround()
         {
         this._isGrounded = Physics2D.OverlapCircle(this.groundCheck.position, this._groundRadius, this.whatIsGround);
-        //this._animController.SetBool("grounded", this._isGrounded);
         }
 
     public bool GetGrounded()
@@ -65,15 +64,8 @@ public class PlayerMovement : MonoBehaviour
         if (this._inAir)
             {
             this._isGrounded = !this._inAir;
-            StartCoroutine(InAir());
             }
         return this._isGrounded;
-        }
-
-    IEnumerator InAir()
-        {
-        yield return new WaitForSeconds(0.2f);
-        this._inAir = Physics2D.OverlapCircle(this.groundCheck.position, this._groundRadius, this.whatIsGround);
         }
 
     public void NormalMovement()
@@ -98,38 +90,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Movement()
         {
-        //*
-#if UNITY_ANDROID
-        if (this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
-        {
-            this._move = 1.0f;
-        }
-        else if (this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
-        {
-            this._move = -1.0f;
-        }
-        else
-        {
-            this._move = 0.0f;
-        }
-#endif//*/
-
-#if UNITY_EDITOR
-        this._move = Input.GetAxis("Horizontal");
-#endif
-
-        //this._animController.SetFloat("speed", Mathf.Abs(this._move));
-
         this.VerifySpriteDirection();
-
-        // Movement is velocity in the x direction up to current move rate
-        this._rb2D.velocity = new Vector2(this._move * this._currentSpeed, this._rb2D.velocity.y);
         }
 
     public bool GetMovement()
         {
         bool moving = false;
-        if (Mathf.Abs(this._move) > 0)
+        if (Mathf.Abs(this.move) > 0)
             {
             moving = true;
             }
@@ -138,58 +105,56 @@ public class PlayerMovement : MonoBehaviour
 
     public void StartedClimbingVertically()
         {
-        this._rb2D.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+        this.rb2D.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         this._activelyClimbing = true;
         }
 
     public void ClimbingUp()
         {
-        this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, this.climbingSpeed);
+        this.rb2D.velocity = new Vector2(this.rb2D.velocity.x, this.climbingSpeed);
         }
 
     public void ClimbingDown()
         {
-        this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, -this.climbingSpeed);
+        this.rb2D.velocity = new Vector2(this.rb2D.velocity.x, -this.climbingSpeed);
         }
 
     public void StartedClimbingHorizontally()
         {
-        this._rb2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        this.rb2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
         this._activelyClimbing = true;
         }
 
     public void ClimbingRight()
         {
-        this._rb2D.velocity = new Vector2(this.climbingSpeed, this._rb2D.velocity.y);
+        this.rb2D.velocity = new Vector2(this.climbingSpeed, this.rb2D.velocity.y);
         }
 
     public void ClimbingLeft()
         {
-        this._rb2D.velocity = new Vector2(-this.climbingSpeed, this._rb2D.velocity.y);
+        this.rb2D.velocity = new Vector2(-this.climbingSpeed, this.rb2D.velocity.y);
         }
 
     public void StationaryWhileClimbing()
         {
-        this._rb2D.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        this.rb2D.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
         }
 
     public void StoppedClimbing()
         {
-        this._rb2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+        this.rb2D.constraints = RigidbodyConstraints2D.FreezeRotation;
         this._activelyClimbing = false;
         }
 
     void VerifySpriteDirection()
         {
-        if (this._move < 0 && this._facingRight)
+        if (this.move < 0 && this._facingRight)
             {
-            //this._flipSprite.flipX = true;
             _skeletonAnimation.skeleton.FlipX = true;
             this._facingRight = false;
             }
-        else if (this._move > 0 && !this._facingRight)
+        else if (this.move > 0 && !this._facingRight)
             {
-            //this._flipSprite.flipX = false;
             _skeletonAnimation.skeleton.FlipX = false;
             this._facingRight = true;
             }
@@ -197,39 +162,32 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jumped()
         {
-        this._rb2D.velocity = new Vector2(this._rb2D.velocity.x, this.jumpVelocity);
+        this.rb2D.velocity = new Vector2(this.rb2D.velocity.x, this.jumpVelocity);
         this._inAir = true;
-        //this._rb2D.AddForce(new Vector2(this._rb2D.velocity.x, this.jumpVelocity) * Time.deltaTime, ForceMode2D.Impulse);
         }
 
     public void SetNormalMovementValues()
         {
-        this._currentSpeed = this.normalSpeed;
+        this.currentSpeed = this.normalSpeed;
         this._climbingFatigued = false;
         this._jumpingFatigued = false;
         }
 
     public void SetTiredMovementValues()
         {
-        this._currentSpeed = this.tiredSpeed;
+        this.currentSpeed = this.tiredSpeed;
         this._climbingFatigued = true;
         }
 
     public void SetExhaustedMovementValues()
         {
-        this._currentSpeed = this.exhaustedSpeed;
+        this.currentSpeed = this.exhaustedSpeed;
         this._jumpingFatigued = true;
         }
 
     public void SetSprintingMovementValues()
         {
-        this._currentSpeed = this.sprintSpeed;
-        //this._animController.SetBool("sprinting", true);
-        }
-
-    public void StoppedSprinting()
-        {
-        //this._animController.SetBool("sprinting", false);
+        this.currentSpeed = this.sprintSpeed;
         }
 
     public bool canClimb()
@@ -267,5 +225,14 @@ public class PlayerMovement : MonoBehaviour
     public bool fatigueForJumping()
         {
         return this._jumpingFatigued;
+        }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+        {
+        if (this._inAir && collision.gameObject.tag == "Ground")
+            {
+            this._inAir = false;
+            this._player.DetermineFatigue();
+            }
         }
     }

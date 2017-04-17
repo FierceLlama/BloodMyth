@@ -35,6 +35,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerStates _climbingRight;
     private PlayerStates _climbingLeft;
     private PlayerStates _fatigueCheck;
+    private PlayerStates _idle;
 
     private PlayerMovement _playerMovementScript;
     private Player _player;
@@ -45,7 +46,7 @@ public class PlayerManager : MonoBehaviour
     public bool _isTired;
     public bool _isExhausted;
 
-    void Awake()
+    void Start()
     {
         this.Initialize();
     }
@@ -65,8 +66,9 @@ public class PlayerManager : MonoBehaviour
         this._climbingLeft = new PlayerClimbingRight(this, this._player, this._playerMovementScript);
         this._climbingRight = new PlayerClimbingLeft(this, this._player, this._playerMovementScript);
         this._fatigueCheck = new FatigueCheck(this, this._player, this._playerMovementScript);
+        this._idle = new PlayerIdle(this, this._player, this._playerMovementScript);
 
-        this._currentPlayerState = this._normalMovement;
+        this._currentPlayerState = this._idle;
         this._currentPlayerState.Enter();
 
         this._climbDirection = ClimbingDirection.NOT_CLIMBING;
@@ -124,6 +126,38 @@ public class PlayerManager : MonoBehaviour
         // sprint
         // jump
         // climb
+        //*
+#if UNITY_ANDROID
+        if (this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        {
+            this._move = 1.0f;
+        }
+        else if (this._playerManager.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this._playerManager.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        {
+            this._move = -1.0f;
+        }
+        else
+        {
+            this._move = 0.0f;
+        }
+#endif//*/ 
+
+#if UNITY_EDITOR
+        this._playerMovementScript.move = Input.GetAxis("Horizontal");
+#endif
+        // Movement is velocity in the x direction up to current move rate
+        this._playerMovementScript.rb2D.velocity = new Vector2(this._playerMovementScript.move * this._playerMovementScript.currentSpeed, this._playerMovementScript.rb2D.velocity.y);
+        if (!this._playerMovementScript._inAir)
+            {
+            if (this._playerMovementScript.move != 0.0f)
+                {
+                this.PlayerIsNormal();
+                }
+            else
+                {
+                this.PlayerIsIdle();
+                }
+            }
         this._currentPlayerState.Update();
     }
 
@@ -141,6 +175,12 @@ public class PlayerManager : MonoBehaviour
         this.SwitchPlayerState(this._normalMovement);
         this._moveAction = MoveActions.NORMAL_ACTION;
     }
+
+    public void PlayerIsIdle()
+        {
+        this.SwitchPlayerState(this._idle);
+        this._moveAction = MoveActions.NORMAL_ACTION;
+        }
 
     public void PlayerIsTired()
     {

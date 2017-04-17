@@ -126,14 +126,7 @@ public class Player : MonoBehaviour
     {
         if (!this.checkLowHydration())
         {
-            if (!this._temperatureAffectingHydration)
-            {
-                this._currentHydration -= this.hydrationEffectJumping;
-            }
-            else
-            {
-                this._currentHydration -= this.temperatureEffectJumping;
-            }
+            this._currentHydration -= this.hydrationEffectJumping;
         }
     }
 
