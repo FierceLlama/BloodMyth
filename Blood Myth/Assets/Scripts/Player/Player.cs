@@ -31,7 +31,10 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && this._move != 0 && !this._sprinting)
             {
             this._sprinting = true;
-            this._currentState = true;
+            if (!this._jumping)
+                {
+                this._currentState = true;
+                }
             }
         else if(Input.GetKeyUp(KeyCode.LeftShift) && this._moving)
             {
@@ -70,6 +73,7 @@ public class Player : MonoBehaviour
                 {
                 this.skeletonAnimation.state.SetAnimation(0, "Jump", false);
                 }
+
             else if (this._moving && !this._jumping)
                 {
                 if (this._sprinting)
