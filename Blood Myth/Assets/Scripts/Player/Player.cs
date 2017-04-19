@@ -7,12 +7,12 @@ public class Player : MonoBehaviour
     private bool _facingRight;
     private Rigidbody2D _rigidBody;
     private float _move;
-    private bool _currentState = false, _lastState = false, _moving = false, _sprinting = false, _jumping = false;
+    private bool _currentState = false, _moving = false, _sprinting = false, _jumping = false;
     private bool _isGrounded;
 
     public Spine.Unity.SkeletonAnimation skeletonAnimation;
     public Transform groundCheck;
-    public float _groundRadius = 0.02f;
+    public float _groundRadius = 0.2f;
     public LayerMask whatIsGround;
 
     private void Start()
@@ -36,7 +36,10 @@ public class Player : MonoBehaviour
         else if(Input.GetKeyUp(KeyCode.LeftShift) && this._moving)
             {
             this._sprinting = false;
-            this._currentState = true;
+            if (!this._jumping)
+                {
+                this._currentState = true;
+                }
             }
 
         if (Input.GetKeyDown(KeyCode.Space)&& !this._jumping && this.GetGrounded())
@@ -47,15 +50,18 @@ public class Player : MonoBehaviour
             }
 #endif
         this.SpriteDirection();
-        if(this._move != 0 && !this._moving)
+        if (!this._jumping)
             {
-            this._moving = true;
-            this._currentState = true;
-            }
-        else if(this._move == 0 && this._moving)
-            {
-            this._moving = false;
-            this._currentState = true;
+            if (this._move != 0 && !this._moving)
+                {
+                this._moving = true;
+                this._currentState = true;
+                }
+            else if (this._move == 0 && this._moving)
+                {
+                this._moving = false;
+                this._currentState = true;
+                }
             }
 
         if (this._currentState)
@@ -64,8 +70,7 @@ public class Player : MonoBehaviour
                 {
                 this.skeletonAnimation.state.SetAnimation(0, "Jump", false);
                 }
-
-            if (this._moving && !this._jumping)
+            else if (this._moving && !this._jumping)
                 {
                 if (this._sprinting)
                     {
@@ -86,18 +91,14 @@ public class Player : MonoBehaviour
         //this._lastState = this._currentState;
         }
 
-    private void OnCollisionEnter2D(Collision2D ground)
+    public void CheckOnGround()
         {
-        if (this._jumping)
+        this._isGrounded = Physics2D.OverlapCircle(this.groundCheck.position, this._groundRadius, this.whatIsGround);
+        if(this._jumping && this._isGrounded)
             {
             this._jumping = false;
             this._currentState = true;
             }
-        }
-
-    public void CheckOnGround()
-        {
-        this._isGrounded = Physics2D.OverlapCircle(this.groundCheck.position, this._groundRadius, this.whatIsGround);
         }
 
     public bool GetGrounded()
