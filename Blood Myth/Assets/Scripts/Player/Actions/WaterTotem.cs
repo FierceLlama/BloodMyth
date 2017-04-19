@@ -11,7 +11,7 @@ public class WaterTotem : MonoBehaviour
 #if UNITY_EDITOR
         if (inPlayer.gameObject.tag == "Player" && Input.GetKey(KeyCode.W))
             {
-            this._player.GetComponent<Player>().DrinkingWater();
+            //this._player.GetComponent<Player>().DrinkingWater();
             }
 #endif
 #if UNITY_ANDROID

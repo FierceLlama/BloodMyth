@@ -16,7 +16,7 @@ public class TotemBase : MonoBehaviour
         if (playerCollider.gameObject.tag == "Player")
         {
             this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            this._player.GetComponent<Player>().addTotemPowers();
+            //this._player.GetComponent<Player>().addTotemPowers();
             ParticleSystem.MainModule main = this._player.GetComponent<TotemPower>().totemHalo.main;
             main.startColor = totemColor;
         }
