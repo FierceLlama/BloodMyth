@@ -14,9 +14,18 @@ public class Player : MonoBehaviour
     public Transform groundCheck;
     public float _groundRadius = 0.2f;
     public LayerMask whatIsGround;
+    public FatigueStateBaseClass fatigueState;
+    public NormalPlayer normalFatigue;
+    public ExhaustedPlayer exhaustedFatigue;
+    public TiredPlayer tiredFatigue;
+
 
     private void Start()
         {
+        normalFatigue = new NormalPlayer(this);
+        tiredFatigue = new TiredPlayer(this);
+        exhaustedFatigue = new ExhaustedPlayer(this);
+        fatigueState = normalFatigue;
         this._rigidBody = this.GetComponent<Rigidbody2D>();
         this._facingRight = true;
         this.skeletonAnimation.state.SetAnimation(0, "Idle", true);
@@ -24,6 +33,7 @@ public class Player : MonoBehaviour
 
     private void Update()
         {
+        fatigueState.Update();
 //        this.CheckOnGround();
 //#if UNITY_EDITOR
 //        this._move = Input.GetAxis("Horizontal");

@@ -1,18 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NormalPlayer : MonoBehaviour
+public class NormalPlayer : FatigueStateBaseClass
     {
     private Player player;
 
-    private void Start()
+    public NormalPlayer(Player _player)
         {
-        player = this.GetComponent<Player>();
+        this.player = _player;
         }
 
+    public override void Enter()
+        {
+        throw new NotImplementedException();
+        }
 
-    private void Update()
+    public override void Update()
         {
         this.player.CheckOnGround();
 #if UNITY_EDITOR
