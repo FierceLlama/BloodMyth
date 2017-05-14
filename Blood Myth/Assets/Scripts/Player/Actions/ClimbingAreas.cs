@@ -33,6 +33,7 @@ public class ClimbingAreas : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D inPlayer)
     {
+        GameObject.FindWithTag("Actions").GetComponent<SetActionIcon>().DisplayIcon(SetActionIcon.IconType.CLIMB);
         //if (this._player.GetComponent<PlayerMovement>().isActivelyClimbing())
         //{
         //    this.globalClimbingArea.GetComponent<BoxCollider2D>().enabled = true;
@@ -44,7 +45,7 @@ public class ClimbingAreas : MonoBehaviour
         //    this.otherClimbingArea.GetComponent<BoxCollider2D>().enabled = false;
         //    this.globalClimbingArea.GetComponent<ExitingClimbingArea>().setGameObjects(this.platformToClimbThrough, this.otherClimbingArea);
         //}
-    }
+        }
 
     private void OnTriggerExit2D(Collider2D inPlayer)
         {
@@ -52,5 +53,9 @@ public class ClimbingAreas : MonoBehaviour
         //    {
         //    this._player.GetComponent<PlayerMovement>().outOfClimbingArea();
         //    }
+        if (inPlayer.gameObject.tag == "Player")
+            {
+            GameObject.FindWithTag("Actions").GetComponent<SetActionIcon>().HideIcon();
+            }
         }
     }

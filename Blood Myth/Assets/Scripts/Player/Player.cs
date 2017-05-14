@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     private bool _facingRight;
     private Rigidbody2D _rigidBody;
     private float _move;
-    private bool _iHaveChangedState = false, _moving = false, _sprinting = false, _jumping = false;
+    private bool _iHaveChangedState = false, _moving = false, _sprinting = false, _jumping = false, _climbing = false;
     private bool _isGrounded;
 
     public Spine.Unity.SkeletonAnimation skeletonAnimation;
@@ -34,75 +34,6 @@ public class Player : MonoBehaviour
     private void Update()
         {
         fatigueState.Update();
-//        this.CheckOnGround();
-//#if UNITY_EDITOR
-//        this._move = Input.GetAxis("Horizontal");
-//        this._rigidBody.velocity = new Vector2(this._move * 25, this._rigidBody.velocity.y);
-//        if (Input.GetKey(KeyCode.LeftShift) && this._move != 0 && !this._sprinting)
-//            {
-//            this._sprinting = true;
-//            if (!this._jumping)
-//                {
-//                this._iHaveChangedState = true;
-//                }
-//            }
-//        else if(Input.GetKeyUp(KeyCode.LeftShift) && this._moving)
-//            {
-//            this._sprinting = false;
-//            if (!this._jumping)
-//                {
-//                this._iHaveChangedState = true;
-//                }
-//            }
-
-//        if (Input.GetKeyDown(KeyCode.Space)&& !this._jumping && this.GetGrounded())
-//            {
-//            this._jumping = true;
-//            _iHaveChangedState = true;
-//            this._rigidBody.velocity = new Vector2(this._rigidBody.velocity.x, 20);
-//            }
-//#endif
-//        this.SpriteDirection();
-//        if (!this._jumping)
-//            {
-//            if (this._move != 0 && !this._moving)
-//                {
-//                this._moving = true;
-//                this._iHaveChangedState = true;
-//                }
-//            else if (this._move == 0 && this._moving)
-//                {
-//                this._moving = false;
-//                this._iHaveChangedState = true;
-//                }
-//            }
-
-//        if (this._iHaveChangedState)
-//            {
-//            if (this._jumping)
-//                {
-//                this.skeletonAnimation.state.SetAnimation(0, "Jump", false);
-//                }
-
-//            else if (this._moving && !this._jumping)
-//                {
-//                if (this._sprinting)
-//                    {
-//                    this.skeletonAnimation.state.SetAnimation(0, "Sprint", true);
-//                    }
-//                else
-//                    {
-//                    this.skeletonAnimation.state.SetAnimation(0, "Run", true);
-//                    }
-//                }
-//            else
-//                {
-//                this.skeletonAnimation.state.SetAnimation(0, "Idle", true);
-//                }
-//            this._iHaveChangedState = false;
-//            }
-
-//        //this._lastState = this._currentState;
         }
 
     public void CheckOnGround()
@@ -191,5 +122,15 @@ public class Player : MonoBehaviour
     public void SetSprinting(bool sprinting)
         {
         this._sprinting = sprinting;
+        }
+
+    public bool GetClimbing()
+        {
+        return this._climbing;
+        }
+
+    public void SetClimbing(bool climbing)
+        {
+        this._climbing = climbing;
         }
     }
