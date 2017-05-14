@@ -47,11 +47,20 @@ public class NormalPlayer : FatigueStateBaseClass
             this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, 20);
             }
 
-        if (Input.GetKeyDown(KeyCode.W) && !this.player.GetClimbing() && this.player.GetGrounded())
+        if (Input.GetKeyDown(KeyCode.W) && this.player.GetCanClimb() && !this.player.isActivelyClimbing())
             {
-            this.player.SetClimbing(true);
+            this.player.SetCanClimb(false);
             this.player.SetIHaveChangedState(true);
-            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, 20);
+            this.player.StartedClimbingVertically();
+            this.player.DeterminePlayerClimbDirection();
+            }
+        else if(Input.GetKeyDown(KeyCode.W) && this.player.GetCanClimb() && this.player.isActivelyClimbing())
+            {
+            this.player.DeterminePlayerClimbDirection();
+            }
+        else if (this.player.isActivelyClimbing())
+            {
+            this.player.StationaryWhileClimbing();
             }
 #endif
         this.player.SpriteDirection();
