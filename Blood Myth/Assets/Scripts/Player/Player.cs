@@ -491,6 +491,10 @@ public class Player : MonoBehaviour
             case Player.PlayerClimbingDirection.CLIMBING_LEFT:
                 this.ClimbingLeft();
                 break;
+            case Player.PlayerClimbingDirection.NOT_CLIMBING:
+                SetCanClimb(true);
+                this.StoppedClimbing();
+                break;
             default:
                 break;
             }
@@ -540,6 +544,9 @@ public class Player : MonoBehaviour
                 break;
             case ClimbingAreas.ClimbingDirection.CLIMBING_LEFT:
                 this._climbDirection = PlayerClimbingDirection.CLIMBING_LEFT;
+                break;
+            case ClimbingAreas.ClimbingDirection.NOT_CLIMBING:
+                this._climbDirection = PlayerClimbingDirection.NOT_CLIMBING;
                 break;
             default:
                 break;

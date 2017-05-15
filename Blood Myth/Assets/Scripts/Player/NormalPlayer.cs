@@ -47,7 +47,7 @@ public class NormalPlayer : FatigueStateBaseClass
             this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, 20);
             }
 
-        if (Input.GetKeyDown(KeyCode.W) && this.player.GetCanClimb() && !this.player.isActivelyClimbing())
+        if (Input.GetKeyDown(KeyCode.W) && this.player.GetCanClimb() && !this.player.isActivelyClimbing() && this.player.GetGrounded())
             {
             this.player.SetCanClimb(false);
             this.player.SetIHaveChangedState(true);
@@ -56,8 +56,20 @@ public class NormalPlayer : FatigueStateBaseClass
             }
         else if(Input.GetKey(KeyCode.W) && !this.player.GetCanClimb() && this.player.isActivelyClimbing()) // changed to GetKey and added the ! 
             {
-            this.player.DeterminePlayerClimbDirection();
+            /// this is jim gay shite
+            if (this.player.GetGrounded())
+            {
+                this.player.SetCanClimb(true);
+                this.player.SetIHaveChangedState(true);
+                this.player.GetComponent<Player>().outOfClimbingArea();
+                this.player.GetComponent<Player>().setClimbingDirection(ClimbingAreas.ClimbingDirection.NOT_CLIMBING);
             }
+            else
+            {
+                this.player.DeterminePlayerClimbDirection(); // this was the only thing here before
+            }
+            // to about here
+        }
         else if (this.player.isActivelyClimbing())
             {
             this.player.StationaryWhileClimbing();
@@ -86,7 +98,7 @@ public class NormalPlayer : FatigueStateBaseClass
                 }
             else if (this.player.isActivelyClimbing())
             {
-                this.player.skeletonAnimation.state.SetAnimation(0, "Climb", false); 
+                this.player.skeletonAnimation.state.SetAnimation(0, "Climb", true); 
             }
             else if (this.player.GetMoving() && !this.player.GetJumping() && !this.player.isActivelyClimbing())
                 {
