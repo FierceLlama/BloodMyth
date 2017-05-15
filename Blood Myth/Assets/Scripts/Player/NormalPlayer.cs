@@ -23,8 +23,8 @@ public class NormalPlayer : FatigueStateBaseClass
 #if UNITY_EDITOR
         this.player.SetMove(Input.GetAxis("Horizontal"));
         this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * 25, this.player.GetRigidbody().velocity.y);
-        if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting())
-            {
+        if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting()) 
+        {
             this.player.SetSprinting(true);
             if (!this.player.GetJumping())
                 {
@@ -32,7 +32,7 @@ public class NormalPlayer : FatigueStateBaseClass
                 }
             }
         else if (Input.GetKeyUp(KeyCode.LeftShift) && this.player.GetMoving())
-            {
+        {
             this.player.SetSprinting(false);
             if (!this.player.GetJumping())
                 {
@@ -41,7 +41,7 @@ public class NormalPlayer : FatigueStateBaseClass
             }
 
         if (Input.GetKeyDown(KeyCode.Space) && !this.player.GetJumping() && this.player.GetGrounded())
-            {
+        {
             this.player.SetJumping(true);
             this.player.SetIHaveChangedState(true);
             this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, 20);
@@ -54,7 +54,7 @@ public class NormalPlayer : FatigueStateBaseClass
             this.player.StartedClimbingVertically();
             this.player.DeterminePlayerClimbDirection();
             }
-        else if(Input.GetKeyDown(KeyCode.W) && this.player.GetCanClimb() && this.player.isActivelyClimbing())
+        else if(Input.GetKey(KeyCode.W) && !this.player.GetCanClimb() && this.player.isActivelyClimbing()) // changed to GetKey and added the ! 
             {
             this.player.DeterminePlayerClimbDirection();
             }
@@ -80,12 +80,15 @@ public class NormalPlayer : FatigueStateBaseClass
 
         if (this.player.GetIHaveChangedState())
             {
-            if (this.player.GetJumping())
+            if (this.player.GetJumping() && !this.player.isActivelyClimbing())
                 {
                 this.player.skeletonAnimation.state.SetAnimation(0, "Jump", false);
                 }
-
-            else if (this.player.GetMoving() && !this.player.GetJumping())
+            else if (this.player.isActivelyClimbing())
+            {
+                this.player.skeletonAnimation.state.SetAnimation(0, "Climb", false); 
+            }
+            else if (this.player.GetMoving() && !this.player.GetJumping() && !this.player.isActivelyClimbing())
                 {
                 if (this.player.GetSprinting())
                     {
