@@ -13,7 +13,7 @@ public class ExitingClimbingArea : MonoBehaviour
         if (inPlayer.gameObject.tag == "Player")
         {
             this.player.GetComponent<Player>().outOfClimbingArea();
-            this.player.GetComponent<Player>().setClimbingDirection(ClimbingAreas.ClimbingDirection.NOT_CLIMBING);
+            //this.player.GetComponent<Player>().setClimbingDirection(ClimbingAreas.ClimbingDirection.NOT_CLIMBING);
             this._platformToClimbThrough.GetComponent<BoxCollider2D>().enabled = true;
             StartCoroutine(this.ClimbingDelay());
             this.GetComponent<BoxCollider2D>().enabled = false;

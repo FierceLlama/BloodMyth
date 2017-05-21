@@ -22,7 +22,7 @@ public class ExhaustedPlayer : FatigueStateBaseClass
         this.player.CheckOnGround();
 #if UNITY_EDITOR
         this.player.SetMove(Input.GetAxis("Horizontal"));
-        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * 25, this.player.GetRigidbody().velocity.y);
+        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
         if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting())
             {
             this.player.SetSprinting(true);
@@ -44,7 +44,7 @@ public class ExhaustedPlayer : FatigueStateBaseClass
             {
             this.player.SetJumping(true);
             this.player.SetIHaveChangedState(true);
-            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, 20);
+            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
             }
 #endif
         this.player.SpriteDirection();
@@ -67,17 +67,20 @@ public class ExhaustedPlayer : FatigueStateBaseClass
             if (this.player.GetJumping())
                 {
                 this.player.skeletonAnimation.state.SetAnimation(0, "Jump_Exhausted", false);
+                this.player.Jumped();
                 }
 
             else if (this.player.GetMoving() && !this.player.GetJumping())
                 {
                 if (this.player.GetSprinting())
                     {
-                    this.player.skeletonAnimation.state.SetAnimation(0, "Run_Exhausted", true);
+                    //this.player.skeletonAnimation.state.SetAnimation(0, "Run_Exhausted", true);
+                    this.player.SetSpeed(this.player.exhaustedSpeed);
                     }
                 else
                     {
                     this.player.skeletonAnimation.state.SetAnimation(0, "Walk_Exhausted", true);
+                    this.player.SetSpeed(this.player.exhaustedSpeed);
                     }
                 }
             else

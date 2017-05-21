@@ -22,7 +22,7 @@ public class NormalPlayer : FatigueStateBaseClass
         this.player.CheckOnGround();
 #if UNITY_EDITOR
         this.player.SetMove(Input.GetAxis("Horizontal"));
-        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * 25, this.player.GetRigidbody().velocity.y);
+        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
         if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting()) 
         {
             this.player.SetSprinting(true);
@@ -44,35 +44,7 @@ public class NormalPlayer : FatigueStateBaseClass
         {
             this.player.SetJumping(true);
             this.player.SetIHaveChangedState(true);
-            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, 20);
-            }
-
-        if (Input.GetKeyDown(KeyCode.W) && this.player.GetCanClimb() && !this.player.isActivelyClimbing() && this.player.GetGrounded())
-            {
-            this.player.SetCanClimb(false);
-            this.player.SetIHaveChangedState(true);
-            this.player.StartedClimbingVertically();
-            this.player.DeterminePlayerClimbDirection();
-            }
-        else if(Input.GetKey(KeyCode.W) && !this.player.GetCanClimb() && this.player.isActivelyClimbing()) // changed to GetKey and added the ! 
-            {
-            /// this is jim gay shite
-            if (this.player.GetGrounded())
-            {
-                this.player.SetCanClimb(true);
-                this.player.SetIHaveChangedState(true);
-                this.player.GetComponent<Player>().outOfClimbingArea();
-                this.player.GetComponent<Player>().setClimbingDirection(ClimbingAreas.ClimbingDirection.NOT_CLIMBING);
-            }
-            else
-            {
-                this.player.DeterminePlayerClimbDirection(); // this was the only thing here before
-            }
-            // to about here
-        }
-        else if (this.player.isActivelyClimbing())
-            {
-            this.player.StationaryWhileClimbing();
+            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
             }
 #endif
         this.player.SpriteDirection();
@@ -92,23 +64,24 @@ public class NormalPlayer : FatigueStateBaseClass
 
         if (this.player.GetIHaveChangedState())
             {
-            if (this.player.GetJumping() && !this.player.isActivelyClimbing())
+            if (this.player.GetJumping())
                 {
                 this.player.skeletonAnimation.state.SetAnimation(0, "Jump", false);
+                this.player.Jumped();
                 }
-            else if (this.player.isActivelyClimbing())
-            {
-                this.player.skeletonAnimation.state.SetAnimation(0, "Climb", true); 
-            }
-            else if (this.player.GetMoving() && !this.player.GetJumping() && !this.player.isActivelyClimbing())
+
+            else if (this.player.GetMoving() && !this.player.GetJumping())
                 {
                 if (this.player.GetSprinting())
                     {
                     this.player.skeletonAnimation.state.SetAnimation(0, "Sprint", true);
+                    this.player.SetSpeed(this.player.sprintSpeed);
+                    this.player.Sprinting();
                     }
                 else
                     {
                     this.player.skeletonAnimation.state.SetAnimation(0, "Run", true);
+                    this.player.SetSpeed(this.player.normalSpeed);
                     }
                 }
             else

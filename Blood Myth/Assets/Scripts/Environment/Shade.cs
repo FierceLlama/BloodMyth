@@ -9,7 +9,7 @@ public class Shade : MonoBehaviour
     {
         if (inPlayer.gameObject.tag == "Player")
         {
-            //player.GetComponent<Player>().InShade();
+            player.GetComponent<Player>().InShade();
         }
     }
 }

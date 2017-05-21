@@ -31,29 +31,29 @@ public class ClimbingAreas : MonoBehaviour
         if (inPlayer.gameObject.tag == "Player")
         {
             this._player.GetComponent<Player>().inClimbingArea();
-            this._player.GetComponent<Player>().setClimbingDirection(climbDirection);
+            //this._player.GetComponent<Player>().setClimbingDirection(climbDirection);
             }
     }
 
     void OnTriggerStay2D(Collider2D inPlayer)
     {
         GameObject.FindWithTag("Actions").GetComponent<SetActionIcon>().DisplayIcon(SetActionIcon.IconType.CLIMB);
-        if (this._player.GetComponent<Player>().isActivelyClimbing())
-            {
-            this.globalClimbingArea.GetComponent<BoxCollider2D>().enabled = true;
-            // Will be removed when we have actual level design and art assets
-            if (this.platformToClimbThrough)
-                {
-                this.platformToClimbThrough.GetComponent<BoxCollider2D>().enabled = false;
-                }
-            this.otherClimbingArea.GetComponent<BoxCollider2D>().enabled = false;
-            this.globalClimbingArea.GetComponent<ExitingClimbingArea>().setGameObjects(this.platformToClimbThrough, this.otherClimbingArea);
-            }
+        //if (this._player.GetComponent<Player>().isActivelyClimbing())
+        //    {
+        //    this.globalClimbingArea.GetComponent<BoxCollider2D>().enabled = true;
+        //    // Will be removed when we have actual level design and art assets
+        //    if (this.platformToClimbThrough)
+        //        {
+        //        this.platformToClimbThrough.GetComponent<BoxCollider2D>().enabled = false;
+        //        }
+        //    this.otherClimbingArea.GetComponent<BoxCollider2D>().enabled = false;
+        //    this.globalClimbingArea.GetComponent<ExitingClimbingArea>().setGameObjects(this.platformToClimbThrough, this.otherClimbingArea);
+        //    }
         }
 
     private void OnTriggerExit2D(Collider2D inPlayer)
         {
-        if (inPlayer.gameObject.tag == "Player" && !this._player.GetComponent<Player>().isActivelyClimbing())
+        if (inPlayer.gameObject.tag == "Player" /*&& !this._player.GetComponent<Player>().isActivelyClimbing()*/)
             {
             this._player.GetComponent<Player>().outOfClimbingArea();
             }

@@ -18,7 +18,7 @@ public class TemperatureHazard : MonoBehaviour
     {
         if (inPlayer.gameObject.tag == "Player")
         {
-            //player.GetComponent<Player>().TemperatureHazard(hazardEffect);
+            player.GetComponent<Player>().TemperatureHazard(hazardEffect);
         }
     }
 
@@ -29,7 +29,7 @@ public class TemperatureHazard : MonoBehaviour
             this._currentTime += Time.deltaTime;
             if (this._currentTime >= this.timeDelay)
             {
-                //player.GetComponent<Player>().TemperatureHazard(hazardEffect);
+                player.GetComponent<Player>().TemperatureHazard(hazardEffect);
                 this._currentTime = 0.0f;
             }
         }
