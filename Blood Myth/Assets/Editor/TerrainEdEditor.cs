@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+
 [CustomEditor(typeof(TerrainEd)), CanEditMultipleObjects]
 public class TerrainEdEditor : Editor
 {
@@ -12,6 +13,7 @@ public class TerrainEdEditor : Editor
     private void OnEnable()
     {
         terrainEditor = (TerrainEd)target;
+        VertexHandleUtility.Initialize();
     }
     void OnDisable() { }
 
@@ -19,34 +21,78 @@ public class TerrainEdEditor : Editor
     {
         DrawDefaultInspector();
 
+
+        switch ( terrainEditor.Mode)
+        {
+            case TerrainEditorMode.VERTEXEDIT:
+
+                if (GUILayout.Button("Set Transform Mode On"))
+                {
+                    terrainEditor.Mode = TerrainEditorMode.TRANFORMEDIT;
+                    Tools.current = Tool.Move;
+                }
+                if (GUILayout.Button("Turn on Add Vertex Mode"))
+                {
+                    terrainEditor.Mode = TerrainEditorMode.ADDVERTEX;
+                    Tools.current = Tool.Move;
+                }
+
+                break;
+
+            case TerrainEditorMode.ADDVERTEX:
+
+                if (GUILayout.Button("Set Transform Mode On"))
+                {
+                    terrainEditor.Mode = TerrainEditorMode.TRANFORMEDIT;
+                    Tools.current = Tool.Move;
+                }
+                if (GUILayout.Button("Turn off Add Vertex Mode"))
+                {
+                    terrainEditor.Mode = TerrainEditorMode.VERTEXEDIT;
+                    Tools.current = Tool.Move;
+                }
+
+                break;
+
+            case TerrainEditorMode.TRANFORMEDIT:
+
+                if (GUILayout.Button("Set Transform Mode Off"))
+                {
+                    terrainEditor.Mode = TerrainEditorMode.VERTEXEDIT;
+                    Tools.current = Tool.Move;
+                }
+                if (GUILayout.Button("Turn on Add Vertex Mode"))
+                {
+                    terrainEditor.Mode = TerrainEditorMode.ADDVERTEX;
+                    Tools.current = Tool.Move;
+                }
+
+                break;
+        }
+
         if (GUILayout.Button("Clear Terrain"))
         {
             terrainEditor.ClearMesh();
             VertexHandleUtility.ClearList();
         }
-
-        if (!terrainEditor.EditMode)
-        {
-            if (GUILayout.Button("Turn on Edit Mode"))
-            {
-                terrainEditor.EditMode = true;
-                Tools.current = Tool.None;
-            }
-        }
-        else
-        if (GUILayout.Button("Turn off Edit Mode"))
-        {
-            terrainEditor.EditMode = false;
-            Tools.current = Tool.Move;
-        }
     }
 
     void OnSceneGUI()
     {
-        if (terrainEditor.EditMode)
-            ExecuteEditMode();
-        else
-            ExecuteNonEditMode();
+        switch ( terrainEditor.Mode)
+        {
+            case TerrainEditorMode.VERTEXEDIT:
+                ExecuteNonEditMode();
+            break;
+
+            case TerrainEditorMode.ADDVERTEX:
+                ExecuteEditMode();
+            break;
+
+            case TerrainEditorMode.TRANFORMEDIT:
+                ExecuteTransformMode();
+            break;
+        }
     }
 
     void ExecuteEditMode()
@@ -58,13 +104,13 @@ public class TerrainEdEditor : Editor
 
             Vector3 vect = Camera.current.ScreenToWorldPoint(screenPosition);
 
-            VertexHandleUtility.AddToList(terrainEditor.GetVertexOnClick(vect),
-                VertexHandleUtility.VertexList.Count);
+            terrainEditor.GetVertexOnClick(vect); 
         }
 
         foreach (VertexHandle VertHand in VertexHandleUtility.VertexList)
         {
-            Handles.FreeMoveHandle(VertHand.MeshVertex, Quaternion.identity, .3f, pointSnap, Handles.DotCap);
+            Vector3 oldPoint = terrainEditor.transform.TransformPoint(Quaternion.identity * VertHand.MeshVertex),
+                    newPoint = Handles.FreeMoveHandle(oldPoint, Quaternion.identity, .3f, pointSnap, Handles.DotCap);
         }
     }
 
@@ -72,78 +118,26 @@ public class TerrainEdEditor : Editor
     {
         foreach (VertexHandle VertHand in VertexHandleUtility.VertexList)
         {
-            Vector3 NewPos = VertHand.MeshVertex;
+            Vector3 oldPoint = terrainEditor.transform.TransformPoint(Quaternion.identity * VertHand.MeshVertex),
+                    newPoint = Handles.FreeMoveHandle(oldPoint, Quaternion.identity, .3f, pointSnap, Handles.DotCap);
 
-            NewPos = Handles.FreeMoveHandle(VertHand.MeshVertex, Quaternion.identity, .3f, pointSnap, Handles.DotCap);
+            if (newPoint != VertHand.MeshVertex)
+            { 
+                VertHand.MeshVertex = Quaternion.Inverse(Quaternion.identity) *
+                    terrainEditor.transform.InverseTransformPoint(newPoint);
 
-            if (NewPos != VertHand.MeshVertex)
-            {
-                VertHand.MeshVertex = NewPos;
-                UpdateVertsTransfrom(VertHand.ControlID);
+                terrainEditor.UpdateMeshVertices(VertHand.ControlID);
             }
         }
-        
     }
 
-    void UpdateVertsTransfrom(int indx)
+    void ExecuteTransformMode()
     {
-        terrainEditor.UpdateMeshVertices(indx);
+        foreach (VertexHandle VertHand in VertexHandleUtility.VertexList)
+        {
+           Handles.FreeMoveHandle(VertHand.TransMeshVertex, Quaternion.identity, .3f, pointSnap, Handles.DotCap);
+        }
     }
-    /*
-        void UpdateVertsTransfrom()
-        {
-            for (int i = 0; i < terrainEditor.transVerts.Length; ++i)
-            {
-                terrainEditor.transVerts[i] = terrainEditor.OrigVerts[i]
-                    + terrainEditor.transform.position;
-            }
-        }
-
-
-        //only runs when the referenced object is selected.
-        //Locking the inspector makes it work.
-        ///////////////////////////////////////////////////////////
-        //create a list of handles,
-        //Add an index to each handle,
-        //To "Drag" loop through the Handles instead of the vertices
-        void OnSceneGUI()
-        {
-            DragHandleResult dhResult;
-
-            foreach (Vector3 vert in terrainEditor.transVerts)
-                HandlesList.Add(VertexHandleFactory.CreateVertexHandle(vert, .3f, Handles.DotCap));
-
-            if (terrainEditor.EditMode)
-            {
-                if (Event.current.type == EventType.MouseDown)
-                {
-                    Vector3 screenPosition = Event.current.mousePosition;
-                    screenPosition.y = SceneView.currentDrawingSceneView.camera.pixelHeight - screenPosition.y;
-                    Vector3 vect = Camera.current.ScreenToWorldPoint(screenPosition);
-                    terrainEditor.GetVertexOnClick(vect);
-                    UpdateVertsTransfrom();
-                }
-            }
-
-            if (terrainEditor.EditMode == false && terrainEditor.Generated == true)
-            {
-                foreach (VertexHandle Vert in HandlesList)
-                {
-                    Vert.DragHandle(out dhResult);
-
-                    switch (dhResult)
-                    {
-                        case DragHandleResult.LMBRelease:
-                            //Vert.UpdatePosition();
-                            UpdateVertsTransfrom();
-                            break;
-                    }
-
-                }
-            }
-        }
-
-
-        */
+        
 }
 

@@ -3,30 +3,34 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
+public enum TerrainEditorMode
+{
+    VERTEXEDIT,
+    ADDVERTEX,
+    TRANFORMEDIT
+}
+
 [ExecuteInEditMode]
 public class TerrainEd : MonoBehaviour
 {
 
 #if UNITY_EDITOR
 
+    #region Class Members
+
+    [HideInInspector]
+    public Vector3[] VList;
+    [HideInInspector]
+    public TerrainEditorMode Mode;
+    
     Mesh _mesh;
-    LineRenderer lr;
-    [HideInInspector]
-    public Vector3[] OrigVerts;
-    [HideInInspector]
-    public Vector3[] transVerts;
-
-    int vertCount;
-    [HideInInspector]
-    public bool EditMode;
-    [HideInInspector]
-    public bool Generated = false;
-
     MeshFilter meshFilter;
     MeshRenderer renderer;
-
     Triangulator triangluator;
 
+    int vertCount;
+
+    #endregion
     // Use this for initialization
     void Awake()
     {
@@ -37,56 +41,84 @@ public class TerrainEd : MonoBehaviour
 
     public Vector3 GetVertexOnClick(Vector3 position)
     {
-        vertCount = OrigVerts.Length + 1;
-        Vector3 V = transform.InverseTransformPoint(new Vector3(position.x, position.y, 1.0f));
-
-        Vector3[] vectTemp = new Vector3[vertCount];
-        for (int i = 0; i < OrigVerts.Length; ++i)
-            vectTemp[i] = OrigVerts[i];
-
-        vectTemp[OrigVerts.Length] = V;
-
-        OrigVerts = new Vector3[vectTemp.Length];
-        Array.Copy(vectTemp, OrigVerts, vectTemp.Length);
-        transVerts = new Vector3[vectTemp.Length];
-        Array.Copy(vectTemp, transVerts, vectTemp.Length);
-
 
         if (triangluator == null)
             triangluator = new Triangulator();
         
-        _mesh = triangluator.TriangulateMesh(transVerts);
-        meshFilter.sharedMesh = _mesh;
-        //_mesh.vertices = transVerts;
-        //GenerateMesh();
+        Vector3 V = transform.InverseTransformPoint(new Vector3(position.x, position.y, 1.0f));
 
+        VertexHandle VertHand = VertexHandleUtility.AddToList(V, VertexHandleUtility.VertexList.Count);
+        VertHand.CorrectForTransfrom(transform.position);
+        
+        GenerateMesh();
+      
         return V;
     }
+
+    private void GenerateMesh()
+    {
+        _mesh = triangluator.TriangulateMesh(GenerateListFromHandles());
+
+        GenereateMeshUVS();
+
+        if (_mesh != null)
+            meshFilter.sharedMesh = _mesh;
+    }
+
+    private void GenereateMeshUVS()
+    {
+        Vector2[] UV = { };
+
+        if (_mesh != null)
+        { 
+            if (_mesh.vertexCount > 3)
+            { 
+                UV = UvCalculator.CalculateUVs(_mesh.vertices, 1);
+
+            foreach (Vector2 textureUV in UV)
+                textureUV.Normalize();
+            }
+        
+            _mesh.uv = UV;
+        }
+    }
+
+    public Vector3 [] GenerateListFromHandles()
+    {
+        VList = new Vector3[VertexHandleUtility.VertexList.Count];
+
+        for (int i = 0; i < VList.Length; i++)
+        {
+            VList[i] = VertexHandleUtility.VertexList[i].TransMeshVertex;
+        }
+
+  
+        return VList;
+    }
+
+    public void ApplyTransformtoVertiexList()
+    {
+        if (VertexHandleUtility.VertexList != null)
+            for (int i = 0; i < VertexHandleUtility.VertexList.Count; i++)
+                VertexHandleUtility.VertexList[i].CorrectForTransfrom(transform.position);
+    }
+
     public void Update()
     {
         if (transform.hasChanged)
         {
-            UpdateMeshVertices();
+            ApplyTransformtoVertiexList();
             transform.hasChanged = false;
         }
     }
-    public void UpdateMeshVertices()
-    {
-        for (int i = 0; i < transVerts.Length; ++i)
-            transVerts[i] = OrigVerts[i] + transform.position;
-
-        meshFilter.sharedMesh.vertices = transVerts;
-    }
+ 
     public void UpdateMeshVertices(int indx)
     {
-        OrigVerts[indx] = VertexHandleUtility.VertexList[indx].MeshVertex;
-        transVerts[indx] = VertexHandleUtility.VertexList[indx].MeshVertex;
-
-        for (int i = 0; i < transVerts.Length; ++i)
-            transVerts[i] = OrigVerts[i] + transform.position;
-
-       // _mesh.vertices = transVerts;
-       _mesh = triangluator.TriangulateMesh(transVerts);
+        VertexHandleUtility.VertexList[indx].CorrectForTransfrom(transform.position);
+        VList[indx] = VertexHandleUtility.VertexList[indx].TransMeshVertex;
+        
+       _mesh = triangluator.TriangulateMesh(VList);
+        GenereateMeshUVS();
         meshFilter.sharedMesh = _mesh;
     }
 
@@ -112,42 +144,15 @@ public class TerrainEd : MonoBehaviour
             renderer.sharedMaterial.color = Color.green;
         }
     }
+
     private void InitalizeMesh()
     {
         _mesh = new Mesh();
         meshFilter.sharedMesh = _mesh;
         _mesh.name = "ScriptedMesh";
 
-        OrigVerts = new Vector3[0];
-        transVerts = new Vector3[0];
+        VList = new Vector3[0];
         vertCount = 0;
-    }
-
-    private void GenerateMesh()
-    {
-        //Generate Triangles and UVs here.
-        if (!Generated)
-        {
-            //Testing
-          /*  if (_mesh.vertexCount >= 4)
-            {
-                _mesh.uv = new Vector2[]
-               {
-                    new Vector2 (0, 0),
-                    new Vector2 (0, 1),
-                    new Vector2(1, 1),
-                    new Vector2 (1, 0)
-               };
-            */
-              //  _mesh.triangles = new int[] { 0, 3, 2, 0, 2, 1 };
-               // _mesh.RecalculateNormals();
-                //This is a reference -- remember this
-
-
-              //  meshFilter.sharedMesh = triangluator.TriangulateMesh( );
-                Generated = true;
-            //}
-        }
     }
 
     public void ClearMesh()
@@ -156,11 +161,9 @@ public class TerrainEd : MonoBehaviour
         _mesh.name = "Cleared Terrain";
         meshFilter.sharedMesh = _mesh;
 
-        transVerts = new Vector3[0];
-        OrigVerts = new Vector3[0];
+        VList = new Vector3[0];
         _mesh.vertices = new Vector3[0];
 
-        Generated = false;
         transform.position = Vector3.zero;
     }
 #endif

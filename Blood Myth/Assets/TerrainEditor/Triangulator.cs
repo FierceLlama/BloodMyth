@@ -25,7 +25,7 @@ public class Triangulator
     {
         if (Vertices.Length < 3)
             return null;
-
+        
         geometry = new InputGeometry();
 
         foreach (Vector3 Vert in Vertices)
