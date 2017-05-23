@@ -12,7 +12,7 @@ public class FatigueHazard : MonoBehaviour
     {
         if (inPlayer.gameObject.tag == "Player")
         {
-            player.GetComponent<Player>().FatigueHazard();
+            //player.GetComponent<Player>().FatigueHazard();
         }
     }
 
@@ -23,7 +23,7 @@ public class FatigueHazard : MonoBehaviour
             this._currentTime += Time.deltaTime;
             if (this._currentTime >= this.timeDelay)
             {
-                player.GetComponent<Player>().FatigueHazard();
+                //player.GetComponent<Player>().FatigueHazard();
                 this._currentTime = 0.0f;
             }
         }

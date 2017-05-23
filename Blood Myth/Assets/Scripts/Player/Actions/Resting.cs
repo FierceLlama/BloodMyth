@@ -17,7 +17,7 @@ public class Resting : MonoBehaviour
     {
         if (inPlayer.gameObject.tag == "Player")
         {
-            player.GetComponent<PlayerManager>().CheckPlayerFatigue();
+            player.GetComponent<Player>().CheckFatigue();
         }
     }
 }

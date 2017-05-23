@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum TemperatureEffect
+    {
+    HOT_HAZARD,
+    COLD_HAZARD
+    }
+
 public class TemperatureHazard : MonoBehaviour
 {
     public GameObject player;

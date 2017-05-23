@@ -7,7 +7,7 @@ public class RestartFallTest : MonoBehaviour
     {
         if (player.tag == "Player")
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("FallTest");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Fall");
         }
     }
 }

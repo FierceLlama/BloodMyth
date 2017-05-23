@@ -109,4 +109,9 @@ public class BM_SceneManager : MonoBehaviour
     {
         this.LoadGameScene(inSceneID);
     }
+
+    public void LoadNextScene()
+        {
+            GameManager.Instance.LoadGameScene(SceneId.Fall);
+        }
 }

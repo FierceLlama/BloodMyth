@@ -9,29 +9,31 @@ public class PlayerCamera : MonoBehaviour
     public float offsetZ;
     public float offsetX;
     public float smooth;
+    private Player _playerScript;
 
 	Vector3 curPos;
 	Vector3 playerPos;
 
     //public bool isZooming = false;
     void Start()
-    {        
+    {
+        this._playerScript = player.GetComponent<Player>();
     }
 
-	void Update () 
+	void FixedUpdate () 
 	{
 		curPos = Camera.main.transform.position;
 		playerPos = player.transform.position;
         playerPos.y += offsetY;
         playerPos.z -= offsetZ;
         // Camera needs to offset in the x based on player facing direction
-        if (player.GetComponent<PlayerMovement>().isFacingRight())
+        if (this._playerScript.IsFacingRight())
         {
             playerPos.x += offsetX;
         }
         else
         {
-            playerPos.x -= offsetX;
+            playerPos.x -= offsetX; 
         }
 
 		transform.position = Vector3.Lerp(curPos, playerPos, speed * smooth * Time.smoothDeltaTime);

@@ -1,44 +1,42 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public enum PlayerFatigue
-{
-    NORMAL_FATIGUE,
-    TIRED_FATIGUE,
-    EXHAUSTED_FATIGUE
-}
 
-public enum TemperatureEffect
-{
-    COLD_HAZARD,
-    HOT_HAZARD
-}
 
 public class Player : MonoBehaviour
-{
-    // Input variables
-    private InputManager _inputManager;
+    {
+
+    //Player Movement script
+    private float _currentSpeed = 0;
+    [Header("Movement Variables:")]
+    // Movement speed
+    public float normalSpeed = 25.0f;
+    // Sprinting speed
+    public float sprintSpeed = 35.0f;
+    // Tired speed
+    public float tiredSpeed = 12.5f;
+    // Tired Sprint speed
+    public float tiredSprintSpeed = 22.5f;
+    // Exhausted speed
+    public float exhaustedSpeed = 6.25f;
+    // Jump velocity
+    public float jumpVelocity = 25.0f;
+
+    //
+    //Player
     private TouchInputData _primaryTouch;
     private TouchInputData _secondaryTouch;
-
-    // Temperature change stuffies -- will be removed later
-    Material curMat;
-    Material otherMat;
-    public GameObject tempuratureObj;
-
-    private PlayerFatigue _playerFatigue;
-    private PlayerManager _playerManager;
-    private PlayerMovement _playerMovement;
-    private float _zero = 0.0f;
-    private float _colorDivisor = 100.0f;
-    private int _totemPowers;
-    private int _totemZero = 0;
 
     private float _currentFatigue;
     private float _currentHydration;
     private float _currentTemperature;
     private TemperatureEffect _hazardEffect;
     private bool _temperatureAffectingHydration = false;
+    private int _totemPowers;
+    private int _totemZero = 0;
+    private Rigidbody2D _rb2D;
+    private bool _jumpingFatigued = false;
 
     [Header("QA SECTION")]
     public float maxTemperature = 100.0f;
@@ -48,8 +46,7 @@ public class Player : MonoBehaviour
     public float temperatureAffectOnHydration = 75.0f;
     public float temperatureEffect = 25.0f;
     public float hydrationEffectSprinting = 2.0f;
-    public float hydrationEffectClimbing = 4.0f;
-    public float hydrationEffectJumping = 5.0f;
+    public float hydrationEffectJumping = 7.0f;
     public float temperatureEffectSprinting = 3.0f;
     public float temperatureEffectClimbing = 6.0f;
     public float temperatureEffectJumping = 7.5f;
@@ -60,297 +57,342 @@ public class Player : MonoBehaviour
     public float fatigueRestingRate = 10.0f;
     public float fatigueHazardEffect = 50.0f;
 
-    // Use this for initialization
-    void Start () 
-    {
-        this._playerManager = GetComponent<PlayerManager>();
-        this._playerMovement = GetComponent<PlayerMovement>();
-        curMat = GetComponent<Renderer>().material;
-        otherMat = tempuratureObj.GetComponent<Renderer>().material;
-        this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
-        this._currentFatigue = maxFatigue;
-        this._currentHydration = maxHydration;
-        this._currentTemperature = maxTemperature;
-        this._inputManager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
-    }
-	
-	// Update is called once per frame
-	void Update () 
-    {
-        this._primaryTouch = this._inputManager.GetPrimaryInputData();
-        this._secondaryTouch = this._inputManager.GetSecondryInputData();
+    private float _zero = 0.00f;
+    //
 
-        UpdateMat();
+    private bool _facingRight;
+    private Rigidbody2D _rigidBody;
+    private float _move;
+    private bool _iHaveChangedState = false, _moving = false, _sprinting = false, _jumping = false;
+    private bool _isGrounded;
 
-        // Hydration Check
-        if (this._currentHydration <= this.fatigueLoweringThreshold)
+    public Spine.Unity.SkeletonAnimation skeletonAnimation;
+    public Transform groundCheck;
+    public float _groundRadius = 0.2f;
+    public LayerMask whatIsGround;
+    public FatigueStateBaseClass fatigueState;
+    public NormalPlayer normalFatigue;
+    public ExhaustedPlayer exhaustedFatigue;
+    public TiredPlayer tiredFatigue;
+    private bool _canClimb;
+
+    private void Start()
         {
-            // Lower Fatigue
-            this.LowerFatigue();
+        this._currentFatigue = this.maxFatigue;
+        this._currentHydration = this.maxHydration;
+        this._currentTemperature = this.maxTemperature;
+        this._rb2D = this.GetComponent<Rigidbody2D>();
+        normalFatigue = new NormalPlayer(this);
+        tiredFatigue = new TiredPlayer(this);
+        exhaustedFatigue = new ExhaustedPlayer(this);
+        fatigueState = normalFatigue;
+        this._rigidBody = this.GetComponent<Rigidbody2D>();
+        this._facingRight = true;
+        this.skeletonAnimation.state.SetAnimation(0, "Idle", true);
         }
 
-        // Temp Checks
-        if (this._currentTemperature <= this.fatigueLoweringThreshold)
+    private void Update()
         {
-            // Lower Fatigue
-            this.LowerFatigue();
-            // Swap player material for arms based on last temperature hazard encountered
-            // TODO
+        this.CheckFatigue();
+        fatigueState.Update();
         }
 
-        //// Fatigue Check for crisis
-        //if (this._currentFatigue <= this._zero)
-        //{
-        //    // Crisis -- needs better management later
-        //    Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
-        //}
-	}
-
-    void UpdateMat()
-    {        
-        if (this._currentTemperature < this.fatigueLoweringThreshold)
+    public void CheckOnGround()
         {
-            // swap material on player based on _hazardEffect
-            otherMat.color = new Color(1, otherMat.color.g, otherMat.color.b,1);
-            otherMat.color -= new Color(0, 0.01f, 0.01f, 0);
-        }
-        //else if (this._currentTemperature < this.minTemperature)
-        //{
-        //    otherMat.color = new Color(otherMat.color.r, otherMat.color.g, 1, 1);
-        //    otherMat.color -= new Color(0.01f, 0.01f, 0, 0); 
-        //}
-        else
-        {
-            otherMat.color = Color.white;
+        this._isGrounded = Physics2D.OverlapCircle(this.groundCheck.position, this._groundRadius, this.whatIsGround);
+        if(this._jumping && this._isGrounded)
+            {
+            this._jumping = false;
+            this._iHaveChangedState = true;
+            }
         }
 
-        tempuratureObj.GetComponent<Renderer>().material = otherMat;
-        curMat.color = new Color(this._currentHydration/this._colorDivisor, this._currentHydration / this._colorDivisor,
-                                 this._currentHydration / this._colorDivisor, this._currentFatigue/ this._colorDivisor);
-        GetComponent<Renderer>().material = curMat;
-    }
+    public bool GetGrounded()
+        {
+        return this._isGrounded;
+        }
+
+    public void SpriteDirection()
+        {
+        if (this._move < 0 && this._facingRight)
+            {
+            this.skeletonAnimation.skeleton.FlipX = true;
+            this._facingRight = false;
+            }
+        else if (this._move > 0 && !this._facingRight)
+            {
+            this.skeletonAnimation.skeleton.FlipX = false;
+            this._facingRight = true;
+            }
+        }
+
+    public bool IsFacingRight()
+        {
+        return this._facingRight; 
+        }
+
+    public void SetIHaveChangedState(bool changedState)
+        {
+        this._iHaveChangedState = changedState;
+        }
+
+    public bool GetIHaveChangedState()
+        {
+        return this._iHaveChangedState;
+        }
+
+    public float GetMove()
+        {
+        return this._move;
+        }
+
+    public void SetMove(float move)
+        {
+        this._move = move;
+        }
+
+    public Rigidbody2D GetRigidbody()
+        {
+        return this._rigidBody;
+        }
+
+    public bool GetJumping()
+        {
+        return this._jumping;
+        }
+    public void SetJumping(bool jumping)
+        {
+        this._jumping = jumping;
+        }
+
+    public bool GetMoving()
+        {
+        return this._moving;
+        }
+
+    public void SetMoving(bool moving)
+        {
+        this._moving = moving;
+        }
+
+    public bool GetSprinting()
+        {
+        return this._sprinting;
+        }
+
+    public void SetSprinting(bool sprinting)
+        {
+        this._sprinting = sprinting;
+        }
+
+    //This will need to be refactored
 
     public void Jumped()
-    {
-        if (!this.checkLowHydration())
         {
+        if (!this.checkLowHydration())
+            {
             if (!this._temperatureAffectingHydration)
-            {
+                {
                 this._currentHydration -= this.hydrationEffectJumping;
-            }
+                }
             else
-            {
+                {
                 this._currentHydration -= this.temperatureEffectJumping;
+                }
             }
         }
-    }
 
     public void Sprinting()
-    {
-        if (this._playerManager.GetMovement() && !this.checkLowHydration())
         {
-            if (!this._temperatureAffectingHydration)
+        if (this.GetMoving() && !this.checkLowHydration())
             {
+            if (!this._temperatureAffectingHydration)
+                {
                 this._currentHydration -= this.hydrationEffectSprinting * Time.deltaTime;
-            }
+                }
             else
-            {
+                {
                 this._currentHydration -= this.temperatureEffectSprinting * Time.deltaTime;
+                }
             }
         }
-    }
-
-    public void Climbing()
-    {
-        if (!this.checkLowHydration())
-        {
-            if (!this._temperatureAffectingHydration)
-            {
-                this._currentHydration -= this.hydrationEffectClimbing * Time.deltaTime;
-            }
-            else
-            {
-                this._currentHydration -= this.hydrationEffectClimbing * Time.deltaTime;
-            }
-        }
-        this.DetermineFatigueClimbing();
-    }
 
     bool checkLowHydration()
-    {
+        {
         bool hydration0 = false;
 
         if (this._currentHydration <= this._zero)
-        {
+            {
             this._currentHydration = this._zero;
             hydration0 = true;
-        }
+            }
 
         return hydration0;
-    }
+        }
 
     public void DrinkingWater()
-    {
+        {
         if (this._currentHydration < this.maxHydration)
-        {
+            {
             this._currentHydration += this.hydrationEffectDrinkingWater;
-        }
+            }
         else
-        {
+            {
             this._currentHydration = this.maxHydration;
+            }
         }
-    }
 
     public void InShade()
-    {
+        {
         if (this._currentTemperature < this.maxTemperature)
-        {
+            {
             this._currentTemperature += this.temperatureEffect;
-        }
+            }
         else
-        {
+            {
             this._currentTemperature = this.maxTemperature;
+            }
         }
-    }
 
     public void TemperatureHazard(TemperatureEffect inHazard)
-    {
+        {
         this._hazardEffect = inHazard;
         if (this._currentTemperature > this._zero)
-        {
+            {
             this._currentTemperature -= this.temperatureEffect;
-        }
+            }
         else
-        {
+            {
             this._currentTemperature = this._zero;
+            }
         }
-    }
 
     public void FatigueHazard()
-    {
+        {
         this._currentFatigue -= this.fatigueHazardEffect;
         if (this.CheckCrisis())
-        {
+            {
             Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
-        }
+            }
         else
-        {
-            if (this._playerMovement.isActivelyClimbing())
             {
-                this.DetermineFatigueClimbing();
-            }
-            else
-            {
-                this.DetermineFatigue();
+            this.DetermineFatigueState();
             }
         }
-    }
 
     public void LowerFatigue()
-    {
+        {
         if (this.CheckCrisis())
-        {
-            Camera.main.gameObject.GetComponent<SceneController>(). RestartScene();
-        }
+            {
+            Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
+            }
         else
-        {
+            {
             this._currentFatigue -= this.fatigueDownRate * Time.deltaTime;
             // I don't like this, I need callbacks for threshold values
-            if (this._playerMovement.isActivelyClimbing())
-            {
-                this.DetermineFatigueClimbing();
-            }
-            else
-            {
-                this.DetermineFatigue();
+            this.DetermineFatigueState();   
             }
         }
-    }
 
     bool CheckCrisis()
-    {
+        {
         bool inCrisis = false;
         if (this._currentFatigue <= this._zero)
-        {
+            {
             inCrisis = true;
-        }
+            }
         return inCrisis;
-    }
+        }
 
-    public void DetermineFatigue()
-    {
+    public void DetermineFatigueState()
+        {
         if (this._currentFatigue > this.tiredFatigueRangeHigh)
-        {
-            this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
-            if (this._playerManager.getMoveAction() == MoveActions.SPRINTING_ACTION)
             {
-                this._playerManager.PlayerIsSprinting();
+            this.fatigueState = normalFatigue;
             }
-            else
-            {
-                this._playerManager.PlayerIsNormal();
-            }
-        }
         else if (this._currentFatigue > this.tiredFatigueRangeLow)
-        {
-            this._playerFatigue = PlayerFatigue.TIRED_FATIGUE;
-            this._playerManager.PlayerIsTired();
-        }
+            {
+            this.fatigueState = tiredFatigue;
+            }
         else
-        {
-            this._playerFatigue = PlayerFatigue.EXHAUSTED_FATIGUE;
-            this._playerManager.PlayerIsExhausted();
-        }        
-    }
-
-    public void DetermineFatigueClimbing()
-    {
-        if (this._currentFatigue > this.tiredFatigueRangeHigh)
-        {
-            this._playerFatigue = PlayerFatigue.NORMAL_FATIGUE;
-            this._playerManager.DeterminePlayerClimbDirection();
+            {
+            this.fatigueState = exhaustedFatigue;
+            }
         }
-        else if (this._currentFatigue > this.tiredFatigueRangeLow)
-        {
-            this._playerFatigue = PlayerFatigue.TIRED_FATIGUE;
-            this._playerMovement.StoppedClimbing();
-            this._playerManager.PlayerIsTired();
-        }
-    }
 
     public void addTotemPowers()
-    {
+        {
         this._totemPowers++;
-    }
+        }
 
     public void subtractTotemPowers()
-    {
-        if (this._totemPowers > this._totemZero)
         {
+        if (this._totemPowers > this._totemZero)
+            {
             this._totemPowers--;
+            }
         }
-    }
 
     public int getTotemPowers()
-    {
+        {
         return this._totemPowers;
-    }
+        }
 
     public void Resting()
-    {
-        if (this._currentFatigue < this.maxFatigue)
         {
+        if (this._currentFatigue < this.maxFatigue)
+            {
             this._currentFatigue += this.fatigueRestingRate * Time.deltaTime;
+            }
         }
-    }
 
     public TouchInputData getPrimaryTouch()
-    {
+        {
         return this._primaryTouch;
-    }
+        }
 
     public TouchInputData getSecondaryTouch()
-    {
+        {
         return this._secondaryTouch;
+        }
+
+
+    //PlayerManager
+
+    public void CheckFatigue()
+        {
+        if(this._currentHydration <= this.fatigueLoweringThreshold)
+            {
+            this.LowerFatigue();
+            }
+        if (this._currentTemperature <= this.fatigueLoweringThreshold)
+            {
+            this.LowerFatigue();
+            }
+        }
+
+    public void inClimbingArea()
+        {
+        GameObject.FindWithTag("Actions").GetComponent<SetActionIcon>().DisplayIcon(SetActionIcon.IconType.CLIMB);
+        }
+
+    public void outOfClimbingArea()
+        {
+        GameObject.FindWithTag("Actions").GetComponent<SetActionIcon>().HideIcon();
+        }
+
+    public bool isFacingRight()
+        {
+        return this._facingRight;
+        }
+
+    public void SetSpeed(float speed)
+        {
+        this._currentSpeed = speed;
+        }
+
+    public float GetSpeed()
+        {
+        return this._currentSpeed;
+        }
     }
-}
