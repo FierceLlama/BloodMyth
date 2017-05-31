@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class Player : MonoBehaviour
     {
-
     //Player Movement script
     private float _currentSpeed = 0;
     [Header("Movement Variables:")]
@@ -22,12 +19,7 @@ public class Player : MonoBehaviour
     public float exhaustedSpeed = 6.25f;
     // Jump velocity
     public float jumpVelocity = 25.0f;
-
-    //
-    //Player
-    private TouchInputData _primaryTouch;
-    private TouchInputData _secondaryTouch;
-
+    
     private float _currentFatigue;
     private float _currentHydration;
     private float _currentTemperature;
@@ -74,7 +66,11 @@ public class Player : MonoBehaviour
     public NormalPlayer normalFatigue;
     public ExhaustedPlayer exhaustedFatigue;
     public TiredPlayer tiredFatigue;
-    private bool _canClimb;
+
+    // Input variables
+    private InputManager _inputManager;
+    private TouchInputData _primaryTouch;
+    private TouchInputData _secondaryTouch;
 
     private void Start()
         {
@@ -82,19 +78,23 @@ public class Player : MonoBehaviour
         this._currentHydration = this.maxHydration;
         this._currentTemperature = this.maxTemperature;
         this._rb2D = this.GetComponent<Rigidbody2D>();
-        normalFatigue = new NormalPlayer(this);
-        tiredFatigue = new TiredPlayer(this);
-        exhaustedFatigue = new ExhaustedPlayer(this);
-        fatigueState = normalFatigue;
+        this.normalFatigue = new NormalPlayer(this);
+        this.tiredFatigue = new TiredPlayer(this);
+        this.exhaustedFatigue = new ExhaustedPlayer(this);
+        this.fatigueState = this.normalFatigue;
         this._rigidBody = this.GetComponent<Rigidbody2D>();
         this._facingRight = true;
         this.skeletonAnimation.state.SetAnimation(0, "Idle", true);
+        this._inputManager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
         }
 
     private void Update()
         {
+        this._primaryTouch = this._inputManager.GetPrimaryInputData();
+        this._secondaryTouch = this._inputManager.GetSecondryInputData();
+
         this.CheckFatigue();
-        fatigueState.Update();
+        this.fatigueState.Update();
         }
 
     public void CheckOnGround()
@@ -191,14 +191,7 @@ public class Player : MonoBehaviour
         {
         if (!this.checkLowHydration())
             {
-            if (!this._temperatureAffectingHydration)
-                {
-                this._currentHydration -= this.hydrationEffectJumping;
-                }
-            else
-                {
-                this._currentHydration -= this.temperatureEffectJumping;
-                }
+            this._currentHydration -= this.temperatureEffectJumping;
             }
         }
 
@@ -206,14 +199,7 @@ public class Player : MonoBehaviour
         {
         if (this.GetMoving() && !this.checkLowHydration())
             {
-            if (!this._temperatureAffectingHydration)
-                {
-                this._currentHydration -= this.hydrationEffectSprinting * Time.deltaTime;
-                }
-            else
-                {
                 this._currentHydration -= this.temperatureEffectSprinting * Time.deltaTime;
-                }
             }
         }
 
@@ -256,6 +242,7 @@ public class Player : MonoBehaviour
 
     public void TemperatureHazard(TemperatureEffect inHazard)
         {
+        // This is for changing character effects
         this._hazardEffect = inHazard;
         if (this._currentTemperature > this._zero)
             {
@@ -356,9 +343,6 @@ public class Player : MonoBehaviour
         return this._secondaryTouch;
         }
 
-
-    //PlayerManager
-
     public void CheckFatigue()
         {
         if(this._currentHydration <= this.fatigueLoweringThreshold)
@@ -369,16 +353,6 @@ public class Player : MonoBehaviour
             {
             this.LowerFatigue();
             }
-        }
-
-    public void inClimbingArea()
-        {
-        GameObject.FindWithTag("Actions").GetComponent<SetActionIcon>().DisplayIcon(SetActionIcon.IconType.CLIMB);
-        }
-
-    public void outOfClimbingArea()
-        {
-        GameObject.FindWithTag("Actions").GetComponent<SetActionIcon>().HideIcon();
         }
 
     public bool isFacingRight()
@@ -394,5 +368,10 @@ public class Player : MonoBehaviour
     public float GetSpeed()
         {
         return this._currentSpeed;
+        }
+
+    public bool fatigueForJumping()
+        {
+        return this._jumpingFatigued;
         }
     }

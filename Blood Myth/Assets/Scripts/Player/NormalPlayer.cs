@@ -20,8 +20,53 @@ public class NormalPlayer : FatigueStateBaseClass
     public override void Update()
         {
         this.player.CheckOnGround();
+
+#if UNITY_ANDROID
+        if (this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        {
+            this.player.SetMove(1.0f);
+        }
+        else if (this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        {
+            this.player.SetMove(-1.0f);
+        }
+        else
+        {
+            this.player.SetMove(0.0f);
+        }
+        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
+
+        if ((this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
+                && this.player.getPrimaryTouch().getTouchTapCount() >= 2 && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary && !this.player.GetSprinting())
+            {
+            this.player.SetSprinting(true);
+            if (!this.player.GetJumping())
+                {
+                this.player.SetIHaveChangedState(true);
+                }
+            }
+        else if (this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Canceled)
+            {
+            this.player.SetSprinting(false);
+            if (!this.player.GetJumping())
+                {
+                this.player.SetIHaveChangedState(true);
+                }
+            }
+
+        if ((this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Bottom || this.player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Bottom)
+            && !this.player.fatigueForJumping()
+            && this.player.GetGrounded())
+            {
+            this.player.SetJumping(true);
+            this.player.SetIHaveChangedState(true);
+            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
+            }
+
+#endif
+
 #if UNITY_EDITOR
-        this.player.SetMove(Input.GetAxis("Horizontal"));
+            this.player.SetMove(Input.GetAxis("Horizontal"));
         this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
         if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting()) 
         {
@@ -47,6 +92,7 @@ public class NormalPlayer : FatigueStateBaseClass
             this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
             }
 #endif
+
         this.player.SpriteDirection();
         if (!this.player.GetJumping())
             {
