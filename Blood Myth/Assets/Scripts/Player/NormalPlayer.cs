@@ -20,57 +20,11 @@ public class NormalPlayer : FatigueStateBaseClass
     public override void Update()
         {
         this.player.CheckOnGround();
-
-#if UNITY_ANDROID
-        if (this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
-        {
-            this.player.SetMove(1.0f);
-        }
-        else if (this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
-        {
-            this.player.SetMove(-1.0f);
-        }
-        else
-        {
-            this.player.SetMove(0.0f);
-        }
-        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
-
-        if ((this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
-                && this.player.getPrimaryTouch().getTouchTapCount() >= 2 && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary && !this.player.GetSprinting())
-            {
-            this.player.SetSprinting(true);
-            if (!this.player.GetJumping())
-                {
-                this.player.SetIHaveChangedState(true);
-                }
-            }
-        // Need to find a way to kill sprint...but this should be a non issue when using the new UI
-        else if (this.player.getPrimaryTouch().getTouchTapCount() == 0)
-            {
-            this.player.SetSprinting(false);
-            if (!this.player.GetJumping())
-                {
-                this.player.SetIHaveChangedState(true);
-                }
-            }
-
-        if ((this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Bottom || this.player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Bottom)
-            && !this.player.fatigueForJumping()
-            && this.player.GetGrounded())
-            {
-            this.player.SetJumping(true);
-            this.player.SetIHaveChangedState(true);
-            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
-            }
-
-#endif
-
 #if UNITY_EDITOR
-            this.player.SetMove(Input.GetAxis("Horizontal"));
-        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
-        if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting()) 
-        {
+        this.player.SetMove(Input.GetAxis("Horizontal"));
+        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * 25, this.player.GetRigidbody().velocity.y);
+        if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting())
+            {
             this.player.SetSprinting(true);
             if (!this.player.GetJumping())
                 {
@@ -78,7 +32,7 @@ public class NormalPlayer : FatigueStateBaseClass
                 }
             }
         else if (Input.GetKeyUp(KeyCode.LeftShift) && this.player.GetMoving())
-        {
+            {
             this.player.SetSprinting(false);
             if (!this.player.GetJumping())
                 {
@@ -87,13 +41,12 @@ public class NormalPlayer : FatigueStateBaseClass
             }
 
         if (Input.GetKeyDown(KeyCode.Space) && !this.player.GetJumping() && this.player.GetGrounded())
-        {
+            {
             this.player.SetJumping(true);
             this.player.SetIHaveChangedState(true);
-            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
+            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, 20);
             }
 #endif
-
         this.player.SpriteDirection();
         if (!this.player.GetJumping())
             {
@@ -114,7 +67,6 @@ public class NormalPlayer : FatigueStateBaseClass
             if (this.player.GetJumping())
                 {
                 this.player.skeletonAnimation.state.SetAnimation(0, "Jump", false);
-                this.player.Jumped();
                 }
 
             else if (this.player.GetMoving() && !this.player.GetJumping())
@@ -122,13 +74,10 @@ public class NormalPlayer : FatigueStateBaseClass
                 if (this.player.GetSprinting())
                     {
                     this.player.skeletonAnimation.state.SetAnimation(0, "Sprint", true);
-                    this.player.SetSpeed(this.player.sprintSpeed);
-                    this.player.Sprinting();
                     }
                 else
                     {
                     this.player.skeletonAnimation.state.SetAnimation(0, "Run", true);
-                    this.player.SetSpeed(this.player.normalSpeed);
                     }
                 }
             else
