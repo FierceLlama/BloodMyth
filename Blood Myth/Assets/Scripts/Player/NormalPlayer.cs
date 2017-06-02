@@ -45,7 +45,8 @@ public class NormalPlayer : FatigueStateBaseClass
                 this.player.SetIHaveChangedState(true);
                 }
             }
-        else if (this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Canceled)
+        // Need to find a way to kill sprint...but this should be a non issue when using the new UI
+        else if (this.player.getPrimaryTouch().getTouchTapCount() == 0)
             {
             this.player.SetSprinting(false);
             if (!this.player.GetJumping())
