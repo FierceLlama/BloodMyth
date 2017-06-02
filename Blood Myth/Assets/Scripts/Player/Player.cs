@@ -4,6 +4,54 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
     {
+    //Player Movement script
+    private float _currentSpeed = 0;
+    [Header("Movement Variables:")]
+    // Movement speed
+    public float normalSpeed = 25.0f;
+    // Sprinting speed
+    public float sprintSpeed = 35.0f;
+    // Tired speed
+    public float tiredSpeed = 12.5f;
+    // Tired Sprint speed
+    public float tiredSprintSpeed = 22.5f;
+    // Exhausted speed
+    public float exhaustedSpeed = 6.25f;
+    // Jump velocity
+    public float jumpVelocity = 25.0f;
+
+    private float _currentFatigue;
+    private float _currentHydration;
+    private float _currentTemperature;
+    private TemperatureEffect _hazardEffect;
+    private bool _temperatureAffectingHydration = false;
+    private int _totemPowers;
+    private int _totemZero = 0;
+    private Rigidbody2D _rb2D;
+    private bool _jumpingFatigued = false;
+
+    [Header("QA SECTION")]
+    public float maxTemperature = 100.0f;
+    public float maxHydration = 100.0f;
+    public float maxFatigue = 100.0f;
+    public float fatigueLoweringThreshold = 50.0f;
+    public float temperatureAffectOnHydration = 75.0f;
+    public float temperatureEffect = 25.0f;
+    public float hydrationEffectSprinting = 2.0f;
+    public float hydrationEffectJumping = 7.0f;
+    public float temperatureEffectSprinting = 3.0f;
+    public float temperatureEffectClimbing = 6.0f;
+    public float temperatureEffectJumping = 7.5f;
+    public float hydrationEffectDrinkingWater = 10.0f;
+    public float tiredFatigueRangeHigh = 80.0f;
+    public float tiredFatigueRangeLow = 30.0f;
+    public float fatigueDownRate = 1.0f;
+    public float fatigueRestingRate = 10.0f;
+    public float fatigueHazardEffect = 50.0f;
+
+    private float _zero = 0.00f;
+    //
+
     private bool _facingRight;
     private Rigidbody2D _rigidBody;
     private float _move;
@@ -19,96 +67,40 @@ public class Player : MonoBehaviour
     public ExhaustedPlayer exhaustedFatigue;
     public TiredPlayer tiredFatigue;
 
+    // Input variables
+    private InputManager _inputManager;
+    private TouchInputData _primaryTouch;
+    private TouchInputData _secondaryTouch;
 
     private void Start()
         {
-        normalFatigue = new NormalPlayer(this);
-        tiredFatigue = new TiredPlayer(this);
-        exhaustedFatigue = new ExhaustedPlayer(this);
-        fatigueState = normalFatigue;
+        this._currentFatigue = this.maxFatigue;
+        this._currentHydration = this.maxHydration;
+        this._currentTemperature = this.maxTemperature;
+        this._rb2D = this.GetComponent<Rigidbody2D>();
+        this.normalFatigue = new NormalPlayer(this);
+        this.tiredFatigue = new TiredPlayer(this);
+        this.exhaustedFatigue = new ExhaustedPlayer(this);
+        this.fatigueState = this.normalFatigue;
         this._rigidBody = this.GetComponent<Rigidbody2D>();
         this._facingRight = true;
         this.skeletonAnimation.state.SetAnimation(0, "Idle", true);
+        this._inputManager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
         }
 
     private void Update()
         {
-        fatigueState.Update();
-//        this.CheckOnGround();
-//#if UNITY_EDITOR
-//        this._move = Input.GetAxis("Horizontal");
-//        this._rigidBody.velocity = new Vector2(this._move * 25, this._rigidBody.velocity.y);
-//        if (Input.GetKey(KeyCode.LeftShift) && this._move != 0 && !this._sprinting)
-//            {
-//            this._sprinting = true;
-//            if (!this._jumping)
-//                {
-//                this._iHaveChangedState = true;
-//                }
-//            }
-//        else if(Input.GetKeyUp(KeyCode.LeftShift) && this._moving)
-//            {
-//            this._sprinting = false;
-//            if (!this._jumping)
-//                {
-//                this._iHaveChangedState = true;
-//                }
-//            }
+        this._primaryTouch = this._inputManager.GetPrimaryInputData();
+        this._secondaryTouch = this._inputManager.GetSecondryInputData();
 
-//        if (Input.GetKeyDown(KeyCode.Space)&& !this._jumping && this.GetGrounded())
-//            {
-//            this._jumping = true;
-//            _iHaveChangedState = true;
-//            this._rigidBody.velocity = new Vector2(this._rigidBody.velocity.x, 20);
-//            }
-//#endif
-//        this.SpriteDirection();
-//        if (!this._jumping)
-//            {
-//            if (this._move != 0 && !this._moving)
-//                {
-//                this._moving = true;
-//                this._iHaveChangedState = true;
-//                }
-//            else if (this._move == 0 && this._moving)
-//                {
-//                this._moving = false;
-//                this._iHaveChangedState = true;
-//                }
-//            }
-
-//        if (this._iHaveChangedState)
-//            {
-//            if (this._jumping)
-//                {
-//                this.skeletonAnimation.state.SetAnimation(0, "Jump", false);
-//                }
-
-//            else if (this._moving && !this._jumping)
-//                {
-//                if (this._sprinting)
-//                    {
-//                    this.skeletonAnimation.state.SetAnimation(0, "Sprint", true);
-//                    }
-//                else
-//                    {
-//                    this.skeletonAnimation.state.SetAnimation(0, "Run", true);
-//                    }
-//                }
-//            else
-//                {
-//                this.skeletonAnimation.state.SetAnimation(0, "Idle", true);
-//                }
-//            this._iHaveChangedState = false;
-//            }
-
-//        //this._lastState = this._currentState;
+        this.CheckFatigue();
+        this.fatigueState.Update();
         }
 
     public void CheckOnGround()
         {
         this._isGrounded = Physics2D.OverlapCircle(this.groundCheck.position, this._groundRadius, this.whatIsGround);
-        if(this._jumping && this._isGrounded)
+        if (this._jumping && this._isGrounded)
             {
             this._jumping = false;
             this._iHaveChangedState = true;
@@ -136,7 +128,7 @@ public class Player : MonoBehaviour
 
     public bool IsFacingRight()
         {
-        return this._facingRight; 
+        return this._facingRight;
         }
 
     public void SetIHaveChangedState(bool changedState)
@@ -191,5 +183,195 @@ public class Player : MonoBehaviour
     public void SetSprinting(bool sprinting)
         {
         this._sprinting = sprinting;
+        }
+
+    //This will need to be refactored
+
+    public void Jumped()
+        {
+        if (!this.checkLowHydration())
+            {
+            this._currentHydration -= this.temperatureEffectJumping;
+            }
+        }
+
+    public void Sprinting()
+        {
+        if (this.GetMoving() && !this.checkLowHydration())
+            {
+            this._currentHydration -= this.temperatureEffectSprinting * Time.deltaTime;
+            }
+        }
+
+    bool checkLowHydration()
+        {
+        bool hydration0 = false;
+
+        if (this._currentHydration <= this._zero)
+            {
+            this._currentHydration = this._zero;
+            hydration0 = true;
+            }
+
+        return hydration0;
+        }
+
+    public void DrinkingWater()
+        {
+        if (this._currentHydration < this.maxHydration)
+            {
+            this._currentHydration += this.hydrationEffectDrinkingWater;
+            }
+        else
+            {
+            this._currentHydration = this.maxHydration;
+            }
+        }
+
+    public void InShade()
+        {
+        if (this._currentTemperature < this.maxTemperature)
+            {
+            this._currentTemperature += this.temperatureEffect;
+            }
+        else
+            {
+            this._currentTemperature = this.maxTemperature;
+            }
+        }
+
+    public void TemperatureHazard(TemperatureEffect inHazard)
+        {
+        // This is for changing character effects
+        this._hazardEffect = inHazard;
+        if (this._currentTemperature > this._zero)
+            {
+            this._currentTemperature -= this.temperatureEffect;
+            }
+        else
+            {
+            this._currentTemperature = this._zero;
+            }
+        }
+
+    public void FatigueHazard()
+        {
+        this._currentFatigue -= this.fatigueHazardEffect;
+        if (this.CheckCrisis())
+            {
+            Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
+            }
+        else
+            {
+            this.DetermineFatigueState();
+            }
+        }
+
+    public void LowerFatigue()
+        {
+        if (this.CheckCrisis())
+            {
+            Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
+            }
+        else
+            {
+            this._currentFatigue -= this.fatigueDownRate * Time.deltaTime;
+            // I don't like this, I need callbacks for threshold values
+            this.DetermineFatigueState();
+            }
+        }
+
+    bool CheckCrisis()
+        {
+        bool inCrisis = false;
+        if (this._currentFatigue <= this._zero)
+            {
+            inCrisis = true;
+            }
+        return inCrisis;
+        }
+
+    public void DetermineFatigueState()
+        {
+        if (this._currentFatigue > this.tiredFatigueRangeHigh)
+            {
+            this.fatigueState = normalFatigue;
+            }
+        else if (this._currentFatigue > this.tiredFatigueRangeLow)
+            {
+            this.fatigueState = tiredFatigue;
+            }
+        else
+            {
+            this.fatigueState = exhaustedFatigue;
+            }
+        }
+
+    public void addTotemPowers()
+        {
+        this._totemPowers++;
+        }
+
+    public void subtractTotemPowers()
+        {
+        if (this._totemPowers > this._totemZero)
+            {
+            this._totemPowers--;
+            }
+        }
+
+    public int getTotemPowers()
+        {
+        return this._totemPowers;
+        }
+
+    public void Resting()
+        {
+        if (this._currentFatigue < this.maxFatigue)
+            {
+            this._currentFatigue += this.fatigueRestingRate * Time.deltaTime;
+            }
+        }
+
+    public TouchInputData getPrimaryTouch()
+        {
+        return this._primaryTouch;
+        }
+
+    public TouchInputData getSecondaryTouch()
+        {
+        return this._secondaryTouch;
+        }
+
+    public void CheckFatigue()
+        {
+        if (this._currentHydration <= this.fatigueLoweringThreshold)
+            {
+            this.LowerFatigue();
+            }
+        if (this._currentTemperature <= this.fatigueLoweringThreshold)
+            {
+            this.LowerFatigue();
+            }
+        }
+
+    public bool isFacingRight()
+        {
+        return this._facingRight;
+        }
+
+    public void SetSpeed(float speed)
+        {
+        this._currentSpeed = speed;
+        }
+
+    public float GetSpeed()
+        {
+        return this._currentSpeed;
+        }
+
+    public bool fatigueForJumping()
+        {
+        return this._jumpingFatigued;
         }
     }
