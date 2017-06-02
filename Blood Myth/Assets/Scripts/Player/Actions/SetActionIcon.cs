@@ -22,20 +22,44 @@ public class SetActionIcon : MonoBehaviour
         {
         this._type = IconType.UNINITIALIZED;
         this._image = this.GetComponent<UnityEngine.UI.Image>();
-        this.DisplayIcon(IconType.CAPE);
+        //this.DisplayIcon(IconType.CAPE);
+        this.HideIcon();
         }
+
+    //void Update()
+    //    {
+    //    if (Input.GetKeyDown(KeyCode.Alpha1))
+    //        {
+    //        this.DisplayIcon(IconType.CAPE);
+    //        }
+    //    if (Input.GetKeyDown(KeyCode.Alpha2))
+    //        {
+    //        this.DisplayIcon(IconType.DRINK_WATER);
+    //        }
+    //    if (Input.GetKeyDown(KeyCode.Alpha3))
+    //        {
+    //        this.DisplayIcon(IconType.INVESTIGATE);
+    //        }
+    //    if (Input.GetKeyDown(KeyCode.Alpha4))
+    //        {
+    //        this.HideIcon();
+    //        }
+    //    }
 
     public void DisplayIcon(IconType inType)
         {
         switch (inType)
             {
             case IconType.CAPE:
+                this._type = IconType.CAPE;
                 this._image.sprite = this.capeIcon;
                 break;
             case IconType.DRINK_WATER:
+                this._type = IconType.DRINK_WATER;
                 this._image.sprite = this.drinkingIcon;
                 break;
             case IconType.INVESTIGATE:
+                this._type = IconType.INVESTIGATE;
                 this._image.sprite = this.investigateIcon;
                 break;
             }
@@ -45,5 +69,11 @@ public class SetActionIcon : MonoBehaviour
     public void HideIcon()
         {
         this._image.enabled = false;
+        this._type = IconType.UNINITIALIZED;
+        }
+
+    public IconType GetIconType()
+        {
+        return this._type;
         }
     }

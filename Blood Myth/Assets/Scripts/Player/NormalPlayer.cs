@@ -22,11 +22,13 @@ public class NormalPlayer : FatigueStateBaseClass
         this.player.CheckOnGround();
 
 #if UNITY_ANDROID
-        if (this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
+            this.player.GetMovingRight())
         {
             this.player.SetMove(1.0f);
         }
-        else if (this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
+        else if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
+                this.player.GetMovingLeft())
         {
             this.player.SetMove(-1.0f);
         }
@@ -67,7 +69,21 @@ public class NormalPlayer : FatigueStateBaseClass
 #endif
 
 #if UNITY_EDITOR
-        this.player.SetMove(Input.GetAxis("Horizontal"));
+        //this.player.SetMove(Input.GetAxis("Horizontal"));
+        if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
+            this.player.GetMovingRight())
+            {
+            this.player.SetMove(1.0f);
+            }
+        else if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
+                this.player.GetMovingLeft())
+            {
+            this.player.SetMove(-1.0f);
+            }
+        else
+            {
+            this.player.SetMove(0.0f);
+            }
         this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
         if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting())
             {

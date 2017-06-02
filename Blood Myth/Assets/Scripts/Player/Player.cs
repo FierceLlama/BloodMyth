@@ -72,6 +72,9 @@ public class Player : MonoBehaviour
     private TouchInputData _primaryTouch;
     private TouchInputData _secondaryTouch;
 
+    private bool _movingLeft;
+    private bool _movingRight;
+
     private void Start()
         {
         this._currentFatigue = this.maxFatigue;
@@ -373,5 +376,35 @@ public class Player : MonoBehaviour
     public bool fatigueForJumping()
         {
         return this._jumpingFatigued;
+        }
+
+    public void MovingLeft()
+        {
+        this._movingLeft = true;
+        }
+
+    public void NotMovingLeft()
+        {
+        this._movingLeft = false;
+        }
+
+    public void MovingRight()
+        {
+        this._movingRight = true;
+        }
+
+    public void NotMovingRight()
+        {
+        this._movingRight = false;
+        }
+
+    public bool GetMovingLeft()
+        {
+        return this._movingLeft;
+        }
+
+    public bool GetMovingRight()
+        {
+        return this._movingRight;
         }
     }
