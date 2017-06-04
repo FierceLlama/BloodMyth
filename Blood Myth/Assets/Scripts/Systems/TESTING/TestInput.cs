@@ -17,6 +17,7 @@ public class TestInput : MonoBehaviour {
 
     void Update()
     {
+        /*
         Primary = inputman.GetPrimaryInputData();
         Secondary = inputman.GetSecondryInputData();
 
@@ -48,5 +49,6 @@ public class TestInput : MonoBehaviour {
             else
                 this.gameObject.GetComponent<Renderer>().material.color = Color.white;
         }
+        */
     }
 }
