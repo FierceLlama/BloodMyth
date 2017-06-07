@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class ResetComboLevel : MonoBehaviour
+public class ResetLevel : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D player)
     {
