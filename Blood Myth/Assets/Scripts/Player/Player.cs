@@ -93,8 +93,8 @@ public class Player : MonoBehaviour
 
     private void Update()
         {
-        this._primaryTouch = this._inputManager.GetPrimaryInputData();
-        this._secondaryTouch = this._inputManager.GetSecondryInputData();
+        //this._primaryTouch = this._inputManager.GetPrimaryInputData();
+        //this._secondaryTouch = this._inputManager.GetSecondryInputData();
 
         this.CheckFatigue();
         this.fatigueState.Update();
