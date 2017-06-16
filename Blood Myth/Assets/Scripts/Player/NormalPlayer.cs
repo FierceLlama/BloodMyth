@@ -22,6 +22,15 @@ public class NormalPlayer : FatigueStateBaseClass
         this.player.CheckOnGround();
 
 #if UNITY_ANDROID
+        if ((this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Bottom || this.player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Bottom)
+            && !this.player.fatigueForJumping()
+            && this.player.GetGrounded())
+            {
+            this.player.SetJumping(true);
+            this.player.SetIHaveChangedState(true);
+            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
+            }
+
         if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
             this.player.GetMovingRight())
         {
@@ -57,18 +66,16 @@ public class NormalPlayer : FatigueStateBaseClass
                 }
             }
 
-        if ((this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Bottom || this.player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Bottom)
-            && !this.player.fatigueForJumping()
-            && this.player.GetGrounded())
+#endif
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Space) && !this.player.GetJumping() && this.player.GetGrounded())
             {
             this.player.SetJumping(true);
             this.player.SetIHaveChangedState(true);
             this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
             }
 
-#endif
-
-#if UNITY_EDITOR
         this.player.SetMove(Input.GetAxis("Horizontal"));
         //if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
         //    this.player.GetMovingRight())
@@ -100,13 +107,6 @@ public class NormalPlayer : FatigueStateBaseClass
                 {
                 this.player.SetIHaveChangedState(true);
                 }
-            }
-
-        if (Input.GetKeyDown(KeyCode.Space) && !this.player.GetJumping() && this.player.GetGrounded())
-            {
-            this.player.SetJumping(true);
-            this.player.SetIHaveChangedState(true);
-            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
             }
 #endif
 

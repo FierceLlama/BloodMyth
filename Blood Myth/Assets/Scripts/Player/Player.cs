@@ -55,6 +55,7 @@ public class Player : MonoBehaviour
     private float _move;
     private bool _iHaveChangedState = false, _moving = false, _sprinting = false, _jumping = false;
     private bool _isGrounded;
+    private bool _lastIsGrounded;
 
     public Spine.Unity.SkeletonAnimation skeletonAnimation;
     public Transform groundCheck;
@@ -87,6 +88,7 @@ public class Player : MonoBehaviour
         this._facingRight = true;
         this.skeletonAnimation.state.SetAnimation(0, "Idle", true);
         this._inputManager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
+        this._isGrounded = this._lastIsGrounded = false;
         }
 
     private void Update()
@@ -98,11 +100,12 @@ public class Player : MonoBehaviour
     public void CheckOnGround()
         {
         this._isGrounded = Physics2D.OverlapCircle(this.groundCheck.position, this._groundRadius, this.whatIsGround);
-        if (this._jumping && this._isGrounded)
+        if (this._jumping && this._isGrounded && (this._isGrounded != this._lastIsGrounded))
             {
             this._jumping = false;
             this._iHaveChangedState = true;
             }
+        this._lastIsGrounded = this._isGrounded;
         }
 
     public bool GetGrounded()
@@ -304,7 +307,7 @@ public class Player : MonoBehaviour
             this.fatigueState = exhaustedFatigue;
             }
 
-        if (this.oldFatigueState != this.fatigueState)
+        if (this.oldFatigueState != this.fatigueState && !this._jumping)
             {
             this.SetIHaveChangedState(true);
             this.oldFatigueState = this.fatigueState;

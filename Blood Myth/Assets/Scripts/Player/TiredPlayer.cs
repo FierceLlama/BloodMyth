@@ -21,6 +21,13 @@ public class TiredPlayer : FatigueStateBaseClass
         {
         this.player.CheckOnGround();
 #if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Space) && !this.player.GetJumping() && this.player.GetGrounded())
+            {
+            this.player.SetJumping(true);
+            this.player.SetIHaveChangedState(true);
+            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
+            }
+
         this.player.SetMove(Input.GetAxis("Horizontal"));
         this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
         if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting())
@@ -38,13 +45,6 @@ public class TiredPlayer : FatigueStateBaseClass
                 {
                 this.player.SetIHaveChangedState(true);
                 }
-            }
-
-        if (Input.GetKeyDown(KeyCode.Space) && !this.player.GetJumping() && this.player.GetGrounded())
-            {
-            this.player.SetJumping(true);
-            this.player.SetIHaveChangedState(true);
-            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
             }
 #endif
         this.player.SpriteDirection();
