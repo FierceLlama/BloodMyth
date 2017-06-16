@@ -24,7 +24,6 @@ public class Player : MonoBehaviour
     private float _currentHydration;
     private float _currentTemperature;
     private TemperatureEffect _hazardEffect;
-    private bool _temperatureAffectingHydration = false;
     private int _totemPowers;
     private int _totemZero = 0;
     private Rigidbody2D _rb2D;
@@ -35,7 +34,6 @@ public class Player : MonoBehaviour
     public float maxHydration = 100.0f;
     public float maxFatigue = 100.0f;
     public float fatigueLoweringThreshold = 50.0f;
-    public float temperatureAffectOnHydration = 75.0f;
     public float temperatureEffect = 25.0f;
     public float hydrationEffectSprinting = 2.0f;
     public float hydrationEffectJumping = 7.0f;
@@ -66,11 +64,10 @@ public class Player : MonoBehaviour
     public NormalPlayer normalFatigue;
     public ExhaustedPlayer exhaustedFatigue;
     public TiredPlayer tiredFatigue;
+    public FatigueStateBaseClass oldFatigueState;
 
     // Input variables
     private InputManager _inputManager;
-    private TouchInputData _primaryTouch;
-    private TouchInputData _secondaryTouch;
 
     private bool _movingLeft;
     private bool _movingRight;
@@ -85,6 +82,7 @@ public class Player : MonoBehaviour
         this.tiredFatigue = new TiredPlayer(this);
         this.exhaustedFatigue = new ExhaustedPlayer(this);
         this.fatigueState = this.normalFatigue;
+        this.oldFatigueState = this.fatigueState;
         this._rigidBody = this.GetComponent<Rigidbody2D>();
         this._facingRight = true;
         this.skeletonAnimation.state.SetAnimation(0, "Idle", true);
@@ -93,9 +91,6 @@ public class Player : MonoBehaviour
 
     private void Update()
         {
-        //this._primaryTouch = this._inputManager.GetPrimaryInputData();
-        //this._secondaryTouch = this._inputManager.GetSecondryInputData();
-
         this.CheckFatigue();
         this.fatigueState.Update();
         }
@@ -190,19 +185,19 @@ public class Player : MonoBehaviour
 
     //This will need to be refactored
 
-    public void Jumped()
+    public void LowerHydrationForJumping()
         {
         if (!this.checkLowHydration())
             {
-            this._currentHydration -= this.temperatureEffectJumping;
+            this._currentHydration -= this.hydrationEffectJumping;
             }
         }
 
-    public void Sprinting()
+    public void LowerHydrationForSprinting()
         {
         if (this.GetMoving() && !this.checkLowHydration())
             {
-            this._currentHydration -= this.temperatureEffectSprinting * Time.deltaTime;
+            this._currentHydration -= this.hydrationEffectSprinting * Time.deltaTime;
             }
         }
 
@@ -308,6 +303,12 @@ public class Player : MonoBehaviour
             {
             this.fatigueState = exhaustedFatigue;
             }
+
+        if (this.oldFatigueState != this.fatigueState)
+            {
+            this.SetIHaveChangedState(true);
+            this.oldFatigueState = this.fatigueState;
+            }
         }
 
     public void addTotemPowers()
@@ -334,16 +335,6 @@ public class Player : MonoBehaviour
             {
             this._currentFatigue += this.fatigueRestingRate * Time.deltaTime;
             }
-        }
-
-    public TouchInputData getPrimaryTouch()
-        {
-        return this._primaryTouch;
-        }
-
-    public TouchInputData getSecondaryTouch()
-        {
-        return this._secondaryTouch;
         }
 
     public void CheckFatigue()

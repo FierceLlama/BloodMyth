@@ -69,21 +69,21 @@ public class NormalPlayer : FatigueStateBaseClass
 #endif
 
 #if UNITY_EDITOR
-        //this.player.SetMove(Input.GetAxis("Horizontal"));
-        if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
-            this.player.GetMovingRight())
-            {
-            this.player.SetMove(1.0f);
-            }
-        else if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
-                this.player.GetMovingLeft())
-            {
-            this.player.SetMove(-1.0f);
-            }
-        else
-            {
-            this.player.SetMove(0.0f);
-            }
+        this.player.SetMove(Input.GetAxis("Horizontal"));
+        //if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
+        //    this.player.GetMovingRight())
+        //    {
+        //    this.player.SetMove(1.0f);
+        //    }
+        //else if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
+        //        this.player.GetMovingLeft())
+        //    {
+        //    this.player.SetMove(-1.0f);
+        //    }
+        //else
+        //    {
+        //    this.player.SetMove(0.0f);
+        //    }
         this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
         if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting())
             {
@@ -93,7 +93,7 @@ public class NormalPlayer : FatigueStateBaseClass
                 this.player.SetIHaveChangedState(true);
                 }
             }
-        else if (Input.GetKeyUp(KeyCode.LeftShift) && this.player.GetMoving())
+        else if (!Input.GetKey(KeyCode.LeftShift) && this.player.GetSprinting())
             {
             this.player.SetSprinting(false);
             if (!this.player.GetJumping())
@@ -121,6 +121,7 @@ public class NormalPlayer : FatigueStateBaseClass
             else if (this.player.GetMove() == 0 && this.player.GetMoving())
                 {
                 this.player.SetMoving(false);
+                this.player.SetSprinting(false);
                 this.player.SetIHaveChangedState(true);
                 }
             }
@@ -130,7 +131,7 @@ public class NormalPlayer : FatigueStateBaseClass
             if (this.player.GetJumping())
                 {
                 this.player.skeletonAnimation.state.SetAnimation(0, "Jump", false);
-                this.player.Jumped();
+                this.player.LowerHydrationForJumping();
                 }
 
             else if (this.player.GetMoving() && !this.player.GetJumping())
@@ -139,7 +140,6 @@ public class NormalPlayer : FatigueStateBaseClass
                     {
                     this.player.skeletonAnimation.state.SetAnimation(0, "Sprint", true);
                     this.player.SetSpeed(this.player.sprintSpeed);
-                    this.player.Sprinting();
                     }
                 else
                     {
@@ -152,6 +152,11 @@ public class NormalPlayer : FatigueStateBaseClass
                 this.player.skeletonAnimation.state.SetAnimation(0, "Idle", true);
                 }
             this.player.SetIHaveChangedState(false);
+            }
+
+        if (this.player.GetSprinting())
+            {
+            this.player.LowerHydrationForSprinting();
             }
         }
     }

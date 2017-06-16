@@ -38,8 +38,8 @@ public class Triangulator
             {
                 Vector2 offset = new Vector2(offsetX, offsetY) + Vector2.one * boxDistance * 0.5f;
 
-                float radians = Random.RandomRange(0, 2 * Mathf.PI);
-                float length = Random.RandomRange(0, circleDistance);
+                float radians = Random.Range(0, 2 * Mathf.PI);
+                float length = Random.Range(0, circleDistance);
 
                 Vector2 pos = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * length;
                 pos += offset;
@@ -55,7 +55,7 @@ public class Triangulator
 
         foreach (KeyValuePair<int, TriangleNet.Data.Vertex> pair in meshRepresentation.vertices)
         {
-            zOffsets.Add(pair.Key, Random.RandomRange(-zOffset, zOffset));
+            zOffsets.Add(pair.Key, Random.Range(-zOffset, zOffset));
         }
 
         int triangleIndex = 0;
