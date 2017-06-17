@@ -88,7 +88,9 @@ public class NormalPlayer : FatigueStateBaseClass
             {
             this._player.SetMove(0.0f);
             }
+        
         this._player.GetRigidbody().velocity = new Vector2(this._player.GetMove() * this._player.GetSpeed(), this._player.GetRigidbody().velocity.y);
+
         if ((Input.GetKey(KeyCode.LeftShift) || InputManager.instance.GetSprintActive()) && this._player.GetMove() != 0 && !this._player.GetSprinting())
             {
             this._player.SetSprinting(true);
