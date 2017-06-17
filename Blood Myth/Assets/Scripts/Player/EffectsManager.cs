@@ -12,11 +12,11 @@ public class EffectsManager : MonoBehaviour
 
     void Start()
         {
-        this.coldLH.enabled = false;
-        this.coldRH.enabled = false;
-        this.hotLH.enabled = false;
-        this.hotRH.enabled = false;
-        this.dehydrated.enabled = false;
+        this.coldLH.SetActive(false);
+        this.coldRH.SetActive(false);
+        this.hotLH.SetActive(false);
+        this.hotRH.SetActive(false);
+        this.dehydrated.SetActive(false);
         }
 
     void Update()
@@ -34,13 +34,17 @@ public class EffectsManager : MonoBehaviour
 
     public void SetCold()
         {
-        this.hot.Pause();
-        this.cold.Play();
+        this.coldLH.SetActive(true);
+        this.coldRH.SetActive(true);
+        this.hotLH.SetActive(false);
+        this.hotRH.SetActive(false);
         }
 
     public void SetHot()
         {
-        this.cold.Pause();
-        this.hot.Play();
+        this.coldLH.SetActive(false);
+        this.coldRH.SetActive(false);
+        this.hotLH.SetActive(true);
+        this.hotRH.SetActive(true);
         }
     }
