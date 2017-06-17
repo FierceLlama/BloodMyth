@@ -21,18 +21,85 @@ public struct TouchInputData
 public class InputManager : MonoBehaviour
 {
     public static InputManager instance;
-    
     public bool toggleStatus;
+
+    [SerializeField]
+    bool isJumpActive;
+    [SerializeField]
+    bool isSprintActive;
+    [SerializeField]
+    bool isLeftActive;
+    [SerializeField]
+    bool isRightActive;
+
+    public void ActivateLeftButton()
+    {
+        if (!isLeftActive) isLeftActive = true;
+
+        if (isLeftActive && isRightActive) { isLeftActive = false; isRightActive = false; }
+
+        Debug.Log("Left is " + (isLeftActive ? "Active" : "Not Active"));
+    }
+    public void DeActivateLeftButton()
+    {
+        if (isLeftActive) isLeftActive = false;
+
+        Debug.Log("Left is " + (isLeftActive ? "Active" : "Not Active"));
+    }
+
+    public void ActivateRightButton()
+    {
+        if (!isRightActive) isRightActive = true;
+
+        if (isLeftActive && isRightActive) { isLeftActive = false; isRightActive = false; }
+
+        Debug.Log("Right is " + (isRightActive ? "Active" : "Not Active"));
+    }
+    public void DeActivateRightButton()
+    {
+        if (isRightActive) isRightActive = false;
+
+        Debug.Log("Right is " + (isRightActive ? "Active" : "Not Active"));
+    }
+
+    public void ActivateJumpButton()
+    {
+        if (!isJumpActive) isJumpActive = true;
+
+        Debug.Log("Jump is " + (isJumpActive ? "Active" : "Not Active"));
+    }
+    public void DeActivateJumpButton()
+    {
+        if (isJumpActive) isJumpActive = false;
+
+        Debug.Log("Jump is " + (isJumpActive ? "Active" : "Not Active"));
+    }
+
+    public void triggerSprintButton()
+    {
+        if (isSprintActive)
+            isSprintActive = false;
+        else if (!isSprintActive && (isLeftActive || isRightActive) )
+            isSprintActive = true;
+
+        if (isLeftActive && isRightActive)
+            isSprintActive = false;
+
+        Debug.Log("Sprint is " + (isSprintActive ? "Active" : "Not Active"));
+    }
+
+    public void GetButtonsStatus(ref bool Left, ref bool Right, ref bool Jump)
+    {
+        Left = isLeftActive;
+        Right = isRightActive;
+        Jump = isJumpActive;
+
+        toggleStatus = isSprintActive;
+    }
 
 #if UNITY_STANDALONE_WIN
     bool ismouseontoggle;
 #endif
-
-
-    public  GameObject leftDirectionalButton;
-    public  GameObject rightDirectionalButton;
-    public  GameObject jumpButton;
-    public  GameObject sprintButton;
 
     private void Awake()
     {
@@ -40,6 +107,7 @@ public class InputManager : MonoBehaviour
             instance = this;
     }
 
+    /*
     bool InputHoldSprite(GameObject inObject)
     {
 
@@ -111,4 +179,5 @@ public class InputManager : MonoBehaviour
     }
     
     public int GetInputCount () { return Input.touchCount;  }
+    */
 }
