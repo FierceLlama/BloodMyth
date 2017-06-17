@@ -12,27 +12,29 @@ public class EffectsManager : MonoBehaviour
 
     void Start()
         {
-        this.coldLH.SetActive(false);
-        this.coldRH.SetActive(false);
-        this.hotLH.SetActive(false);
-        this.hotRH.SetActive(false);
-        this.dehydrated.SetActive(false);
+        //this.coldLH.SetActive(false);
+        //this.coldRH.SetActive(false);
+        //this.hotLH.SetActive(false);
+        //this.hotRH.SetActive(false);
+        //this.dehydrated.SetActive(false);
+        this.ClearTempFX();
+        this.ClearDehydrationFX();
         }
 
     void Update()
         {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-            SetHot();
-            }
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //    {
+        //    SetHotFX();
+        //    }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-            SetCold();
-            }
+        //if (Input.GetKeyDown(KeyCode.Alpha2))
+        //    {
+        //    SetColdFX();
+        //    }
         }
 
-    public void SetCold()
+    public void SetColdFX()
         {
         this.coldLH.SetActive(true);
         this.coldRH.SetActive(true);
@@ -40,11 +42,29 @@ public class EffectsManager : MonoBehaviour
         this.hotRH.SetActive(false);
         }
 
-    public void SetHot()
+    public void SetHotFX()
         {
         this.coldLH.SetActive(false);
         this.coldRH.SetActive(false);
         this.hotLH.SetActive(true);
         this.hotRH.SetActive(true);
+        }
+
+    public void SetDehydrationFX()
+        {
+        this.dehydrated.SetActive(true);
+        }
+
+    public void ClearTempFX()
+        {
+        this.coldLH.SetActive(false);
+        this.coldRH.SetActive(false);
+        this.hotLH.SetActive(false);
+        this.hotRH.SetActive(false);
+        }
+
+    public void ClearDehydrationFX()
+        {
+        this.dehydrated.SetActive(false);
         }
     }

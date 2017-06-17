@@ -4,20 +4,18 @@ using System.Collections;
 public class Resting : MonoBehaviour
 {
     public GameObject player;
+    private Player _playerScript;
+
+    void Start()
+        {
+        this._playerScript = this.player.GetComponent<Player>();
+        }
 
     void OnTriggerStay2D(Collider2D inPlayer)
     {
         if (inPlayer.gameObject.tag == "Player")
         {
-            //player.GetComponent<Player>().Resting();
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D inPlayer)
-    {
-        if (inPlayer.gameObject.tag == "Player")
-        {
-            //player.GetComponent<PlayerManager>().CheckPlayerFatigue();
+            this._playerScript.Resting();
         }
     }
 }

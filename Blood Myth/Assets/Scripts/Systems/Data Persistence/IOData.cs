@@ -5,10 +5,13 @@ using System.Collections.Generic;
 
 public enum WorldTotems
 {
-    NO_TOTEMS       = 0x00000001,
+    NO_TOTEMS       = 0x0,
     // Fall Totems -- values will change based on spring and summer totems
+    FALL_MED        = 0x00000001,
     FALL_TOTEMS_1   = 0x00000002,
-    FALL_TOTEMS_2   = 0x00000004
+    FALL_TOTEMS_2   = 0x00000004,
+    FALL_TOTEMS_3   = 0x00000008,
+    FALL_TOTEMS_4   = 0x00000010,
 };
 
 [Serializable]
@@ -72,6 +75,7 @@ public class IOData
     }
 
     private int _worldTotems = (int)WorldTotems.NO_TOTEMS;
+
     public int worldTotems
         {
         get

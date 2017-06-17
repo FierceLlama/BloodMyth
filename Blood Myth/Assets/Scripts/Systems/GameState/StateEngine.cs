@@ -28,10 +28,10 @@ public class MainMenuState : GameState
     public override void Exit() { }
     public override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            GameManager.Instance.LoadGameScene(SceneId.Fall);
-        }
+        //if (Input.GetKeyDown(KeyCode.Return))
+        //{
+        //    GameManager.Instance.LoadGameScene(SceneId.Fall);
+        //}
     }
 }
 

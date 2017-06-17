@@ -25,7 +25,7 @@ public class TerrainEd : MonoBehaviour
     
     Mesh _mesh;
     MeshFilter meshFilter;
-    MeshRenderer renderer;
+    MeshRenderer _renderer;
     Triangulator triangluator;
 
     int vertCount;
@@ -125,23 +125,23 @@ public class TerrainEd : MonoBehaviour
     private void AddRequiredComponents()
     {
         meshFilter = gameObject.GetComponent<MeshFilter>();
-        renderer = gameObject.GetComponent<MeshRenderer>();
+        _renderer = gameObject.GetComponent<MeshRenderer>();
 
         if (meshFilter == null)
             meshFilter = (MeshFilter)gameObject.AddComponent<MeshFilter>();
 
-        if (renderer == null)
+        if (_renderer == null)
         {
-            renderer = gameObject.AddComponent<MeshRenderer>();
-            renderer.sharedMaterial = new Material(Shader.Find("Standard"));
+            _renderer = gameObject.AddComponent<MeshRenderer>();
+            _renderer.sharedMaterial = new Material(Shader.Find("Standard"));
 
             Texture2D tex = new Texture2D(1, 1);
             tex.SetPixel(0, 0, Color.green);
             tex.alphaIsTransparency = false;
             tex.Apply();
 
-            renderer.sharedMaterial.mainTexture = tex;
-            renderer.sharedMaterial.color = Color.green;
+            _renderer.sharedMaterial.mainTexture = tex;
+            _renderer.sharedMaterial.color = Color.green;
         }
     }
 

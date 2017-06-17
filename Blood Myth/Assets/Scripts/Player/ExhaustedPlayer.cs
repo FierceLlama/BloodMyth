@@ -14,7 +14,7 @@ public class ExhaustedPlayer : FatigueStateBaseClass
 
     public override void Enter()
         {
-        throw new NotImplementedException();
+        Debug.Log("Exhausted State");
         }
 
     public override void Update()

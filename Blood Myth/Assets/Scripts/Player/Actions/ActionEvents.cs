@@ -5,9 +5,10 @@ public class ActionEvents : MonoBehaviour
     {
     private SetActionIcon.IconType _type;
     private SetActionIcon _actionScript;
+
     void Start()
         {
-        this._actionScript = GetComponent<SetActionIcon>();
+        this._actionScript = GameObject.FindWithTag("Actions").GetComponent<SetActionIcon>();
         this._type = SetActionIcon.IconType.UNINITIALIZED;
         }
 

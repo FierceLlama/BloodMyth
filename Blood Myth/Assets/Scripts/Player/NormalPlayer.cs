@@ -14,7 +14,7 @@ public class NormalPlayer : FatigueStateBaseClass
 
     public override void Enter()
         {
-        throw new NotImplementedException();
+        Debug.Log("Normal State");
         }
 
     public override void Update()

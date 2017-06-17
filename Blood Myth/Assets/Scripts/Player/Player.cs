@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
     public float tiredFatigueRangeHigh = 80.0f;
     public float tiredFatigueRangeLow = 30.0f;
     public float fatigueDownRate = 1.0f;
-    public float fatigueRestingRate = 10.0f;
+    public float fatigueRestingRate = 1.0f;
     public float fatigueHazardEffect = 50.0f;
 
     private float _zero = 0.00f;
@@ -67,13 +67,9 @@ public class Player : MonoBehaviour
     public TiredPlayer tiredFatigue;
     public FatigueStateBaseClass oldFatigueState;
 
-    // Input variables
-    private InputManager _inputManager;
-
-    private bool _movingLeft;
-    private bool _movingRight;
-
-    private Spine.Unity.BoneFollower rightHand;
+    private bool _hydrationFX;
+    private bool _tempFX;
+    private EffectsManager _fxMan;
 
     private void Start()
         {
@@ -89,8 +85,10 @@ public class Player : MonoBehaviour
         this._rigidBody = this.GetComponent<Rigidbody2D>();
         this._facingRight = true;
         this.skeletonAnimation.state.SetAnimation(0, "Idle", true);
-        this._inputManager = GameObject.FindWithTag("GameManager").GetComponent<InputManager>();
         this._isGrounded = this._lastIsGrounded = false;
+        this._hydrationFX = false;
+        this._tempFX = false;
+        this._fxMan = this.GetComponent<EffectsManager>();
         }
 
     private void Update()
@@ -229,6 +227,12 @@ public class Player : MonoBehaviour
             {
             this._currentHydration = this.maxHydration;
             }
+
+        if (this._hydrationFX && this._currentHydration >= this.fatigueLoweringThreshold)
+            {
+            this._hydrationFX = false;
+            this._fxMan.ClearDehydrationFX();
+            }
         }
 
     public void InShade()
@@ -240,6 +244,12 @@ public class Player : MonoBehaviour
         else
             {
             this._currentTemperature = this.maxTemperature;
+            }
+
+        if (this._tempFX && this._currentTemperature >= this.fatigueLoweringThreshold)
+            {
+            this._tempFX = false;
+            this._fxMan.ClearTempFX();
             }
         }
 
@@ -254,6 +264,10 @@ public class Player : MonoBehaviour
         else
             {
             this._currentTemperature = this._zero;
+            }
+        if (this._tempFX)
+            {
+            this.SetTempFX();
             }
         }
 
@@ -298,15 +312,15 @@ public class Player : MonoBehaviour
         {
         if (this._currentFatigue > this.tiredFatigueRangeHigh)
             {
-            this.fatigueState = normalFatigue;
+            this.fatigueState = this.normalFatigue;
             }
         else if (this._currentFatigue > this.tiredFatigueRangeLow)
             {
-            this.fatigueState = tiredFatigue;
+            this.fatigueState = this.tiredFatigue;
             }
         else
             {
-            this.fatigueState = exhaustedFatigue;
+            this.fatigueState = this.exhaustedFatigue;
             }
 
         if (this.oldFatigueState != this.fatigueState && !this._jumping)
@@ -339,6 +353,11 @@ public class Player : MonoBehaviour
         if (this._currentFatigue < this.maxFatigue)
             {
             this._currentFatigue += this.fatigueRestingRate * Time.deltaTime;
+            this.DetermineFatigueState();
+            }
+        else
+            {
+            this._currentFatigue = this.maxFatigue;
             }
         }
 
@@ -347,10 +366,33 @@ public class Player : MonoBehaviour
         if (this._currentHydration <= this.fatigueLoweringThreshold)
             {
             this.LowerFatigue();
+            if (!this._hydrationFX)
+                {
+                this._hydrationFX = true;
+                this._fxMan.SetDehydrationFX();
+                }
             }
         if (this._currentTemperature <= this.fatigueLoweringThreshold)
             {
             this.LowerFatigue();
+            if (!this._tempFX)
+                {
+                this._tempFX = true;
+                this.SetTempFX();
+                }
+            }
+        }
+
+    void SetTempFX()
+        {
+        switch (this._hazardEffect)
+            {
+            case TemperatureEffect.COLD_HAZARD:
+                this._fxMan.SetColdFX();
+                break;
+            case TemperatureEffect.HOT_HAZARD:
+                this._fxMan.SetHotFX();
+                break;
             }
         }
 
@@ -372,37 +414,5 @@ public class Player : MonoBehaviour
     public bool fatigueForJumping()
         {
         return this._jumpingFatigued;
-        }
-
-    public void MovingLeft()
-        {
-        this._movingLeft = true;
-        }
-
-    public void NotMovingLeft()
-        {
-        this._movingLeft = false;
-        }
-
-    public void MovingRight()
-        {
-        this._movingRight = true;
-        }
-
-    public void NotMovingRight()
-        {
-        this._movingRight = false;
-        }
-
-    public bool GetMovingLeft()
-        {
-        //return this._movingLeft;
-        return InputManager.instance.GetLeftActive();
-        }
-
-    public bool GetMovingRight()
-        {
-        //return this._movingRight;
-        return InputManager.instance.GetRightActive();
         }
     }

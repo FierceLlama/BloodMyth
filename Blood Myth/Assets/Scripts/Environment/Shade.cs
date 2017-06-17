@@ -4,12 +4,18 @@ using System.Collections;
 public class Shade : MonoBehaviour
 {
     public GameObject player;
+    private Player _playerScript;
+
+    void Start()
+        {
+        this._playerScript = this.player.GetComponent<Player>();
+        }
 
     void OnTriggerStay2D(Collider2D inPlayer)
     {
         if (inPlayer.gameObject.tag == "Player")
         {
-            //player.GetComponent<Player>().InShade();
+            this._playerScript.InShade();
         }
     }
 }

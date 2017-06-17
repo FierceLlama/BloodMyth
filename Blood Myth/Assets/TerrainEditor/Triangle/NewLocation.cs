@@ -78,7 +78,7 @@ namespace TriangleNet
 
             ////////////////////////////// HALE'S VARIABLES //////////////////////////////
             // keeps the difference of coordinates edge 
-            float xShortestEdge = 0, yShortestEdge = 0, xMiddleEdge, yMiddleEdge, xLongestEdge, yLongestEdge;
+            float xShortestEdge = 0, yShortestEdge = 0, xMiddleEdge = 0, yMiddleEdge = 0, xLongestEdge = 0, yLongestEdge = 0;
 
             // keeps the square of edge lengths
             float shortestEdgeDist = 0, middleEdgeDist = 0, longestEdgeDist = 0;
