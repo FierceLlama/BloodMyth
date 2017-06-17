@@ -73,6 +73,8 @@ public class Player : MonoBehaviour
     private bool _movingLeft;
     private bool _movingRight;
 
+    private Spine.Unity.BoneFollower rightHand;
+
     private void Start()
         {
         this._currentFatigue = this.maxFatigue;

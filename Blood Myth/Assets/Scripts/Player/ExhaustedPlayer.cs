@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class ExhaustedPlayer : FatigueStateBaseClass
     {
-    private Player player;
+    private Player _player;
 
-    public ExhaustedPlayer(Player _player)
+    public ExhaustedPlayer(Player inPlayer)
         {
-        this.player = _player;
+        this._player = inPlayer;
         }
 
     public override void Enter()
@@ -19,72 +19,37 @@ public class ExhaustedPlayer : FatigueStateBaseClass
 
     public override void Update()
         {
-        this.player.CheckOnGround();
+        this._player.CheckOnGround();
+
 #if UNITY_EDITOR
-        this.player.SetMove(Input.GetAxis("Horizontal"));
-        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
-        if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting())
-            {
-            this.player.SetSprinting(true);
-            if (!this.player.GetJumping())
-                {
-                this.player.SetIHaveChangedState(true);
-                }
-            }
-        else if (Input.GetKeyUp(KeyCode.LeftShift) && this.player.GetMoving())
-            {
-            this.player.SetSprinting(false);
-            if (!this.player.GetJumping())
-                {
-                this.player.SetIHaveChangedState(true);
-                }
-            }
-
-        //if (Input.GetKeyDown(KeyCode.Space) && !this.player.GetJumping() && this.player.GetGrounded())
-        //    {
-        //    this.player.SetJumping(true);
-        //    this.player.SetIHaveChangedState(true);
-        //    this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, 20);
-        //    }
+        this._player.SetMove(Input.GetAxis("Horizontal"));
+        this._player.GetRigidbody().velocity = new Vector2(this._player.GetMove() * this._player.GetSpeed(), this._player.GetRigidbody().velocity.y);
 #endif
-        this.player.SpriteDirection();
-        //if (!this.player.GetJumping())
-        //    {
-            if (this.player.GetMove() != 0 && !this.player.GetMoving())
-                {
-                this.player.SetMoving(true);
-                this.player.SetIHaveChangedState(true);
-                }
-            else if (this.player.GetMove() == 0 && this.player.GetMoving())
-                {
-                this.player.SetMoving(false);
-                this.player.SetIHaveChangedState(true);
-                }
-            //}
 
-        if (this.player.GetIHaveChangedState())
+        this._player.SpriteDirection();
+
+        if (this._player.GetMove() != 0 && !this._player.GetMoving())
             {
-            /*if (this.player.GetJumping())
-                {
-                this.player.skeletonAnimation.state.SetAnimation(0, "Jump_Exhausted", false);
-                }
+            this._player.SetMoving(true);
+            this._player.SetIHaveChangedState(true);
+            }
+        else if (this._player.GetMove() == 0 && this._player.GetMoving())
+            {
+            this._player.SetMoving(false);
+            this._player.SetIHaveChangedState(true);
+            }
 
-            else*/ if (this.player.GetMoving()/* && !this.player.GetJumping()*/)
+        if (this._player.GetIHaveChangedState())
+            {
+            if (this._player.GetMoving())
                 {
-                //if (this.player.GetSprinting())
-                //    {
-                //    this.player.skeletonAnimation.state.SetAnimation(0, "Run_Exhausted", true);
-                //    }
-                //else
-                //    {
-                    this.player.skeletonAnimation.state.SetAnimation(0, "Walk_Exhausted", true);
-                    //}
+                this._player.skeletonAnimation.state.SetAnimation(0, "Walk_Exhausted", true);
                 }
             else
                 {
-                this.player.skeletonAnimation.state.SetAnimation(0, "Idle_Exhausted", true);
+                this._player.skeletonAnimation.state.SetAnimation(0, "Idle_Exhausted", true);
                 }
-            this.player.SetIHaveChangedState(false);
+            this._player.SetIHaveChangedState(false);
             }
         }
     }

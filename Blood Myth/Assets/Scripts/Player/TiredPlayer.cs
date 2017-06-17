@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class TiredPlayer : FatigueStateBaseClass
     {
-    private Player player;
+    private Player _player;
 
-    public TiredPlayer(Player _player)
+    public TiredPlayer(Player inPlayer)
         {
-        this.player = _player;
+        this._player = inPlayer;
         }
 
     public override void Enter()
@@ -19,76 +19,76 @@ public class TiredPlayer : FatigueStateBaseClass
 
     public override void Update()
         {
-        this.player.CheckOnGround();
+        this._player.CheckOnGround();
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Space) && !this.player.GetJumping() && this.player.GetGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && !this._player.GetJumping() && this._player.GetGrounded())
             {
-            this.player.SetJumping(true);
-            this.player.SetIHaveChangedState(true);
-            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
+            this._player.SetJumping(true);
+            this._player.SetIHaveChangedState(true);
+            this._player.GetRigidbody().velocity = new Vector2(this._player.GetRigidbody().velocity.x, this._player.jumpVelocity);
             }
 
-        this.player.SetMove(Input.GetAxis("Horizontal"));
-        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
-        if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting())
+        this._player.SetMove(Input.GetAxis("Horizontal"));
+        this._player.GetRigidbody().velocity = new Vector2(this._player.GetMove() * this._player.GetSpeed(), this._player.GetRigidbody().velocity.y);
+        if (Input.GetKey(KeyCode.LeftShift) && this._player.GetMove() != 0 && !this._player.GetSprinting())
             {
-            this.player.SetSprinting(true);
-            if (!this.player.GetJumping())
+            this._player.SetSprinting(true);
+            if (!this._player.GetJumping())
                 {
-                this.player.SetIHaveChangedState(true);
+                this._player.SetIHaveChangedState(true);
                 }
             }
-        else if (!Input.GetKey(KeyCode.LeftShift) && this.player.GetSprinting())
+        else if (!Input.GetKey(KeyCode.LeftShift) && this._player.GetSprinting())
             {
-            this.player.SetSprinting(false);
-            if (!this.player.GetJumping())
+            this._player.SetSprinting(false);
+            if (!this._player.GetJumping())
                 {
-                this.player.SetIHaveChangedState(true);
+                this._player.SetIHaveChangedState(true);
                 }
             }
 #endif
-        this.player.SpriteDirection();
-        if (!this.player.GetJumping())
+        this._player.SpriteDirection();
+        if (!this._player.GetJumping())
             {
-            if (this.player.GetMove() != 0 && !this.player.GetMoving())
+            if (this._player.GetMove() != 0 && !this._player.GetMoving())
                 {
-                this.player.SetMoving(true);
-                this.player.SetIHaveChangedState(true);
+                this._player.SetMoving(true);
+                this._player.SetIHaveChangedState(true);
                 }
-            else if (this.player.GetMove() == 0 && this.player.GetMoving())
+            else if (this._player.GetMove() == 0 && this._player.GetMoving())
                 {
-                this.player.SetMoving(false);
-                this.player.SetSprinting(false);
-                this.player.SetIHaveChangedState(true);
+                this._player.SetMoving(false);
+                this._player.SetSprinting(false);
+                this._player.SetIHaveChangedState(true);
                 }
             }
 
-        if (this.player.GetIHaveChangedState())
+        if (this._player.GetIHaveChangedState())
             {
-            if (this.player.GetJumping())
+            if (this._player.GetJumping())
                 {
-                this.player.skeletonAnimation.state.SetAnimation(0, "Jump_Tired", false);
-                this.player.LowerHydrationForJumping();
+                this._player.skeletonAnimation.state.SetAnimation(0, "Jump_Tired", false);
+                this._player.LowerHydrationForJumping();
                 }
 
-            else if (this.player.GetMoving() && !this.player.GetJumping())
+            else if (this._player.GetMoving() && !this._player.GetJumping())
                 {
-                if (this.player.GetSprinting())
+                if (this._player.GetSprinting())
                     {
-                    this.player.skeletonAnimation.state.SetAnimation(0, "Run_Tired", true);
-                    this.player.SetSpeed(this.player.tiredSprintSpeed);
+                    this._player.skeletonAnimation.state.SetAnimation(0, "Run_Tired", true);
+                    this._player.SetSpeed(this._player.tiredSprintSpeed);
                     }
                 else
                     {
-                    this.player.skeletonAnimation.state.SetAnimation(0, "Walk_Tired", true);
-                    this.player.SetSpeed(this.player.tiredSpeed);
+                    this._player.skeletonAnimation.state.SetAnimation(0, "Walk_Tired", true);
+                    this._player.SetSpeed(this._player.tiredSpeed);
                     }
                 }
             else
                 {
-                this.player.skeletonAnimation.state.SetAnimation(0, "Idle_Tired", true);
+                this._player.skeletonAnimation.state.SetAnimation(0, "Idle_Tired", true);
                 }
-            this.player.SetIHaveChangedState(false);
+            this._player.SetIHaveChangedState(false);
             }
         }
     }

@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class NormalPlayer : FatigueStateBaseClass
     {
-    private Player player;
+    private Player _player;
 
-    public NormalPlayer(Player _player)
+    public NormalPlayer(Player inPlayer)
         {
-        this.player = _player;
+        this._player = inPlayer;
         }
 
     public override void Enter()
@@ -19,144 +19,143 @@ public class NormalPlayer : FatigueStateBaseClass
 
     public override void Update()
         {
-        this.player.CheckOnGround();
+        this._player.CheckOnGround();
 
 #if UNITY_ANDROID
-        if ((this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Bottom || this.player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Bottom)
-            && !this.player.fatigueForJumping()
-            && this.player.GetGrounded())
+        if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Bottom || this._player.getSecondaryTouch().CurrentScreenSection == ScreenSection.Bottom)
+            && !this._player.fatigueForJumping()
+            && this._player.GetGrounded())
             {
-            this.player.SetJumping(true);
-            this.player.SetIHaveChangedState(true);
-            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
+            this._player.SetJumping(true);
+            this._player.SetIHaveChangedState(true);
+            this._player.GetRigidbody().velocity = new Vector2(this._player.GetRigidbody().velocity.x, this._player.jumpVelocity);
             }
 
-        if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
-            this.player.GetMovingRight())
+        if (/*this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
+            this._player.GetMovingRight())
         {
-            this.player.SetMove(1.0f);
+            this._player.SetMove(1.0f);
         }
-        else if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
-                this.player.GetMovingLeft())
+        else if (/*this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
+                this._player.GetMovingLeft())
         {
-            this.player.SetMove(-1.0f);
+            this._player.SetMove(-1.0f);
         }
         else
         {
-            this.player.SetMove(0.0f);
+            this._player.SetMove(0.0f);
         }
-        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
+        this._player.GetRigidbody().velocity = new Vector2(this._player.GetMove() * this._player.GetSpeed(), this._player.GetRigidbody().velocity.y);
 
-        if ((this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
-                && this.player.getPrimaryTouch().getTouchTapCount() >= 2 && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary && !this.player.GetSprinting())
+        if ((this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right || this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left)
+                && this._player.getPrimaryTouch().getTouchTapCount() >= 2 && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary && !this._player.GetSprinting())
             {
-            this.player.SetSprinting(true);
-            if (!this.player.GetJumping())
+            this._player.SetSprinting(true);
+            if (!this._player.GetJumping())
                 {
-                this.player.SetIHaveChangedState(true);
+                this._player.SetIHaveChangedState(true);
                 }
             }
         // Need to find a way to kill sprint...but this should be a non issue when using the new UI
-        else if (this.player.getPrimaryTouch().getTouchTapCount() == 0)
+        else if (this._player.getPrimaryTouch().getTouchTapCount() == 0)
             {
-            this.player.SetSprinting(false);
-            if (!this.player.GetJumping())
+            this._player.SetSprinting(false);
+            if (!this._player.GetJumping())
                 {
-                this.player.SetIHaveChangedState(true);
+                this._player.SetIHaveChangedState(true);
                 }
             }
-
 #endif
 
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Space) && !this.player.GetJumping() && this.player.GetGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && !this._player.GetJumping() && this._player.GetGrounded())
             {
-            this.player.SetJumping(true);
-            this.player.SetIHaveChangedState(true);
-            this.player.GetRigidbody().velocity = new Vector2(this.player.GetRigidbody().velocity.x, this.player.jumpVelocity);
+            this._player.SetJumping(true);
+            this._player.SetIHaveChangedState(true);
+            this._player.GetRigidbody().velocity = new Vector2(this._player.GetRigidbody().velocity.x, this._player.jumpVelocity);
             }
 
-        this.player.SetMove(Input.GetAxis("Horizontal"));
-        //if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
-        //    this.player.GetMovingRight())
+        this._player.SetMove(Input.GetAxis("Horizontal"));
+        //if (/*this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
+        //    this._player.GetMovingRight())
         //    {
-        //    this.player.SetMove(1.0f);
+        //    this._player.SetMove(1.0f);
         //    }
-        //else if (/*this.player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this.player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
-        //        this.player.GetMovingLeft())
+        //else if (/*this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
+        //        this._player.GetMovingLeft())
         //    {
-        //    this.player.SetMove(-1.0f);
+        //    this._player.SetMove(-1.0f);
         //    }
         //else
         //    {
-        //    this.player.SetMove(0.0f);
+        //    this._player.SetMove(0.0f);
         //    }
-        this.player.GetRigidbody().velocity = new Vector2(this.player.GetMove() * this.player.GetSpeed(), this.player.GetRigidbody().velocity.y);
-        if (Input.GetKey(KeyCode.LeftShift) && this.player.GetMove() != 0 && !this.player.GetSprinting())
+        this._player.GetRigidbody().velocity = new Vector2(this._player.GetMove() * this._player.GetSpeed(), this._player.GetRigidbody().velocity.y);
+        if (Input.GetKey(KeyCode.LeftShift) && this._player.GetMove() != 0 && !this._player.GetSprinting())
             {
-            this.player.SetSprinting(true);
-            if (!this.player.GetJumping())
+            this._player.SetSprinting(true);
+            if (!this._player.GetJumping())
                 {
-                this.player.SetIHaveChangedState(true);
+                this._player.SetIHaveChangedState(true);
                 }
             }
-        else if (!Input.GetKey(KeyCode.LeftShift) && this.player.GetSprinting())
+        else if (!Input.GetKey(KeyCode.LeftShift) && this._player.GetSprinting())
             {
-            this.player.SetSprinting(false);
-            if (!this.player.GetJumping())
+            this._player.SetSprinting(false);
+            if (!this._player.GetJumping())
                 {
-                this.player.SetIHaveChangedState(true);
+                this._player.SetIHaveChangedState(true);
                 }
             }
 #endif
 
-        this.player.SpriteDirection();
-        if (!this.player.GetJumping())
+        this._player.SpriteDirection();
+        if (!this._player.GetJumping())
             {
-            if (this.player.GetMove() != 0 && !this.player.GetMoving())
+            if (this._player.GetMove() != 0 && !this._player.GetMoving())
                 {
-                this.player.SetMoving(true);
-                this.player.SetIHaveChangedState(true);
+                this._player.SetMoving(true);
+                this._player.SetIHaveChangedState(true);
                 }
-            else if (this.player.GetMove() == 0 && this.player.GetMoving())
+            else if (this._player.GetMove() == 0 && this._player.GetMoving())
                 {
-                this.player.SetMoving(false);
-                this.player.SetSprinting(false);
-                this.player.SetIHaveChangedState(true);
+                this._player.SetMoving(false);
+                this._player.SetSprinting(false);
+                this._player.SetIHaveChangedState(true);
                 }
             }
 
-        if (this.player.GetIHaveChangedState())
+        if (this._player.GetIHaveChangedState())
             {
-            if (this.player.GetJumping())
+            if (this._player.GetJumping())
                 {
-                this.player.skeletonAnimation.state.SetAnimation(0, "Jump", false);
-                this.player.LowerHydrationForJumping();
+                this._player.skeletonAnimation.state.SetAnimation(0, "Jump", false);
+                this._player.LowerHydrationForJumping();
                 }
 
-            else if (this.player.GetMoving() && !this.player.GetJumping())
+            else if (this._player.GetMoving() && !this._player.GetJumping())
                 {
-                if (this.player.GetSprinting())
+                if (this._player.GetSprinting())
                     {
-                    this.player.skeletonAnimation.state.SetAnimation(0, "Sprint", true);
-                    this.player.SetSpeed(this.player.sprintSpeed);
+                    this._player.skeletonAnimation.state.SetAnimation(0, "Sprint", true);
+                    this._player.SetSpeed(this._player.sprintSpeed);
                     }
                 else
                     {
-                    this.player.skeletonAnimation.state.SetAnimation(0, "Run", true);
-                    this.player.SetSpeed(this.player.normalSpeed);
+                    this._player.skeletonAnimation.state.SetAnimation(0, "Run", true);
+                    this._player.SetSpeed(this._player.normalSpeed);
                     }
                 }
             else
                 {
-                this.player.skeletonAnimation.state.SetAnimation(0, "Idle", true);
+                this._player.skeletonAnimation.state.SetAnimation(0, "Idle", true);
                 }
-            this.player.SetIHaveChangedState(false);
+            this._player.SetIHaveChangedState(false);
             }
 
-        if (this.player.GetSprinting())
+        if (this._player.GetSprinting())
             {
-            this.player.LowerHydrationForSprinting();
+            this._player.LowerHydrationForSprinting();
             }
         }
     }

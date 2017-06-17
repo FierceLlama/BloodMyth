@@ -118,7 +118,7 @@ namespace Spine.Unity {
 			if (thisTransform.parent == skeletonTransform) {
 				// Recommended setup: Use local transform properties if Spine GameObject is the immediate parent
 				thisTransform.localPosition = new Vector3(bone.worldX, bone.worldY, followZPosition ? 0f : thisTransform.localPosition.z);
-				if (followBoneRotation) thisTransform.localRotation = Quaternion.Euler(0f, 0f, bone.WorldRotationX);
+				if (followBoneRotation) thisTransform.localRotation = Quaternion.Euler(0f, 0f, -bone.WorldRotationX);
 			} else {
 				// For special cases: Use transform world properties if transform relationship is complicated
 				Vector3 targetWorldPosition = skeletonTransform.TransformPoint(new Vector3(bone.worldX, bone.worldY, 0f));
@@ -127,13 +127,13 @@ namespace Spine.Unity {
 
 				if (followBoneRotation) {
 					Vector3 worldRotation = skeletonTransform.rotation.eulerAngles;
-					thisTransform.rotation = Quaternion.Euler(worldRotation.x, worldRotation.y, skeletonTransform.rotation.eulerAngles.z + bone.WorldRotationX);
+					thisTransform.rotation = Quaternion.Euler(-worldRotation.x, -worldRotation.y, skeletonTransform.rotation.eulerAngles.z + bone.WorldRotationX);
 				}
 			}
 				
-			Vector3 localScale = followLocalScale ? new Vector3(bone.scaleX, bone.scaleY, 1f) : Vector3.one;
-			if (followSkeletonFlip) localScale.y *= bone.skeleton.flipX ^ bone.skeleton.flipY ? -1f : 1f;
-			thisTransform.localScale = localScale;
+			//Vector3 localScale = followLocalScale ? new Vector3(bone.scaleX, bone.scaleY, 1f) : Vector3.one;
+			//if (followSkeletonFlip) localScale.y *= bone.skeleton.flipX ^ bone.skeleton.flipY ? -1f : 1f;
+			//thisTransform.localScale = localScale;
 		}
 	}
 
