@@ -32,6 +32,14 @@ public class InputManager : MonoBehaviour
     [SerializeField]
     bool isRightActive;
 
+    private void Awake()
+        {
+        if (instance == null)
+            {
+            instance = this;
+            }
+        }
+
     public void ActivateLeftButton()
     {
         if (!isLeftActive) isLeftActive = true;
@@ -109,11 +117,25 @@ public class InputManager : MonoBehaviour
     bool ismouseontoggle;
 #endif
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-    }
+    public bool GetLeftActive()
+        {
+        return this.isLeftActive;
+        }
+
+    public bool GetRightActive()
+        {
+        return this.isRightActive;
+        }
+
+    public bool GetJumpActive()
+        {
+        return this.isJumpActive;
+        }
+
+    public bool GetSprintActive()
+        {
+        return this.isSprintActive;
+        }
 
     /*
     bool InputHoldSprite(GameObject inObject)

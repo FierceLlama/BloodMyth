@@ -396,11 +396,13 @@ public class Player : MonoBehaviour
 
     public bool GetMovingLeft()
         {
-        return this._movingLeft;
+        //return this._movingLeft;
+        return InputManager.instance.GetLeftActive();
         }
 
     public bool GetMovingRight()
         {
-        return this._movingRight;
+        //return this._movingRight;
+        return InputManager.instance.GetRightActive();
         }
     }

@@ -68,30 +68,28 @@ public class NormalPlayer : FatigueStateBaseClass
 #endif
 
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Space) && !this._player.GetJumping() && this._player.GetGrounded())
+        if ((Input.GetKeyDown(KeyCode.Space) || InputManager.instance.GetJumpActive()) && !this._player.GetJumping() && this._player.GetGrounded())
             {
             this._player.SetJumping(true);
             this._player.SetIHaveChangedState(true);
             this._player.GetRigidbody().velocity = new Vector2(this._player.GetRigidbody().velocity.x, this._player.jumpVelocity);
             }
 
-        this._player.SetMove(Input.GetAxis("Horizontal"));
-        //if (/*this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Right && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
-        //    this._player.GetMovingRight())
-        //    {
-        //    this._player.SetMove(1.0f);
-        //    }
-        //else if (/*this._player.getPrimaryTouch().CurrentScreenSection == ScreenSection.Left && this._player.getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary*/
-        //        this._player.GetMovingLeft())
-        //    {
-        //    this._player.SetMove(-1.0f);
-        //    }
-        //else
-        //    {
-        //    this._player.SetMove(0.0f);
-        //    }
+        //this._player.SetMove(Input.GetAxis("Horizontal"));
+        if (InputManager.instance.GetRightActive())
+            {
+            this._player.SetMove(1.0f);
+            }
+        else if (InputManager.instance.GetLeftActive())
+            {
+            this._player.SetMove(-1.0f);
+            }
+        else
+            {
+            this._player.SetMove(0.0f);
+            }
         this._player.GetRigidbody().velocity = new Vector2(this._player.GetMove() * this._player.GetSpeed(), this._player.GetRigidbody().velocity.y);
-        if (Input.GetKey(KeyCode.LeftShift) && this._player.GetMove() != 0 && !this._player.GetSprinting())
+        if ((Input.GetKey(KeyCode.LeftShift) || InputManager.instance.GetSprintActive()) && this._player.GetMove() != 0 && !this._player.GetSprinting())
             {
             this._player.SetSprinting(true);
             if (!this._player.GetJumping())
