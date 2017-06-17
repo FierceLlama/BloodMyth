@@ -42,7 +42,11 @@ public class InputManager : MonoBehaviour
     }
     public void DeActivateLeftButton()
     {
-        if (isLeftActive) isLeftActive = false;
+        if (isLeftActive)
+        { 
+            isLeftActive = false;
+            if (toggleStatus) toggleStatus = false;
+        }
 
         Debug.Log("Left is " + (isLeftActive ? "Active" : "Not Active"));
     }
@@ -57,7 +61,11 @@ public class InputManager : MonoBehaviour
     }
     public void DeActivateRightButton()
     {
-        if (isRightActive) isRightActive = false;
+        if (isRightActive)
+        {
+            isRightActive = false;
+            if (toggleStatus) toggleStatus = false;
+        }
 
         Debug.Log("Right is " + (isRightActive ? "Active" : "Not Active"));
     }
