@@ -25,22 +25,10 @@ public class WaterTotem : MonoBehaviour
         {
         if (inPlayer.gameObject.tag == "Player")
             {
-#if UNITY_EDITOR
-            if (Input.GetKey(KeyCode.W))
+            if (InputManager.instance.GetDrinkingActive())
                 {
                 this._playerScript.DrinkingWater();
                 }
-#endif
-
-#if UNITY_ANDROID
-            if ((this._player.GetComponent<PlayerManager>().getPrimaryTouch().CurrentScreenSection == ScreenSection.Top &&
-                this._player.GetComponent<PlayerManager>().getPrimaryTouch().getTouchPhase() == TouchPhase.Stationary)
-                || (this._player.GetComponent<PlayerManager>().getSecondaryTouch().CurrentScreenSection == ScreenSection.Top &&
-                this._player.GetComponent<PlayerManager>().getSecondaryTouch().getTouchPhase() == TouchPhase.Stationary))
-                {
-                this._playerScript.DrinkingWater();
-                }
-#endif
             }
         }
 

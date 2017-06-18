@@ -20,11 +20,21 @@ public class ExhaustedPlayer : FatigueStateBaseClass
     public override void Update()
         {
         this._player.CheckOnGround();
+        
+        if (InputManager.instance.GetRightActive())
+            {
+            this._player.SetMove(1.0f);
+            }
+        else if (InputManager.instance.GetLeftActive())
+            {
+            this._player.SetMove(-1.0f);
+            }
+        else
+            {
+            this._player.SetMove(0.0f);
+            }
 
-#if UNITY_EDITOR
-        this._player.SetMove(Input.GetAxis("Horizontal"));
         this._player.GetRigidbody().velocity = new Vector2(this._player.GetMove() * this._player.GetSpeed(), this._player.GetRigidbody().velocity.y);
-#endif
 
         this._player.SpriteDirection();
 

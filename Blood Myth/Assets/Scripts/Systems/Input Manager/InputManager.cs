@@ -235,6 +235,21 @@ public class InputManager : MonoBehaviour
         return this.isSprintActive;
         }
 
+    public bool GetCapeActive()
+        {
+        return this.capeActive;
+        }
+
+    public bool GetDrinkingActive()
+        {
+        return this.drinkWaterActive;
+        }
+
+    public bool GetInvestigateActive()
+        {
+        return this.investigateActive;
+        }
+
     /*
     bool InputHoldSprite(GameObject inObject)
     {

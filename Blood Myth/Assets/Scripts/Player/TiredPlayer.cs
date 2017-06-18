@@ -20,17 +20,31 @@ public class TiredPlayer : FatigueStateBaseClass
     public override void Update()
         {
         this._player.CheckOnGround();
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Space) && !this._player.GetJumping() && this._player.GetGrounded())
+
+#if UNITY_ANDROID
+        if (InputManager.instance.GetJumpActive() && !this._player.GetJumping() && this._player.GetGrounded())
             {
             this._player.SetJumping(true);
             this._player.SetIHaveChangedState(true);
             this._player.GetRigidbody().velocity = new Vector2(this._player.GetRigidbody().velocity.x, this._player.jumpVelocity);
             }
+        
+        if (InputManager.instance.GetRightActive())
+            {
+            this._player.SetMove(1.0f);
+            }
+        else if (InputManager.instance.GetLeftActive())
+            {
+            this._player.SetMove(-1.0f);
+            }
+        else
+            {
+            this._player.SetMove(0.0f);
+            }
 
-        this._player.SetMove(Input.GetAxis("Horizontal"));
         this._player.GetRigidbody().velocity = new Vector2(this._player.GetMove() * this._player.GetSpeed(), this._player.GetRigidbody().velocity.y);
-        if (Input.GetKey(KeyCode.LeftShift) && this._player.GetMove() != 0 && !this._player.GetSprinting())
+
+        if (InputManager.instance.GetSprintActive() && this._player.GetMove() != 0 && !this._player.GetSprinting())
             {
             this._player.SetSprinting(true);
             if (!this._player.GetJumping())
@@ -38,7 +52,7 @@ public class TiredPlayer : FatigueStateBaseClass
                 this._player.SetIHaveChangedState(true);
                 }
             }
-        else if (!Input.GetKey(KeyCode.LeftShift) && this._player.GetSprinting())
+        else if (!InputManager.instance.GetSprintActive() && this._player.GetSprinting())
             {
             this._player.SetSprinting(false);
             if (!this._player.GetJumping())
@@ -47,7 +61,51 @@ public class TiredPlayer : FatigueStateBaseClass
                 }
             }
 #endif
+
+#if UNITY_EDITOR
+        if ((Input.GetKeyDown(KeyCode.Space)) && !this._player.GetJumping() && this._player.GetGrounded())
+            {
+            this._player.SetJumping(true);
+            this._player.SetIHaveChangedState(true);
+            this._player.GetRigidbody().velocity = new Vector2(this._player.GetRigidbody().velocity.x, this._player.jumpVelocity);
+            }
+
+        //this._player.SetMove(Input.GetAxis("Horizontal"));
+        if (InputManager.instance.GetRightActive())
+            {
+            this._player.SetMove(1.0f);
+            }
+        else if (InputManager.instance.GetLeftActive())
+            {
+            this._player.SetMove(-1.0f);
+            }
+        else
+            {
+            this._player.SetMove(0.0f);
+            }
+
+        this._player.GetRigidbody().velocity = new Vector2(this._player.GetMove() * this._player.GetSpeed(), this._player.GetRigidbody().velocity.y);
+
+        if ((Input.GetKey(KeyCode.LeftShift)) && this._player.GetMove() != 0 && !this._player.GetSprinting())
+            {
+            this._player.SetSprinting(true);
+            if (!this._player.GetJumping())
+                {
+                this._player.SetIHaveChangedState(true);
+                }
+            }
+        else if ((!Input.GetKey(KeyCode.LeftShift)) && this._player.GetSprinting())
+            {
+            this._player.SetSprinting(false);
+            if (!this._player.GetJumping())
+                {
+                this._player.SetIHaveChangedState(true);
+                }
+            }
+#endif
+
         this._player.SpriteDirection();
+
         if (!this._player.GetJumping())
             {
             if (this._player.GetMove() != 0 && !this._player.GetMoving())
