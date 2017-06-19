@@ -10,8 +10,8 @@ using System.Collections;
 [RequireComponent(typeof(BM_SceneManager))]
 [RequireComponent(typeof(GamePlayInterface))]
 [RequireComponent(typeof(AudioManager))]
-[RequireComponent(typeof(DialogueManager))]
-[RequireComponent(typeof(InputManager))]
+//[RequireComponent(typeof(DialogueManager))]
+//[RequireComponent(typeof(InputManager))]
 
 [DisallowMultipleComponent]
 public class GameManager : MonoBehaviour

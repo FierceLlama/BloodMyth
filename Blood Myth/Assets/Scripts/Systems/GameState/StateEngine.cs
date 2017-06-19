@@ -25,7 +25,11 @@ public class MainMenuState : GameState
     public MainMenuState() { }
 
     public override void Enter() { }
-    public override void Exit() { }
+    public override void Exit()
+        {
+        //GameObject stop = GameObject.FindWithTag("Player");
+        //stop.GetComponent<StopBackgroundMusic>().StopMusic();
+        }
     public override void Update()
     {
         //if (Input.GetKeyDown(KeyCode.Return))

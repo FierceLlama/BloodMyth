@@ -42,6 +42,11 @@ abstract class AudioObject : MonoBehaviour
     {
         AudioSrc.volume = newVol;
     }
+
+    public void Stop()
+        {
+        this.AudioSrc.Stop();
+        }
 }
 
 public class AudioObjectPool
@@ -84,6 +89,16 @@ public class AudioObjectPool
 
         return null;
     }
+
+    public GameObject FindInMusic(string clipName)
+        {
+        AudioObject AObj = MusicList[0];
+
+        if (AObj)
+            return AObj.gameObject;
+
+        return null;
+        }
     
     public GameObject getFreeObject(GameObject AudioObjectParent)
     {

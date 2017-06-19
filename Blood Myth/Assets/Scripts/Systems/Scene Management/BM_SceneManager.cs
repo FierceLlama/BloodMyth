@@ -90,11 +90,30 @@ public class BM_SceneManager : MonoBehaviour
                     gpInterface.LoadingOnLoad(mode);
                     break;
                 }
-            case (int)SceneId.Fall:
+            case (int)SceneId.Spring:
+                    {
+                    gpInterface.GameOnLoad(mode);
+                    this.sceneToLoad = SceneId.Summer;
+                    break;
+                    }
+            case (int)SceneId.Summer:
                 {
                     gpInterface.GameOnLoad(mode);
+                    this.sceneToLoad = SceneId.Fall;
                     break;
                 }
+            case (int)SceneId.Fall:
+                    {
+                    gpInterface.GameOnLoad(mode);
+                    this.sceneToLoad = SceneId.Winter;
+                    break;
+                    }
+            case (int)SceneId.Winter:
+                    {
+                    gpInterface.GameOnLoad(mode);
+                    this.sceneToLoad = SceneId.MainMenu;
+                    break;
+                    }
             default:
                 {
                     loading = false;
@@ -112,6 +131,6 @@ public class BM_SceneManager : MonoBehaviour
 
     public void LoadNextScene()
         {
-            GameManager.Instance.LoadGameScene(SceneId.Fall);
+            GameManager.Instance.LoadGameScene(sceneToLoad);
         }
 }

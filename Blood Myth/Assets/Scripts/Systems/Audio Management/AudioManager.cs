@@ -71,6 +71,15 @@ class AudioManager: MonoBehaviour
         GObj.GetComponent<AudioObject>().PlayAudio();
     }
 
+    public void StopAudio(string clipName)
+        {
+        GameObject GObj = null;
+
+        GObj = AudioPool.FindInMusic(clipName);
+        GObj.GetComponent<AudioObject>().free = true;
+        GObj.GetComponent<AudioObject>().Stop();
+        }
+
     public void ApplyVolumeChange(AudioType inAudioType, float inVol)
     {
         inVol = Mathf.Clamp(inVol, 0, 1);
