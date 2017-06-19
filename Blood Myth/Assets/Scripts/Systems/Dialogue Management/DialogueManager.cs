@@ -79,9 +79,9 @@ public class DialogueManager : MonoBehaviour
             for (int i = 0; i < CurrentDialogue.Lines.Count; i++)
                 {
                 s += CurrentDialogue.Lines[i].line;
-                s += ",";
+                //s += ",";
                 }
-            s = s.Replace(",", "\n");
+            //s = s.Replace(",", "\n");
             this.diagDisplay.GetComponentInChildren<UnityEngine.UI.Text>().text = s;
             //Testing!! 
 

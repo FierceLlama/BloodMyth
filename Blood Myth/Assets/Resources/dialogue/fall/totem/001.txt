@@ -1,5 +1,1 @@
-|PLY|Line 1
-|NPC|Line 2 the players Name is #PLAYER#
-|TTM|Line 3 #PLAYER# POTATO POTATO
-#PLAYER#
-Line 5
+Through the darkness it can be seen that the strongest light lies within you. 
