@@ -51,6 +51,9 @@ public class InputManager : MonoBehaviour
         {
         this._actionScript = GameObject.FindWithTag("Actions").GetComponent<SetActionIcon>();
         this._type = SetActionIcon.IconType.UNINITIALIZED;
+
+        //this.DeactivateAll();
+        //this.DeactivateAllInput();
         }
 
     public void ActivateLeftButton()
@@ -116,6 +119,18 @@ public class InputManager : MonoBehaviour
 
         //Debug.Log("Sprint is " + (isSprintActive ? "Active" : "Not Active"));
     }
+
+    void DeactivateAllInput()
+        {
+        this.DeActivateJumpButton();
+        this.DeActivateRightButton();
+        this.DeActivateRightButton();
+        this.triggerSprintButton();
+        this.isLeftActive = false;
+        this.isRightActive = false;
+        this.isJumpActive = false;
+        isSprintActive = false;
+        }
 
     public void ActivateActionButton()
         {
@@ -200,6 +215,9 @@ public class InputManager : MonoBehaviour
         this.DeactivateCape();
         this.DeactivateDrinkWater();
         this.DeactivateInvestigate();
+        this.capeActive = false;
+        this.drinkWaterActive = false;
+        this.investigateActive = false;
         }
 
     public void GetButtonsStatus(ref bool Left, ref bool Right, ref bool Jump)

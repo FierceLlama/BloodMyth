@@ -67,12 +67,15 @@ public class Player : MonoBehaviour
     public TiredPlayer tiredFatigue;
     public FatigueStateBaseClass oldFatigueState;
 
+    private int _numLeaves;
+
     private bool _hydrationFX;
     private bool _tempFX;
     private EffectsManager _fxMan;
 
     private void Start()
         {
+        this._numLeaves = 0;
         this._currentFatigue = this.maxFatigue;
         this._currentHydration = this.maxHydration;
         this._currentTemperature = this.maxTemperature;
@@ -414,5 +417,22 @@ public class Player : MonoBehaviour
     public bool fatigueForJumping()
         {
         return this._jumpingFatigued;
+        }
+
+    public void addLeaf()
+        {
+        this._numLeaves++;
+        }
+
+    public void removeLeaf()
+        {
+        if(this._numLeaves > 0)
+            {
+            this._numLeaves--;
+            }
+        else
+            {
+            this._numLeaves = 0;
+            }
         }
     }
