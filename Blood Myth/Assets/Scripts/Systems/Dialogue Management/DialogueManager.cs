@@ -42,6 +42,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField]
     public DialogueActor[] Characters;
 
+    public GameObject diagDisplay;
+
     void Awake()
     {
         if (!Instance)
@@ -51,6 +53,8 @@ public class DialogueManager : MonoBehaviour
         }
         else if (Instance != this)
             DestroyImmediate(this);
+
+        this.diagDisplay.SetActive(false);
     }
 
     void InitDialogueManager()
@@ -65,23 +69,30 @@ public class DialogueManager : MonoBehaviour
 
     public bool StartDialogue(string DialogueKey)
     {
+        this.diagDisplay.SetActive(true);
         CurrentDialogue = dialogueLibrary.FetchDialogueData(DialogueKey);
 
         if (CurrentDialogue != null)
         {
-
+            GameManager.Instance.ChangeGameState(GameStateId.Dialogue);
+            string s = "";
+            for (int i = 0; i < CurrentDialogue.Lines.Count; i++)
+                {
+                s += CurrentDialogue.Lines[i].line;
+                s += ",";
+                }
+            s = s.Replace(",", "\n");
+            this.diagDisplay.GetComponentInChildren<UnityEngine.UI.Text>().text = s;
             //Testing!! 
-            
-            Debug.Log(CurrentDialogue.Lines[0].line);
-            Debug.Log(CurrentDialogue.Lines[0].Actor);
 
-            Debug.Log(CurrentDialogue.Lines[1].line);
-            Debug.Log(CurrentDialogue.Lines[1].Actor);
+            //Debug.Log(CurrentDialogue.Lines[0].line);
+            //Debug.Log(CurrentDialogue.Lines[0].Actor);
 
-            Debug.Log(CurrentDialogue.Lines[2].line);
-            Debug.Log(CurrentDialogue.Lines[2].Actor);
-            
-           // GameManager.Instance.ChangeGameState(GameStateId.Dialogue);
+            //Debug.Log(CurrentDialogue.Lines[1].line);
+            //Debug.Log(CurrentDialogue.Lines[1].Actor);
+
+            //Debug.Log(CurrentDialogue.Lines[2].line);
+            //Debug.Log(CurrentDialogue.Lines[2].Actor);
 
             return true;
         }
@@ -116,4 +127,10 @@ public class DialogueManager : MonoBehaviour
         
         return outDialogueLine == null ? false : true;
     }
-}
+
+    public void KillDiaglogue()
+        {
+        GameManager.Instance.ChangeGameState(GameStateId.Gameplay);
+        this.diagDisplay.SetActive(false);
+        }
+    }

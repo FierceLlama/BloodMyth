@@ -67,7 +67,15 @@ public class DialogueState: GameState
      */
     public DialogueState() { }
 
-    public override void Enter()   { }
-    public override void Exit()   { }
-    public override void Update() { }
+    public override void Enter()
+        {
+        Time.timeScale = 0.0f;
+        }
+    public override void Exit()
+        {
+        Time.timeScale = 1.0f;
+        }
+    public override void Update()
+        {
+        }
 }
