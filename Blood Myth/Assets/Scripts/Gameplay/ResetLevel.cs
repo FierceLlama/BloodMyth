@@ -8,6 +8,7 @@ public class ResetLevel : MonoBehaviour
     {
         if (player.gameObject.tag == "Player")
         {
+            this.GetComponent<StopBackgroundMusic>().StopMusic();
             string sceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(sceneName);
         }
