@@ -73,6 +73,8 @@ public class Player : MonoBehaviour
     private bool _tempFX;
     private EffectsManager _fxMan;
 
+    public string clipName;
+
     private void Start()
         {
         this._numLeaves = 0;
@@ -279,7 +281,8 @@ public class Player : MonoBehaviour
         this._currentFatigue -= this.fatigueHazardEffect;
         if (this.CheckCrisis())
             {
-            Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
+            AudioManager.Instance.StopAudio(clipName);
+            GameManager.Instance.GetComponent<BM_SceneManager>().ResetScene();
             }
         else
             {
@@ -291,7 +294,8 @@ public class Player : MonoBehaviour
         {
         if (this.CheckCrisis())
             {
-            Camera.main.gameObject.GetComponent<SceneController>().RestartScene();
+            AudioManager.Instance.StopAudio(clipName);
+            GameManager.Instance.GetComponent<BM_SceneManager>().ResetScene();
             }
         else
             {

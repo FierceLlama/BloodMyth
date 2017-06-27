@@ -31,110 +31,132 @@
 using System;
 using UnityEngine;
 
-namespace Spine.Unity {
-	/// <summary>Sets a GameObject's transform to match a bone on a Spine skeleton.</summary>
-	[ExecuteInEditMode]
-	[AddComponentMenu("Spine/BoneFollower")]
-	public class BoneFollower : MonoBehaviour {
+namespace Spine.Unity
+    {
+    /// <summary>Sets a GameObject's transform to match a bone on a Spine skeleton.</summary>
+    [ExecuteInEditMode]
+    [AddComponentMenu("Spine/BoneFollower")]
+    public class BoneFollower : MonoBehaviour
+        {
 
-		#region Inspector
-		public SkeletonRenderer skeletonRenderer;
-		public SkeletonRenderer SkeletonRenderer {
-			get { return skeletonRenderer; }
-			set {
-				skeletonRenderer = value;
-				Initialize();
-			}
-		}
+        #region Inspector
+        public SkeletonRenderer skeletonRenderer;
+        public SkeletonRenderer SkeletonRenderer
+            {
+            get { return skeletonRenderer; }
+            set
+                {
+                skeletonRenderer = value;
+                Initialize();
+                }
+            }
 
-		/// <summary>If a bone isn't set in code, boneName is used to find the bone.</summary>
-		[SpineBone(dataField: "skeletonRenderer")]
-		public String boneName;
+        /// <summary>If a bone isn't set in code, boneName is used to find the bone.</summary>
+        [SpineBone(dataField: "skeletonRenderer")]
+        public String boneName;
 
-		public bool followZPosition = true;
-		public bool followBoneRotation = true;
+        public bool followZPosition = true;
+        public bool followBoneRotation = true;
 
-		[Tooltip("Follows the skeleton's flip state by controlling this Transform's local scale.")]
-		public bool followSkeletonFlip = true;
+        [Tooltip("Follows the skeleton's flip state by controlling this Transform's local scale.")]
+        public bool followSkeletonFlip = true;
 
-		[Tooltip("Follows the target bone's local scale. BoneFollower cannot inherit world/skewed scale because of UnityEngine.Transform property limitations.")]
-		public bool followLocalScale = false;
+        [Tooltip("Follows the target bone's local scale. BoneFollower cannot inherit world/skewed scale because of UnityEngine.Transform property limitations.")]
+        public bool followLocalScale = false;
 
-		[UnityEngine.Serialization.FormerlySerializedAs("resetOnAwake")]
-		public bool initializeOnAwake = true;
-		#endregion
+        [UnityEngine.Serialization.FormerlySerializedAs("resetOnAwake")]
+        public bool initializeOnAwake = true;
+        #endregion
 
-		[NonSerialized] public bool valid;
-		[NonSerialized] public Bone bone;
-		Transform skeletonTransform;
+        [NonSerialized] public bool valid;
+        [NonSerialized] public Bone bone;
+        Transform skeletonTransform;
 
-		public void Awake () {
-			if (initializeOnAwake) Initialize();
-		}
+        public void Awake()
+            {
+            if (initializeOnAwake) Initialize();
+            }
 
-		public void HandleRebuildRenderer (SkeletonRenderer skeletonRenderer) {
-			Initialize();
-		}
+        public void HandleRebuildRenderer(SkeletonRenderer skeletonRenderer)
+            {
+            Initialize();
+            }
 
-		public void Initialize () {
-			bone = null;
-			valid = skeletonRenderer != null && skeletonRenderer.valid;
-			if (!valid) return;
+        public void Initialize()
+            {
+            bone = null;
+            valid = skeletonRenderer != null && skeletonRenderer.valid;
+            if (!valid) return;
 
-			skeletonTransform = skeletonRenderer.transform;
-			skeletonRenderer.OnRebuild -= HandleRebuildRenderer;
-			skeletonRenderer.OnRebuild += HandleRebuildRenderer;
+            skeletonTransform = skeletonRenderer.transform;
+            skeletonRenderer.OnRebuild -= HandleRebuildRenderer;
+            skeletonRenderer.OnRebuild += HandleRebuildRenderer;
 
-			if (!string.IsNullOrEmpty(boneName))
-				bone = skeletonRenderer.skeleton.FindBone(boneName);
+            if (!string.IsNullOrEmpty(boneName))
+                bone = skeletonRenderer.skeleton.FindBone(boneName);
 
-			#if UNITY_EDITOR
-			if (Application.isEditor)
-				LateUpdate();
-			#endif
-		}
+#if UNITY_EDITOR
+            if (Application.isEditor)
+                LateUpdate();
+#endif
+            }
 
-		void OnDestroy () {
-			if (skeletonRenderer != null)
-				skeletonRenderer.OnRebuild -= HandleRebuildRenderer;
-		}
+        void OnDestroy()
+            {
+            if (skeletonRenderer != null)
+                skeletonRenderer.OnRebuild -= HandleRebuildRenderer;
+            }
 
-		public void LateUpdate () {
-			if (!valid) {
-				Initialize();
-				return;
-			}
+        public void LateUpdate()
+            {
+            if (!valid)
+                {
+                Initialize();
+                return;
+                }
 
-			if (bone == null) {
-				if (string.IsNullOrEmpty(boneName)) return;
-				bone = skeletonRenderer.skeleton.FindBone(boneName);
-				if (bone == null) {
-					Debug.LogError("Bone not found: " + boneName, this);
-					return;
-				}
-			}
+            //if (bone == null)
+            //    {
+            //    if (string.IsNullOrEmpty(boneName)) return;
+            //    bone = skeletonRenderer.skeleton.FindBone(boneName);
+            //    if (bone == null)
+            //        {
+            //        Debug.LogError("Bone not found: " + boneName, this);
+            //        return;
+            //        }
+            //    }
 
-			Transform thisTransform = this.transform;
-			if (thisTransform.parent == skeletonTransform) {
-				// Recommended setup: Use local transform properties if Spine GameObject is the immediate parent
-				thisTransform.localPosition = new Vector3(bone.worldX, bone.worldY, followZPosition ? 0f : thisTransform.localPosition.z);
-				if (followBoneRotation) thisTransform.localRotation = Quaternion.Euler(0f, 0f, -bone.WorldRotationX);
-			} else {
-				// For special cases: Use transform world properties if transform relationship is complicated
-				Vector3 targetWorldPosition = skeletonTransform.TransformPoint(new Vector3(bone.worldX, bone.worldY, 0f));
-				if (!followZPosition) targetWorldPosition.z = thisTransform.position.z;
-				thisTransform.position = targetWorldPosition;
+            Transform thisTransform = this.transform;
+            if (thisTransform.parent == skeletonTransform)
+                {
+                // Recommended setup: Use local transform properties if Spine GameObject is the immediate parent
+                thisTransform.localPosition = new Vector3(bone.worldX, bone.worldY, followZPosition ? 0f : thisTransform.localPosition.z);
+                if (followBoneRotation)
+                    {
+                    thisTransform.localRotation = Quaternion.Euler(0f, 0f, -bone.WorldRotationX);
+                    }
+                }
+            else
+                {
+                // For special cases: Use transform world properties if transform relationship is complicated
+                Vector3 targetWorldPosition = skeletonTransform.TransformPoint(new Vector3(bone.worldX, bone.worldY, 0f));
+                if (!followZPosition)
+                    {
+                    targetWorldPosition.z = thisTransform.position.z;
+                    }
+                thisTransform.position = targetWorldPosition;
 
-				if (followBoneRotation) {
-					Vector3 worldRotation = skeletonTransform.rotation.eulerAngles;
-					thisTransform.rotation = Quaternion.Euler(-worldRotation.x, -worldRotation.y, skeletonTransform.rotation.eulerAngles.z + bone.WorldRotationX);
-				}
-			}
-				
-			//Vector3 localScale = followLocalScale ? new Vector3(bone.scaleX, bone.scaleY, 1f) : Vector3.one;
-			//if (followSkeletonFlip) localScale.y *= bone.skeleton.flipX ^ bone.skeleton.flipY ? -1f : 1f;
-			//thisTransform.localScale = localScale;
-		}
-	}
+                //if (followBoneRotation)
+                //    {
+                //    Vector3 worldRotation = skeletonTransform.rotation.eulerAngles;
+                //    thisTransform.rotation = Quaternion.Euler(-worldRotation.x, -worldRotation.y, skeletonTransform.rotation.eulerAngles.z + bone.WorldRotationX);
+                //    }
+                }
 
-}
+        //Vector3 localScale = followLocalScale ? new Vector3(bone.scaleX, bone.scaleY, 1f) : Vector3.one;
+        //if (followSkeletonFlip) localScale.y *= bone.skeleton.flipX ^ bone.skeleton.flipY ? -1f : 1f;
+        //thisTransform.localScale = localScale;
+        }
+        }
+
+    }
