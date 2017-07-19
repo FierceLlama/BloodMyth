@@ -96,6 +96,12 @@ public class BM_SceneManager : MonoBehaviour
                     DialogueManager.Instance.ClearDialogueKeys();
                     DialogueManager.Instance.LoadDialogueKeys("SPRING|TOTEM|001");
                     DialogueManager.Instance.LoadDialogueKeys("SPRING|TOTEM|002");
+                    DialogueManager.Instance.LoadDialogueKeys("SPRING|MED|000");
+                    DialogueManager.Instance.LoadDialogueKeys("SPRING|MED|001");
+                    DialogueManager.Instance.LoadDialogueKeys("SPRING|MED|002");
+                    DialogueManager.Instance.LoadDialogueKeys("SPRING|MED|003");
+                    DialogueManager.Instance.LoadDialogueKeys("SPRING|MED|004");
+                    DialogueManager.Instance.LoadDialogueKeys("SPRING|MED|005");
                     this.sceneToLoad = SceneId.Summer;
                     break;
                     }
@@ -107,6 +113,15 @@ public class BM_SceneManager : MonoBehaviour
                     DialogueManager.Instance.LoadDialogueKeys("SUMMER|TOTEM|001");
                     DialogueManager.Instance.LoadDialogueKeys("SUMMER|TOTEM|002");
                     DialogueManager.Instance.LoadDialogueKeys("SUMMER|TOTEM|003");
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|MED|000");
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|MED|001");
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|MED|002");
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|MED|003");
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|MED|004");
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|MED|005");
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|MED|006");
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|MED|007");
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|MED|008");
                     this.sceneToLoad = SceneId.Fall;
                     break;
                     }
@@ -118,6 +133,13 @@ public class BM_SceneManager : MonoBehaviour
                     DialogueManager.Instance.LoadDialogueKeys("FALL|TOTEM|002");
                     DialogueManager.Instance.LoadDialogueKeys("FALL|TOTEM|003");
                     DialogueManager.Instance.LoadDialogueKeys("FALL|TOTEM|004");
+                    DialogueManager.Instance.LoadDialogueKeys("FALL|MED|000");
+                    DialogueManager.Instance.LoadDialogueKeys("FALL|MED|001");
+                    DialogueManager.Instance.LoadDialogueKeys("FALL|MED|002");
+                    DialogueManager.Instance.LoadDialogueKeys("FALL|MED|003");
+                    DialogueManager.Instance.LoadDialogueKeys("FALL|MED|004");
+                    DialogueManager.Instance.LoadDialogueKeys("FALL|MED|005");
+                    DialogueManager.Instance.LoadDialogueKeys("FALL|MED|006");
                     this.sceneToLoad = SceneId.Winter;
                     break;
                     }
@@ -128,6 +150,12 @@ public class BM_SceneManager : MonoBehaviour
                     DialogueManager.Instance.LoadDialogueKeys("WINTER|TOTEM|001");
                     DialogueManager.Instance.LoadDialogueKeys("WINTER|TOTEM|002");
                     DialogueManager.Instance.LoadDialogueKeys("WINTER|TOTEM|003");
+                    DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|000");
+                    DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|001");
+                    DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|002");
+                    DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|003");
+                    DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|004");
+                    DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|005");
                     this.sceneToLoad = SceneId.MainMenu;
                     break;
                     }
