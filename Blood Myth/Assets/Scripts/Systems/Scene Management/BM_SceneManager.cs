@@ -103,6 +103,7 @@ public class BM_SceneManager : MonoBehaviour
                     {
                     gpInterface.GameOnLoad(mode);
                     DialogueManager.Instance.ClearDialogueKeys();
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|EVENT|000");
                     DialogueManager.Instance.LoadDialogueKeys("SUMMER|TOTEM|001");
                     DialogueManager.Instance.LoadDialogueKeys("SUMMER|TOTEM|002");
                     DialogueManager.Instance.LoadDialogueKeys("SUMMER|TOTEM|003");

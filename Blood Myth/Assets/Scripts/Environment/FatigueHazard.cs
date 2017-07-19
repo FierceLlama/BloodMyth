@@ -13,5 +13,4 @@ public class FatigueHazard : MonoBehaviour
             player.GetComponent<Player>().FatigueHazard();
         }
     }
-
 }

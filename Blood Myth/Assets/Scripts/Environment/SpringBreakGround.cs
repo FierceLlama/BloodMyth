@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class SpringBreakGround : MonoBehaviour
     {
-    static bool doneThisBefore = false;
+    private static bool doneThisShitAlready = false;
 
     void Start()
         {
-        if (doneThisBefore)
+        if (doneThisShitAlready)
             {
             this.gameObject.SetActive(false);
             }
@@ -16,9 +16,9 @@ public class SpringBreakGround : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D inPlayer)
         {
-        if (inPlayer.gameObject.tag == "Player" && !doneThisBefore)
+        if (inPlayer.gameObject.tag == "Player" && !doneThisShitAlready)
             {
-            doneThisBefore = true;
+            doneThisShitAlready = true;
             this.gameObject.SetActive(false);
             }
         }

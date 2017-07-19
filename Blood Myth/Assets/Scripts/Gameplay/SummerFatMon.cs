@@ -4,17 +4,24 @@ using UnityEngine;
 
 public class SummerFatMon : MonoBehaviour
     {
+    private static bool doneThisShitAlready;
     public GameObject start;
     public bool completed;
     public GameObject player;
     public string dialogue;
-    public GameObject fatigueMonster;
     public Sprite fatigueMonsterSprite;
 
     private void Start()
         {
-        this.completed = false;
-        this.start.transform.position = this.player.transform.position;
+        if (doneThisShitAlready)
+            {
+            this.gameObject.SetActive(false);
+            }
+        else
+            {
+            this.completed = false;
+            this.start.transform.position = this.player.transform.position;
+            }
         }
 
     public void OnTriggerEnter2D(Collider2D inPlayer)
@@ -31,9 +38,9 @@ public class SummerFatMon : MonoBehaviour
                 }
             else
                 {
+                doneThisShitAlready = true;
                 this.player.GetComponent<Player>().FatigueHazard();
-                this.fatigueMonster.SetActive(false);
-                this.GetComponent<BoxCollider2D>().enabled = false;
+                this.gameObject.SetActive(false);
                 }
             }
         }

@@ -278,7 +278,7 @@ public class Player : MonoBehaviour
 
     public void FatigueHazard()
         {
-        this._currentFatigue -= this.fatigueHazardEffect;
+        this._currentFatigue -= (this._currentFatigue / 2.0f);
         if (this.CheckCrisis())
             {
             AudioManager.Instance.StopAudio(clipName);
