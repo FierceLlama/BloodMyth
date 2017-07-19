@@ -86,9 +86,4 @@ public class GameManager : MonoBehaviour
     {
         GameSManager.CurrentState = GameStateID;
     }
-
-    public void LoadGameScene(SceneId inSceneID)
-    {
-        SceneManager.pubLoadGameScene(inSceneID);
-    }
 }

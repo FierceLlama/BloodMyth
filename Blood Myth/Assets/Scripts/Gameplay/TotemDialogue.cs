@@ -8,6 +8,7 @@ public class TotemDialogue : MonoBehaviour
     public GameObject _player;
     private Player _playerScript;
     private SetActionIcon _action;
+    public Sprite totemSprite;
 
     void Start()
         {
@@ -29,8 +30,8 @@ public class TotemDialogue : MonoBehaviour
             {
             if (InputManager.instance.GetInvestigateActive())
                 {
-                DialogueManager.Instance.LoadDialogueKeys(DialogueKey);
-                DialogueManager.Instance.StartDialogue(DialogueKey);
+                //DialogueManager.Instance.LoadDialogueKeys(DialogueKey);
+                DialogueManager.Instance.StartDialogue(DialogueKey, totemSprite);
                 }
             }
         }

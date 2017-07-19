@@ -43,6 +43,11 @@ public class DialogueManager : MonoBehaviour
     public DialogueActor[] Characters;
 
     public GameObject diagDisplay;
+    public GameObject playerPortrait;
+    public Sprite playerSprite;
+    public GameObject NPCPortrait;
+    private Sprite _NPCSprite;
+    private UnityEngine.UI.Image _NPCImage;
 
     void Awake()
     {
@@ -55,6 +60,10 @@ public class DialogueManager : MonoBehaviour
             DestroyImmediate(this);
 
         this.diagDisplay.SetActive(false);
+        this.playerPortrait.GetComponent<UnityEngine.UI.Image>().sprite = this.playerSprite;
+        this.playerPortrait.SetActive(false);
+        this._NPCImage = this.NPCPortrait.GetComponent<UnityEngine.UI.Image>();
+        this.NPCPortrait.SetActive(false);
     }
 
     void InitDialogueManager()
@@ -62,14 +71,22 @@ public class DialogueManager : MonoBehaviour
         dialogueLibrary = new DialogueLibrary();
     }
 
+    public void ClearDialogueKeys()
+        {
+        dialogueLibrary.ClearDialogueKeys();
+        }
+
     public void LoadDialogueKeys(string inKey)
     {
         dialogueLibrary.PreLoadDialogueHandle(inKey);
-    } 
+    }
 
-    public bool StartDialogue(string DialogueKey)
+    public bool StartDialogue(string DialogueKey, Sprite inNPCSprite)
     {
         this.diagDisplay.SetActive(true);
+        this.playerPortrait.SetActive(true);
+        this.NPCPortrait.SetActive(true);
+        this._NPCImage.sprite = inNPCSprite;
         CurrentDialogue = dialogueLibrary.FetchDialogueData(DialogueKey);
 
         if (CurrentDialogue != null)
@@ -132,5 +149,7 @@ public class DialogueManager : MonoBehaviour
         {
         GameManager.Instance.ChangeGameState(GameStateId.Gameplay);
         this.diagDisplay.SetActive(false);
+        this.playerPortrait.SetActive(false);
+        this.NPCPortrait.SetActive(false);
         }
     }

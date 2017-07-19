@@ -72,9 +72,15 @@ public class DialogueLibrary
 
         return Data;
     }
+
+    public void ClearDialogueKeys()
+        {
+        CurrentActiveDialogues.Clear();
+        }
+
     public void PreLoadDialogueHandle(string inKey)
     {
-        CurrentActiveDialogues.Clear();
+        //CurrentActiveDialogues.Clear();
         CurrentActiveDialogues.Add(ParseDialogueKey(inKey));
     }
 

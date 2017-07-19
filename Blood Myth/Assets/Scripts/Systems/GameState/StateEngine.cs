@@ -66,8 +66,6 @@ public class DialogueState: GameState
     /*
      * Add Input control scheme here. 
      * UI Actions must be done here.
-     * 
-     * 
      */
     public DialogueState() { }
 

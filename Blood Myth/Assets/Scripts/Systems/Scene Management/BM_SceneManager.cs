@@ -93,24 +93,40 @@ public class BM_SceneManager : MonoBehaviour
             case (int)SceneId.Spring:
                     {
                     gpInterface.GameOnLoad(mode);
+                    DialogueManager.Instance.ClearDialogueKeys();
+                    DialogueManager.Instance.LoadDialogueKeys("SPRING|TOTEM|001");
+                    DialogueManager.Instance.LoadDialogueKeys("SPRING|TOTEM|002");
                     this.sceneToLoad = SceneId.Summer;
                     break;
                     }
             case (int)SceneId.Summer:
                     {
                     gpInterface.GameOnLoad(mode);
+                    DialogueManager.Instance.ClearDialogueKeys();
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|TOTEM|001");
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|TOTEM|002");
+                    DialogueManager.Instance.LoadDialogueKeys("SUMMER|TOTEM|003");
                     this.sceneToLoad = SceneId.Fall;
                     break;
                     }
             case (int)SceneId.Fall:
                     {
                     gpInterface.GameOnLoad(mode);
+                    DialogueManager.Instance.ClearDialogueKeys();
+                    DialogueManager.Instance.LoadDialogueKeys("FALL|TOTEM|001");
+                    DialogueManager.Instance.LoadDialogueKeys("FALL|TOTEM|002");
+                    DialogueManager.Instance.LoadDialogueKeys("FALL|TOTEM|003");
+                    DialogueManager.Instance.LoadDialogueKeys("FALL|TOTEM|004");
                     this.sceneToLoad = SceneId.Winter;
                     break;
                     }
             case (int)SceneId.Winter:
                     {
                     gpInterface.GameOnLoad(mode);
+                    DialogueManager.Instance.ClearDialogueKeys();
+                    DialogueManager.Instance.LoadDialogueKeys("WINTER|TOTEM|001");
+                    DialogueManager.Instance.LoadDialogueKeys("WINTER|TOTEM|002");
+                    DialogueManager.Instance.LoadDialogueKeys("WINTER|TOTEM|003");
                     this.sceneToLoad = SceneId.MainMenu;
                     break;
                     }
@@ -131,11 +147,11 @@ public class BM_SceneManager : MonoBehaviour
 
     public void LoadNextScene()
         {
-        GameManager.Instance.LoadGameScene(sceneToLoad);
+        this.LoadGameScene(sceneToLoad);
         }
 
     public void ResetScene()
         {
-        GameManager.Instance.LoadGameScene(currentScene);
+        this.LoadGameScene(currentScene);
         }
     }

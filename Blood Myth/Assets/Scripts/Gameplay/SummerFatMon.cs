@@ -9,6 +9,7 @@ public class SummerFatMon : MonoBehaviour
     public GameObject player;
     public string dialogue;
     public GameObject fatigueMonster;
+    public Sprite fatigueMonsterSprite;
 
     private void Start()
         {
@@ -26,7 +27,7 @@ public class SummerFatMon : MonoBehaviour
                 this.player.transform.position = this.start.transform.position;
                 this.player.GetComponent<Player>().addLeaf();
                 DialogueManager.Instance.LoadDialogueKeys(dialogue);
-                DialogueManager.Instance.StartDialogue(dialogue);
+                DialogueManager.Instance.StartDialogue(dialogue, fatigueMonsterSprite);
                 }
             else
                 {
