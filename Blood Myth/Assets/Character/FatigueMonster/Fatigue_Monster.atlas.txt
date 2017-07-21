@@ -1,0 +1,83 @@
+
+Fatigue_Monster.png
+size: 2445,2445
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+L_Bicep
+  rotate: false
+  xy: 2, 368
+  size: 814, 693
+  orig: 814, 693
+  offset: 0, 0
+  index: -1
+L_Forearm
+  rotate: false
+  xy: 2, 1063
+  size: 1140, 1380
+  orig: 1140, 1380
+  offset: 0, 0
+  index: -1
+L_Middle_Finger
+  rotate: true
+  xy: 818, 482
+  size: 412, 656
+  orig: 412, 656
+  offset: 0, 0
+  index: -1
+L_Pointer_Finger
+  rotate: true
+  xy: 1928, 859
+  size: 791, 470
+  orig: 791, 470
+  offset: 0, 0
+  index: -1
+L_Ring_Finger
+  rotate: true
+  xy: 835, 280
+  size: 200, 850
+  orig: 200, 850
+  offset: 0, 0
+  index: -1
+R_Bicep
+  rotate: false
+  xy: 1687, 114
+  size: 726, 743
+  orig: 726, 743
+  offset: 0, 0
+  index: -1
+R_Forearm
+  rotate: false
+  xy: 1144, 896
+  size: 782, 1547
+  orig: 782, 1547
+  offset: 0, 0
+  index: -1
+R_Middle_Finger
+  rotate: true
+  xy: 2, 8
+  size: 95, 758
+  orig: 95, 758
+  offset: 0, 0
+  index: -1
+R_Pointer_Finger
+  rotate: false
+  xy: 1928, 1652
+  size: 484, 791
+  orig: 484, 791
+  offset: 0, 0
+  index: -1
+R_Ring_Finger
+  rotate: true
+  xy: 2, 105
+  size: 261, 831
+  orig: 261, 831
+  offset: 0, 0
+  index: -1
+Skull
+  rotate: false
+  xy: 835, 2
+  size: 212, 276
+  orig: 212, 276
+  offset: 0, 0
+  index: -1
