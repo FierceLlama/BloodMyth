@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpringColdWater : MonoBehaviour
+public class KillPlayer : MonoBehaviour
     {
     public GameObject player;
     private Player _playerScript;

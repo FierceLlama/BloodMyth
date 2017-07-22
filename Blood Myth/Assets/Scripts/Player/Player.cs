@@ -66,6 +66,7 @@ public class Player : MonoBehaviour
     public ExhaustedPlayer exhaustedFatigue;
     public TiredPlayer tiredFatigue;
     public FatigueStateBaseClass oldFatigueState;
+    public PlayerDeath playerDeath;
 
     private int _numLeaves;
 
@@ -87,6 +88,7 @@ public class Player : MonoBehaviour
         this.exhaustedFatigue = new ExhaustedPlayer(this);
         this.fatigueState = this.normalFatigue;
         this.oldFatigueState = this.fatigueState;
+        this.playerDeath = new PlayerDeath(this);
         this._rigidBody = this.GetComponent<Rigidbody2D>();
         this._facingRight = true;
         this.skeletonAnimation.state.SetAnimation(0, "Idle", true);
@@ -281,8 +283,10 @@ public class Player : MonoBehaviour
         this._currentFatigue -= (this._currentFatigue / 2.0f);
         if (this.CheckCrisis())
             {
-            AudioManager.Instance.StopAudio(clipName);
-            GameManager.Instance.GetComponent<BM_SceneManager>().ResetScene();
+            if (this.fatigueState != this.playerDeath)
+                {
+                this.PlayerDeathSequence();
+                }
             }
         else
             {
@@ -294,8 +298,10 @@ public class Player : MonoBehaviour
         {
         if (this.CheckCrisis())
             {
-            AudioManager.Instance.StopAudio(clipName);
-            GameManager.Instance.GetComponent<BM_SceneManager>().ResetScene();
+            if (this.fatigueState != this.playerDeath)
+                {
+                this.PlayerDeathSequence();
+                }
             }
         else
             {
@@ -317,23 +323,26 @@ public class Player : MonoBehaviour
 
     public void DetermineFatigueState()
         {
-        if (this._currentFatigue > this.tiredFatigueRangeHigh)
+        if (this.fatigueState != this.playerDeath)
             {
-            this.fatigueState = this.normalFatigue;
-            }
-        else if (this._currentFatigue > this.tiredFatigueRangeLow)
-            {
-            this.fatigueState = this.tiredFatigue;
-            }
-        else
-            {
-            this.fatigueState = this.exhaustedFatigue;
-            }
+            if (this._currentFatigue > this.tiredFatigueRangeHigh)
+                {
+                this.fatigueState = this.normalFatigue;
+                }
+            else if (this._currentFatigue > this.tiredFatigueRangeLow)
+                {
+                this.fatigueState = this.tiredFatigue;
+                }
+            else
+                {
+                this.fatigueState = this.exhaustedFatigue;
+                }
 
-        if (this.oldFatigueState != this.fatigueState && !this._jumping)
-            {
-            this.SetIHaveChangedState(true);
-            this.oldFatigueState = this.fatigueState;
+            if (this.oldFatigueState != this.fatigueState && !this._jumping)
+                {
+                this.SetIHaveChangedState(true);
+                this.oldFatigueState = this.fatigueState;
+                }
             }
         }
 
@@ -438,5 +447,24 @@ public class Player : MonoBehaviour
             {
             this._numLeaves = 0;
             }
+        }
+
+    public void PlayerDeathSequence()
+        {
+        this.fatigueState = this.playerDeath;
+        this.playerDeath.Enter();
+        StartCoroutine("WaitForDeath");
+        }
+
+    IEnumerator WaitForDeath()
+        {
+        yield return new WaitForSeconds(3.0f);
+        this.ResetSceneForPlayerDeath();
+        }
+
+    void ResetSceneForPlayerDeath()
+        {
+        AudioManager.Instance.StopAudio(clipName);
+        GameManager.Instance.GetComponent<BM_SceneManager>().ResetScene();
         }
     }

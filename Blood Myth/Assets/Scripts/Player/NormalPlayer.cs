@@ -14,7 +14,6 @@ public class NormalPlayer : FatigueStateBaseClass
 
     public override void Enter()
         {
-        Debug.Log("Normal State");
         }
 
     public override void Update()

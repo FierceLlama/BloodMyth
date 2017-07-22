@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpringColdWater : MonoBehaviour
+public class GetLeaf : MonoBehaviour
     {
     public GameObject player;
     private Player _playerScript;
 
-    void Start()
+    private void Start()
         {
         this._playerScript = this.player.GetComponent<Player>();
         }
 
     private void OnTriggerEnter2D(Collider2D inPlayer)
         {
-        this._playerScript.PlayerDeathSequence();
+        if (inPlayer.gameObject.tag == "Player")
+            {
+            this._playerScript.addLeaf();
+            this.gameObject.SetActive(false);
+            }
         }
     }
