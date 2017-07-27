@@ -6,6 +6,8 @@ public class LoadingScene : MonoBehaviour
 {
     bool Sceneloaded = false;
     SceneId privSceneToLoad;
+    AsyncOperation async;
+
     public SceneId SceneToLoad
     {
         get { return privSceneToLoad; }
@@ -27,10 +29,8 @@ public class LoadingScene : MonoBehaviour
 
     IEnumerator CheckSceneLoadStatus()
     {
-        yield return new WaitForSeconds(3);
-
         // Start an asynchronous operation to load the scene that was passed to the LoadNewScene coroutine.
-        AsyncOperation async = SceneManager.LoadSceneAsync((int)privSceneToLoad);
+        async = SceneManager.LoadSceneAsync((int)privSceneToLoad);
 
         while (!async.isDone)
         {
