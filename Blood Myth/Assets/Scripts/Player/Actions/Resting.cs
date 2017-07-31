@@ -18,4 +18,21 @@ public class Resting : MonoBehaviour
             this._playerScript.Resting();
         }
     }
+
+    void OnTriggerEnter2D(Collider2D inPlayer)
+    {
+        if (inPlayer.gameObject.tag == "Player")
+        {
+            AudioManager.Instance.PlaySound("Resting", AudioType.Music);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D inPlayer)
+    {
+        if (inPlayer.gameObject.tag == "Player")
+        {
+            AudioManager.Instance.StopSound("Resting", AudioType.Music);
+        }
+    }
+
 }

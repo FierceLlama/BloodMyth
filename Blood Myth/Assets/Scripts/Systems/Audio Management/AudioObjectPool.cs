@@ -94,7 +94,7 @@ public class AudioObjectPool
         else if (inType == AudioType.Music)
             GObj = FindInMusic(clipname);
        
-        if (!GObj)
+        if (GObj)
             GObj.GetComponent<AudioObject>().Stop();
 
         return GObj;

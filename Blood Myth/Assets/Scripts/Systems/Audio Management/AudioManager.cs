@@ -78,13 +78,10 @@ class AudioManager: MonoBehaviour
         if (inType == AudioType.SFX)
         {
             GObj = AudioPool.StopSound("sfx/" + clipname, inType);
-            GObj.GetComponent<AudioObject>().setVolume(SoundEffectsVolume);
         }
         else if (inType == AudioType.Music)
         {
             GObj = AudioPool.StopSound("music/" + clipname, inType);
-            GObj.GetComponent<AudioObject>().SetLoopingMode(true);
-            GObj.GetComponent<AudioObject>().setVolume(BackGroundMusicVolume);
         }
     }
 
