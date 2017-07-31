@@ -61,7 +61,7 @@ public class SummerFatMon : MonoBehaviour
     IEnumerator WaitForDeath()
         {
         yield return new WaitForSeconds(3.0f);
-        AudioManager.Instance.StopAudio("Summer");
+        AudioManager.Instance.StopSound("Summer",AudioType.Music);
         GameManager.Instance.GetComponent<BM_SceneManager>().ResetScene();
         }
 

@@ -464,7 +464,7 @@ public class Player : MonoBehaviour
 
     void ResetSceneForPlayerDeath()
         {
-        AudioManager.Instance.StopAudio(clipName);
+        AudioManager.Instance.StopSound(clipName, AudioType.Music);
         GameManager.Instance.GetComponent<BM_SceneManager>().ResetScene();
         }
     }

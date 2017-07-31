@@ -44,9 +44,11 @@ abstract class AudioObject : MonoBehaviour
     }
 
     public void Stop()
-        {
+    {
         this.AudioSrc.Stop();
-        }
+        this.free = true; // this shouldn't matter they get set to true in the Update anyway. 
+                           //but good to have just in case of multiple operations in same frame.
+    }
 }
 
 public class AudioObjectPool
@@ -66,9 +68,13 @@ public class AudioObjectPool
         SFXList.Sort((c1, c2) => c2.free.CompareTo(c1.free));
     }
 
-    public GameObject PlaySound(string clipname, GameObject AudioObjectParent)
+    public GameObject PlaySound(string clipname, GameObject AudioObjectParent, AudioType inType)
     {
-        GameObject GObj = FindInSFX(clipname);
+        GameObject GObj = null;
+        if (inType == AudioType.SFX)
+            GObj = FindInSFX(clipname);
+        else if (inType == AudioType.Music)
+            GObj = FindInMusic(clipname);
 
         if (!GObj)
         {
@@ -78,6 +84,20 @@ public class AudioObjectPool
 
         return GObj;
 
+    }
+
+    public GameObject StopSound (string clipname, AudioType inType)
+    {
+        GameObject GObj = null;
+        if (inType == AudioType.SFX)
+            GObj = FindInSFX(clipname);
+        else if (inType == AudioType.Music)
+            GObj = FindInMusic(clipname);
+       
+        if (!GObj)
+            GObj.GetComponent<AudioObject>().Stop();
+
+        return GObj;
     }
 
     private GameObject FindInSFX(string clipname)
@@ -92,7 +112,8 @@ public class AudioObjectPool
 
     public GameObject FindInMusic(string clipName)
         {
-        AudioObject AObj = MusicList[0];
+
+        AudioObject AObj = MusicList.Find(x => (x.ClipName == clipName) );
 
         if (AObj)
             return AObj.gameObject;
