@@ -8,7 +8,7 @@ public class SkipLevelHack : MonoBehaviour
 
     public void SkipHack()
         {
-        AudioManager.Instance.StopAudio(clipName);
+        AudioManager.Instance.StopSound(clipName, AudioType.Music);
         GameManager.Instance.GetComponent<BM_SceneManager>().LoadNextScene();
         }
     }

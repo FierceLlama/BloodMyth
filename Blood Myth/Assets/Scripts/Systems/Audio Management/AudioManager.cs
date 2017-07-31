@@ -57,12 +57,12 @@ class AudioManager: MonoBehaviour
 
         if (inType == AudioType.SFX)
         { 
-            GObj = AudioPool.PlaySound("sfx/"+clipname, SFXParentObject);
+            GObj = AudioPool.PlaySound("sfx/"+clipname, SFXParentObject, inType);
             GObj.GetComponent<AudioObject>().setVolume(SoundEffectsVolume);
         }
         else if (inType == AudioType.Music)
         {
-            GObj = AudioPool.PlaySound("music/"+clipname, MusicParentObject);
+            GObj = AudioPool.PlaySound("music/"+clipname, MusicParentObject,inType);
             GObj.GetComponent<AudioObject>().SetLoopingMode(true);
             GObj.GetComponent<AudioObject>().setVolume(BackGroundMusicVolume);
         }
@@ -71,14 +71,19 @@ class AudioManager: MonoBehaviour
         GObj.GetComponent<AudioObject>().PlayAudio();
     }
 
-    public void StopAudio(string clipName)
-        {
+    public void StopSound(string clipname, AudioType inType)
+    {
         GameObject GObj = null;
-
-        GObj = AudioPool.FindInMusic(clipName);
-        GObj.GetComponent<AudioObject>().free = true;
-        GObj.GetComponent<AudioObject>().Stop();
+      
+        if (inType == AudioType.SFX)
+        {
+            GObj = AudioPool.StopSound("sfx/" + clipname, inType);
         }
+        else if (inType == AudioType.Music)
+        {
+            GObj = AudioPool.StopSound("music/" + clipname, inType);
+        }
+    }
 
     public void ApplyVolumeChange(AudioType inAudioType, float inVol)
     {

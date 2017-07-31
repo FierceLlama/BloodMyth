@@ -8,6 +8,6 @@ public class StopBackgroundMusic : MonoBehaviour
 
     public void StopMusic()
         {
-        AudioManager.Instance.StopAudio(clipName);
+        AudioManager.Instance.StopSound(clipName,AudioType.Music);
         }
     }
