@@ -123,6 +123,7 @@ public class NormalPlayer : FatigueStateBaseClass
             {
             if (this._player.GetJumping())
                 {
+                AudioManager.Instance.PlaySound("Jump", AudioType.SFX);
                 this._player.skeletonAnimation.state.SetAnimation(0, "Jump", false);
                 this._player.skeletonAnimation.state.AddAnimation(0, "Jump_Idle", true, 0.1f);
                 this._player.LowerHydrationForJumping();

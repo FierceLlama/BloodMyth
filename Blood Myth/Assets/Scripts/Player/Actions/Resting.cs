@@ -23,7 +23,7 @@ public class Resting : MonoBehaviour
     {
         if (inPlayer.gameObject.tag == "Player")
         {
-            AudioManager.Instance.PlaySound("Resting", AudioType.Music);
+            AudioManager.Instance.PlaySoundVolume("Resting", AudioType.Music, 0.5f);
         }
     }
 

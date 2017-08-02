@@ -42,7 +42,7 @@ class AudioManager: MonoBehaviour
     {
         AudioPool = new AudioObjectPool();
         AudioPool.Init();
-        this.BackGroundMusicVolume = 1.0f;
+        this.BackGroundMusicVolume = 0.1f;
         this.SoundEffectsVolume = 1.0f;
    }
 
@@ -70,6 +70,18 @@ class AudioManager: MonoBehaviour
         GObj.GetComponent<AudioObject>().free = false;
         GObj.GetComponent<AudioObject>().PlayAudio();
     }
+
+    public void PlaySoundVolume(string clipname, AudioType inType, float inVol)
+        {
+        GameObject GObj = null;
+        
+        GObj = AudioPool.PlaySound("music/" + clipname, MusicParentObject, inType);
+        GObj.GetComponent<AudioObject>().SetLoopingMode(true);
+        GObj.GetComponent<AudioObject>().setVolume(inVol);
+
+        GObj.GetComponent<AudioObject>().free = false;
+        GObj.GetComponent<AudioObject>().PlayAudio();
+        }
 
     public void StopSound(string clipname, AudioType inType)
     {

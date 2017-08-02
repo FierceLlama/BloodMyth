@@ -280,6 +280,14 @@ public class Player : MonoBehaviour
 
     public void FatigueHazard()
         {
+        if (this._numLeaves > 0)
+            {
+            AudioManager.Instance.PlaySound("LeafAttack", AudioType.SFX);
+            }
+        else
+            {
+            AudioManager.Instance.PlaySound("NoLeafAttack", AudioType.SFX);
+            }
         this._currentFatigue -= (this._currentFatigue / 2.0f);
         if (this.CheckCrisis())
             {
@@ -290,7 +298,7 @@ public class Player : MonoBehaviour
             }
         else
             {
-            this.DetermineFatigueState();
+            this.DetermineFatigueState(true);
             }
         }
 
@@ -307,7 +315,7 @@ public class Player : MonoBehaviour
             {
             this._currentFatigue -= this.fatigueDownRate * Time.deltaTime;
             // I don't like this, I need callbacks for threshold values
-            this.DetermineFatigueState();
+            this.DetermineFatigueState(true);
             }
         }
 
@@ -321,7 +329,7 @@ public class Player : MonoBehaviour
         return inCrisis;
         }
 
-    public void DetermineFatigueState()
+    public void DetermineFatigueState(bool negativeEffect)
         {
         if (this.fatigueState != this.playerDeath)
             {
@@ -342,6 +350,14 @@ public class Player : MonoBehaviour
                 {
                 this.SetIHaveChangedState(true);
                 this.oldFatigueState = this.fatigueState;
+                if (negativeEffect)
+                    {
+                    AudioManager.Instance.PlaySound("FatigueDown", AudioType.SFX);
+                    }
+                else
+                    {
+                    AudioManager.Instance.PlaySound("FatigueUp", AudioType.SFX);
+                    }
                 }
             }
         }
@@ -369,7 +385,7 @@ public class Player : MonoBehaviour
         if (this._currentFatigue < this.maxFatigue)
             {
             this._currentFatigue += this.fatigueRestingRate * Time.deltaTime;
-            this.DetermineFatigueState();
+            this.DetermineFatigueState(false);
             }
         else
             {
@@ -434,6 +450,7 @@ public class Player : MonoBehaviour
 
     public void addLeaf()
         {
+        AudioManager.Instance.PlaySound("Leaf", AudioType.SFX);
         this._numLeaves++;
         }
 

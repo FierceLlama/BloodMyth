@@ -40,6 +40,7 @@ public class SummerFatMon : MonoBehaviour
             this._fatMon.skeletonAnimation.state.AddAnimation(0, "Idle", true, 1.0f);
             if (!completed)
                 {
+                AudioManager.Instance.PlaySound("NoLeafAttack", AudioType.SFX);
                 completed = true;
                 this._playerScript.fatigueState = this._playerScript.playerDeath;
                 this._playerScript.playerDeath.Enter();

@@ -12,6 +12,8 @@ public class MoveWindGale : MonoBehaviour
     public string clipName;
     public float delayStartUp;
 
+    private bool _canHear = false;
+
     void Start()
         {
         this._xForm = this.gameObject;
@@ -57,7 +59,10 @@ public class MoveWindGale : MonoBehaviour
     void TurnOn()
         {
         this.gameObject.SetActive(true);
-        AudioManager.Instance.PlaySound(clipName, AudioType.SFX);
+        if (this._canHear)
+            {
+            AudioManager.Instance.PlaySound(clipName, AudioType.SFX);
+            }
         this._xForm.transform.position = start.transform.position;
         }
 
@@ -66,5 +71,10 @@ public class MoveWindGale : MonoBehaviour
         this.gameObject.SetActive(false);
         Invoke("TurnOn", this.delayStartUp);
         yield return new WaitForSeconds(this.delayStartUp);
+        }
+
+    public void SetCanHear(bool inCanHear)
+        {
+        this._canHear = inCanHear;
         }
     }

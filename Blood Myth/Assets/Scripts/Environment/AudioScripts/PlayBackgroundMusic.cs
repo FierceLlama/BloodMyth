@@ -8,6 +8,6 @@ public class PlayBackgroundMusic : MonoBehaviour
 
     void Start()
     {
-        AudioManager.Instance.PlaySound(clipName, AudioType.Music);
+        AudioManager.Instance.PlaySoundVolume(clipName, AudioType.Music, 0.15f);
     }
 }
