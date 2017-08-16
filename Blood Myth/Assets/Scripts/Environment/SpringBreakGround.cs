@@ -19,6 +19,7 @@ public class SpringBreakGround : MonoBehaviour
         if (inPlayer.gameObject.tag == "Player" && !doneThisShitAlready)
             {
             doneThisShitAlready = true;
+            AudioManager.Instance.PlaySound("StoneCrumbling", AudioType.SFX);
             this.gameObject.SetActive(false);
             }
         }
