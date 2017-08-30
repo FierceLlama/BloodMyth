@@ -39,6 +39,7 @@ public class NormalPlayer : FatigueStateBaseClass
         else
             {
             this._player.SetMove(0.0f);
+            InputManager.instance.NotMovingTurnOffSprint();
             }
         
         this._player.GetRigidbody().velocity = new Vector2(this._player.GetMove() * this._player.GetSpeed(), this._player.GetRigidbody().velocity.y);

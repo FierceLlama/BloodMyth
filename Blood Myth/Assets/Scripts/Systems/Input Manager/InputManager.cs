@@ -120,6 +120,11 @@ public class InputManager : MonoBehaviour
         //Debug.Log("Sprint is " + (isSprintActive ? "Active" : "Not Active"));
     }
 
+    public void NotMovingTurnOffSprint()
+        {
+        this.isSprintActive = false;
+        }
+
     void DeactivateAllInput()
         {
         this.DeActivateJumpButton();
