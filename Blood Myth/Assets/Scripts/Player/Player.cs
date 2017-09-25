@@ -454,6 +454,11 @@ public class Player : MonoBehaviour
         this._numLeaves++;
         }
 
+    public int getNumLeaves()
+        {
+        return this._numLeaves;
+        }
+
     public void removeLeaf()
         {
         if(this._numLeaves > 0)
