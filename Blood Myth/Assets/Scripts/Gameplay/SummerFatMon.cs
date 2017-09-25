@@ -11,6 +11,8 @@ public class SummerFatMon : MonoBehaviour
     private Player _playerScript;
     private FatigueMonster _fatMon;
     public GameObject leaf;
+    public GameObject canvasNumLeaves;
+    public GameObject canvasLeaf;
 
     private void Start()
         {
@@ -29,6 +31,8 @@ public class SummerFatMon : MonoBehaviour
             this.start.transform.position = this.player.transform.position;
             this._playerScript = this.player.GetComponent<Player>();
             this.leaf.SetActive(false);
+            this.canvasLeaf.SetActive(false);
+            this.canvasNumLeaves.SetActive(false);
             }
         }
 

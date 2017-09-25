@@ -9,7 +9,7 @@ public class FatigueMonster : MonoBehaviour
 
     void Start()
         {
-        flipX = false;
+        flipX = flipX ^ false;
         this.skeletonAnimation.state.SetAnimation(0, "Idle", true);
         this.skeletonAnimation.Skeleton.FlipX = flipX;
         }

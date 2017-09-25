@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
     public PlayerDeath playerDeath;
 
     private int _numLeaves;
+    private UnityEngine.UI.Text _numLeavesText;
 
     private bool _hydrationFX;
     private bool _tempFX;
@@ -79,6 +80,10 @@ public class Player : MonoBehaviour
     private void Start()
         {
         this._numLeaves = 0;
+        if (GameObject.FindWithTag("NumLeaves"))
+            {
+            this._numLeavesText = GameObject.FindWithTag("NumLeaves").GetComponent<UnityEngine.UI.Text>();
+            }
         this._currentFatigue = this.maxFatigue;
         this._currentHydration = this.maxHydration;
         this._currentTemperature = this.maxTemperature;
@@ -282,7 +287,9 @@ public class Player : MonoBehaviour
         {
         if (this._numLeaves > 0)
             {
+            this._numLeaves--;
             AudioManager.Instance.PlaySound("LeafAttack", AudioType.SFX);
+            this._numLeavesText.text = "x " + this._numLeaves.ToString();
             }
         else
             {
