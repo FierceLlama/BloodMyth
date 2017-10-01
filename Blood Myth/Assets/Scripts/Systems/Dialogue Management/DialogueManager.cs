@@ -20,20 +20,20 @@ using UnityEngine;
 
 [System.Serializable]
 public class DialogueActor
-{
+    {
     [SerializeField]
     public Actors Actor;
     [SerializeField]
     public Sprite Portrait;
-}
+    }
 public enum Actors
-{
+    {
     PLY,
     NPC,
     TTM,
-}
+    }
 public class DialogueManager : MonoBehaviour
-{
+    {
     public static DialogueManager Instance;
     DialogueLibrary dialogueLibrary;
     DialogueData CurrentDialogue;
@@ -49,13 +49,15 @@ public class DialogueManager : MonoBehaviour
     private Sprite _NPCSprite;
     private UnityEngine.UI.Image _NPCImage;
 
+    private GameObject _introOutroDiagDisplay;
+
     void Awake()
-    {
-        if (!Instance)
         {
+        if (!Instance)
+            {
             Instance = this;
             InitDialogueManager();
-        }
+            }
         else if (Instance != this)
             DestroyImmediate(this);
 
@@ -67,9 +69,9 @@ public class DialogueManager : MonoBehaviour
     }
 
     void InitDialogueManager()
-    {
+        {
         dialogueLibrary = new DialogueLibrary();
-    }
+        }
 
     public void ClearDialogueKeys()
         {
@@ -77,12 +79,12 @@ public class DialogueManager : MonoBehaviour
         }
 
     public void LoadDialogueKeys(string inKey)
-    {
+        {
         dialogueLibrary.PreLoadDialogueHandle(inKey);
-    }
+        }
 
     public bool StartDialogue(string DialogueKey, Sprite inNPCSprite)
-    {
+        {
         this.diagDisplay.SetActive(true);
         this.playerPortrait.SetActive(true);
         this.NPCPortrait.SetActive(true);
@@ -90,16 +92,16 @@ public class DialogueManager : MonoBehaviour
         CurrentDialogue = dialogueLibrary.FetchDialogueData(DialogueKey);
 
         if (CurrentDialogue != null)
-        {
+            {
             GameManager.Instance.ChangeGameState(GameStateId.Dialogue);
-            string s = "";
-            for (int i = 0; i < CurrentDialogue.Lines.Count; i++)
-                {
-                s += CurrentDialogue.Lines[i].line;
-                //s += ",";
-                }
-            s = s.Replace("/", "\n");
-            this.diagDisplay.GetComponentInChildren<UnityEngine.UI.Text>().text = s;
+            //string s = "";
+            //for (int i = 0; i < CurrentDialogue.Lines.Count; i++)
+            //    {
+            //    s += CurrentDialogue.Lines[i].line;
+            //    //s += ",";
+            //    }
+            //s = s.Replace("/", "\n");
+            this.diagDisplay.GetComponentInChildren<UnityEngine.UI.Text>().text = CurrentDialogue.Lines[0].line;
             //Testing!! 
 
             //Debug.Log(CurrentDialogue.Lines[0].line);
@@ -112,38 +114,38 @@ public class DialogueManager : MonoBehaviour
             //Debug.Log(CurrentDialogue.Lines[2].Actor);
 
             return true;
-        }
-   
+            }
+
         return false;
-    }
+        }
 
 
     public bool GetNextLine(out DialogueLine outDialogueLine)
-    {
-        if ( privGetNextLine(out outDialogueLine) )
         {
+        if (privGetNextLine(out outDialogueLine))
+            {
             currentActor = GetNextActor(outDialogueLine);
             return true;
-        }
+            }
 
         return false;
-           
-    }
+
+        }
     public DialogueActor GetNextActor(DialogueLine inDialogue)
-    {
-        for (int i = 0; i < Characters.Length; ++i)
         {
+        for (int i = 0; i < Characters.Length; ++i)
+            {
             if (Characters[i].Actor == inDialogue.Actor)
                 return Characters[i];
-        }
+            }
         return null;
-    }
-    public bool privGetNextLine (out DialogueLine outDialogueLine)
-    {
+        }
+    public bool privGetNextLine(out DialogueLine outDialogueLine)
+        {
         outDialogueLine = CurrentDialogue.GetNextDialogueLine();
-        
+
         return outDialogueLine == null ? false : true;
-    }
+        }
 
     public void KillDiaglogue()
         {
@@ -151,5 +153,26 @@ public class DialogueManager : MonoBehaviour
         this.diagDisplay.SetActive(false);
         this.playerPortrait.SetActive(false);
         this.NPCPortrait.SetActive(false);
+        }
+
+    public void StartIntroOutroDialogue(string DialogueKey, GameObject dialogueObject)
+        {
+        this._introOutroDiagDisplay = dialogueObject;
+        CurrentDialogue = dialogueLibrary.FetchDialogueData(DialogueKey);
+        this.IntroOutroDialogue();
+        }
+
+    public void IntroOutroDialogue()
+        {
+        DialogueLine outDialogueLine = null;
+        if (this.privGetNextLine(out outDialogueLine))
+            {
+            this._introOutroDiagDisplay.GetComponent<UnityEngine.UI.Text>().text = outDialogueLine.line;
+            }
+        else
+            {
+            this._introOutroDiagDisplay = null;
+            GameManager.Instance.GetComponent<BM_SceneManager>().LoadNextScene();
+            }
         }
     }

@@ -83,6 +83,14 @@ public class BM_SceneManager : MonoBehaviour
                     gpInterface.LoadingOnLoad(mode);
                     break;
                     }
+            case (int)SceneId.Intro:
+                    {
+                    gpInterface.GameOnLoad(mode);
+                    DialogueManager.Instance.ClearDialogueKeys();
+                    DialogueManager.Instance.LoadDialogueKeys("INTRO|TOTEM|000");
+                    this.sceneToLoad = SceneId.Spring;
+                    break;
+                    }
             case (int)SceneId.Spring:
                     {
                     gpInterface.GameOnLoad(mode);
@@ -148,6 +156,14 @@ public class BM_SceneManager : MonoBehaviour
                     DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|003");
                     DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|004");
                     DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|005");
+                    this.sceneToLoad = SceneId.MainMenu;
+                    break;
+                    }
+            case (int)SceneId.Outro:
+                    {
+                    gpInterface.GameOnLoad(mode);
+                    DialogueManager.Instance.ClearDialogueKeys();
+                    DialogueManager.Instance.LoadDialogueKeys("OUTRO|TOTEM|000");
                     this.sceneToLoad = SceneId.MainMenu;
                     break;
                     }
