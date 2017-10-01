@@ -156,7 +156,7 @@ public class BM_SceneManager : MonoBehaviour
                     DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|003");
                     DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|004");
                     DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|005");
-                    this.sceneToLoad = SceneId.MainMenu;
+                    this.sceneToLoad = SceneId.Outro;
                     break;
                     }
             case (int)SceneId.Outro:
