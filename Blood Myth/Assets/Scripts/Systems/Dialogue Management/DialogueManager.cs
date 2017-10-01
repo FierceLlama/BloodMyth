@@ -172,7 +172,7 @@ public class DialogueManager : MonoBehaviour
         else
             {
             this._introOutroDiagDisplay = null;
-            // Terrible...
+            // Terrible...  
             AudioManager.Instance.StopSound("Menu", AudioType.Music);
             GameManager.Instance.GetComponent<BM_SceneManager>().LoadNextScene();
             }
