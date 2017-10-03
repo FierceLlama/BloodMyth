@@ -290,12 +290,14 @@ public class Player : MonoBehaviour
             this._numLeaves--;
             AudioManager.Instance.PlaySound("LeafAttack", AudioType.SFX);
             this._numLeavesText.text = "x " + this._numLeaves.ToString();
+            this._currentFatigue -= (this._currentFatigue / 2.0f);
             }
         else
             {
             AudioManager.Instance.PlaySound("NoLeafAttack", AudioType.SFX);
+            this._currentFatigue -= 50.0f;
             }
-        this._currentFatigue -= (this._currentFatigue / 2.0f);
+        
         if (this.CheckCrisis())
             {
             if (this.fatigueState != this.playerDeath)
@@ -326,7 +328,7 @@ public class Player : MonoBehaviour
             }
         }
 
-    bool CheckCrisis()
+    public bool CheckCrisis()
         {
         bool inCrisis = false;
         if (this._currentFatigue <= this._zero)
