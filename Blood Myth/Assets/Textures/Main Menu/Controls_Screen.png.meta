@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 6aa935603f3bbb246aaaf8da4e5e4a6e
-timeCreated: 1506994058
+guid: c00ec375f85805c43a5e98a397143714
+timeCreated: 1507006859
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -78,7 +78,7 @@ TextureImporter:
     serializedVersion: 2
     sprites: []
     outline: []
-  spritePackingTag: Winter
+  spritePackingTag: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

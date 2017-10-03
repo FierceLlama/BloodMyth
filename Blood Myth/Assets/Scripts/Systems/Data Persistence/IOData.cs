@@ -144,6 +144,6 @@ public class IOData
 
     public void LevelToContinueFrom(Levels inLevel)
         {
-        this._levelscompleted = this.LevelsCompleted | (int)inLevel;
+        this._levelscompleted = (int)inLevel;
         }
 }
