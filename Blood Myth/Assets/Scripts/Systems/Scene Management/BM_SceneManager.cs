@@ -104,6 +104,8 @@ public class BM_SceneManager : MonoBehaviour
                     DialogueManager.Instance.LoadDialogueKeys("SPRING|MED|004");
                     DialogueManager.Instance.LoadDialogueKeys("SPRING|MED|005");
                     this.sceneToLoad = SceneId.Summer;
+                    IOSystem.Instance.data.LevelToContinueFrom(Levels.SPRING);
+                    IOSystem.Instance.AutoSave();
                     break;
                     }
             case (int)SceneId.Summer:
@@ -123,6 +125,8 @@ public class BM_SceneManager : MonoBehaviour
                     DialogueManager.Instance.LoadDialogueKeys("SUMMER|MED|007");
                     DialogueManager.Instance.LoadDialogueKeys("SUMMER|MED|008");
                     this.sceneToLoad = SceneId.Fall;
+                    IOSystem.Instance.data.LevelToContinueFrom(Levels.SUMMER);
+                    IOSystem.Instance.AutoSave();
                     break;
                     }
             case (int)SceneId.Fall:
@@ -141,6 +145,8 @@ public class BM_SceneManager : MonoBehaviour
                     DialogueManager.Instance.LoadDialogueKeys("FALL|MED|005");
                     DialogueManager.Instance.LoadDialogueKeys("FALL|MED|006");
                     this.sceneToLoad = SceneId.Winter;
+                    IOSystem.Instance.data.LevelToContinueFrom(Levels.FALL);
+                    IOSystem.Instance.AutoSave();
                     break;
                     }
             case (int)SceneId.Winter:
@@ -157,6 +163,8 @@ public class BM_SceneManager : MonoBehaviour
                     DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|004");
                     DialogueManager.Instance.LoadDialogueKeys("WINTER|MED|005");
                     this.sceneToLoad = SceneId.Outro;
+                    IOSystem.Instance.data.LevelToContinueFrom(Levels.WINTER);
+                    IOSystem.Instance.AutoSave();
                     break;
                     }
             case (int)SceneId.Outro:

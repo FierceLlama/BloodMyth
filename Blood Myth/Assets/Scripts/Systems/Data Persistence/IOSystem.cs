@@ -60,4 +60,9 @@ public class IOSystem
     {
         return this.data.worldTotems;
     }
+
+    public int GetLevelToStartFrom()
+        {
+        return this.data.LevelsCompleted;
+        }
 }

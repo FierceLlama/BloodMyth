@@ -24,6 +24,15 @@ public enum WorldTotems
     WINTER_TOTEMS_3 = 0x00004000,
     };
 
+public enum Levels
+    {
+    NEW     = 0x00000001,
+    SPRING  = 0x00000002,
+    SUMMER  = 0x00000004,
+    FALL    = 0x00000008,
+    WINTER  = 0x0000000c
+    };
+
 [Serializable]
 public class IOData
 {
@@ -56,7 +65,7 @@ public class IOData
     }
 
     /* Game Progress */
-    private int _levelscompleted;
+    private int _levelscompleted = (int)Levels.NEW;
     public int LevelsCompleted
     {
         get
@@ -132,4 +141,9 @@ public class IOData
     {
         this.worldTotems = this._worldTotems | (int)inTotem;
     }
+
+    public void LevelToContinueFrom(Levels inLevel)
+        {
+        this._levelscompleted = this.LevelsCompleted | (int)inLevel;
+        }
 }

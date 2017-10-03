@@ -78,8 +78,8 @@ public class GameManager : MonoBehaviour
         SceneManager = gameObject.GetComponent<BM_SceneManager>();
         GameSManager = gameObject.GetComponent<GameStateManager>();
         DontDestroyOnLoad(this.gameObject);
-        IOSystem.Instance.Load();
-        //IOSystem.Instance.ClearData();
+        //IOSystem.Instance.Load();
+        IOSystem.Instance.ClearData();
     }
 
     public void ChangeGameState(GameStateId GameStateID)
